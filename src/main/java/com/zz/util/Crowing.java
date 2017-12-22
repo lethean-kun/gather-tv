@@ -35,10 +35,6 @@ public class Crowing {
         String url="http://www.huya.com/l?areafib=1";
         //抓取的数据
         List<LiveShow> liveShows=URLParser(client, url);
-        //循环输出抓取的数据
-        for (LiveShow lv:liveShows) {
-            System.out.println(lv);
-        }
         return liveShows;
 
     }
