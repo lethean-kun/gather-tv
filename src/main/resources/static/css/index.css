@@ -1,0 +1,9 @@
+.show{
+    width: 280px;
+    height: 220px;
+    background:white;
+}
+.layui-header li{
+    font-weight:bold;
+    color:#3AE475;
+}
