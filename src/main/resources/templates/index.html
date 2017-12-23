@@ -1,11 +1,14 @@
-﻿﻿<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>layout 后台大布局 - Layui</title>
-    <link rel="stylesheet" href="css/layui.css" />
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/layui.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <!--ioc图标库-->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+
     <style>
         .site-doc-icon li {
             float: left;
@@ -29,33 +32,33 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-gray">
-        <div class="layui-logo"><img src="test.png"/></div>
+        <div class="layui-logo"><img src="images/logo.svg" style="float: left;margin-left: 0px"/></div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left ">
-            <li class="layui-nav-item layui-font-black"><a href=""><font style="color:#3AE475">全部直播</font></a></li>
-            <li class="layui-nav-item"><a href=""><font style="color:#3AE475">我的订阅</font></a></li>
-            <li class="layui-nav-item"><a href=""><font style="color:#3AE475">用户</font></a></li>
+            <li class="layui-nav-item layui-font-black"><a href=""><font style="color:#23ade5">全部直播</font></a></li>
+            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
+            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
             <li class="layui-nav-item">
-                <a href="javascript:;"><font style="color:#3AE475">分类</font></a>
+                <a href="javascript:;"><font style="color:#23ade5">分类</font></a>
                 <dl class="layui-nav-child">
-                    <dd><a href=""><font style="color:#3AE475">英雄联盟</font></a></dd>
-                    <dd><a href=""><font style="color:#3AE475">王者荣耀</font></a></dd>
-                    <dd><a href=""><font style="color:#3AE475">绝地求生</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">英雄联盟</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">王者荣耀</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">绝地求生</font></a></dd>
                 </dl>
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#3AE475">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
                     贤心</font>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href=""><font style="color:#3AE475">基本资料</font></a></dd>
-                    <dd><a href=""><font style="color:#3AE475">安全设置</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">安全设置</font></a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href=""><font style="color:#3AE475">退了</font></a></li>
+            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">退了</font></a></li>
         </ul>
     </div>
 
@@ -64,46 +67,68 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">全部直播</a>
+                    <a class="" href="javascript:;">
+                        <i class="ion-ios-videocam" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;全部直播
+                    </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">全部分类</a>
+                    <a class="" href="javascript:;">
+                        <i class="ion-social-windows" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;全部分类
+                    </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">主播排行</a>
+                    <a class="" href="javascript:;">
+                        <i class="ion-trophy" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;主播排行
+                    </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">我的关注</a>
+                    <a class="" href="javascript:;">
+                        <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;我的关注
+                    </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">热门分类</a>
+                    <a class="" href="javascript:;">
+                        <i class="ion-ios-flame" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;热门分类
+                    </a>
                     <dl class="layui-nav-child">
-                        <dd style="text-align: center;margin-top: 10px">
-                            <button class="layui-btn layui-btn-primary layui-btn-sm">小型按钮</button>
-                            <button class="layui-btn layui-btn-primary layui-btn-sm">小型按钮</button>
+                        <dd class="button" style="background-color:transparent;">
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
                         </dd>
-                        <dd style="text-align: center;margin-top: 10px">
-                            英雄联盟
+                        <dd class="button" style="background-color:transparent;">
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
                         </dd>
-                        <dd style="text-align: center;margin-top: 10px">
-                            王者荣耀
+                        <dd class="button" style="background-color:transparent;">
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
                         </dd>
-                        <dd style="text-align: center;margin-top: 10px">
-                            炉石传说
+                        <dd class="button" style="background-color:transparent;">
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
+                        </dd>
+                        <dd class="button" style="background-color:transparent;">
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
                         </dd>
 
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
+                    <a href="javascript:;">单机游戏</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">列表一</a></dd>
                         <dd><a href="javascript:;">列表二</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="">云市场</a></li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>
+                <li class="layui-nav-item"><a href="">手机游戏</a></li>
+                <li class="layui-nav-item"><a href="">主机游戏</a></li>
             </ul>
         </div>
     </div>
@@ -112,138 +137,37 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
 
-            <h2><i class="layui-icon" style="color:#f60;font-size: 30px; ">&#xe6ed;</i>&nbsp;全部直播</h2>
-            <hr class="layui-bg-orange"/>
+            <h1><i class="ion-social-youtube" style="color:#23ade5;font-size: 30px; "></i>&nbsp;全部直播</h1>
+            <hr class="layui-bg-blue"/>
             <ul class="site-doc-icon" style="margin-left:10px">
-                <a href="#">
-                    <li style="margin-right: 20px" >
-                        <div class="show" >
-                            <div style="position:relative;" id="fuck">
-                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:110px;top:70px;">
+                <a class="play" href="#">
+                    <li style="margin-right: 20px">
+                        <div class="show">
+                            <div style="position:relative;">
+                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px"
+                                     width="280px"/>
+                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">
 
-                                    <i class="layui-icon" id="star" style="font-size:50px;color: white;display: none">&#xe652;</i>
+                                    <i class="star layui-icon"
+                                       style="font-size:50px;color: white;display: none">&#xe652;</i>
                                 </div>
                             </div>
 
                             <div>
                                 <div style="float: left"><span>&nbsp;高高兴兴来玩</span></div>
-                                <div style="float: right;color:#f60"><span>英雄联盟&nbsp;</span></div>
+                                <div style="float: right;color:#23ade5"><span>英雄联盟&nbsp;</span></div>
                             </div>
                             <div style="clear:both">
-                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="layui-icon">&#xe612;</i>马老师</span>
+                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i
+                                        class="ion-android-contact"></i>马老师</span>
                                 </div>
-                                <div style="float:right"><i class="layui-icon" style="color: red"> &#xe756;</i>110万&nbsp;
+                                <div style="float:right"><i class="ion-fireball" style="color: #23ade5"></i>&nbsp;110万&nbsp;
                                 </div>
                             </div>
 
                         </div>
                     </li>
                 </a>
-                <a href="#">
-                    <li style="margin-right: 20px" >
-                        <div class="show" >
-                            <div style="position:relative;" id="fuck">
-                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:110px;top:70px;">
-
-                                    <i class="layui-icon" id="star" style="font-size:50px;color: white;display: none">&#xe652;</i>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="float: left"><span>&nbsp;高高兴兴来玩</span></div>
-                                <div style="float: right;color:#f60"><span>英雄联盟&nbsp;</span></div>
-                            </div>
-                            <div style="clear:both">
-                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="layui-icon">&#xe612;</i>马老师</span>
-                                </div>
-                                <div style="float:right"><i class="layui-icon" style="color: red"> &#xe756;</i>110万&nbsp;
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li style="margin-right: 20px" >
-                        <div class="show" >
-                            <div style="position:relative;" id="fuck">
-                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:110px;top:70px;">
-
-                                    <i class="layui-icon" id="star" style="font-size:50px;color: white;display: none">&#xe652;</i>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="float: left"><span>&nbsp;高高兴兴来玩</span></div>
-                                <div style="float: right;color:#f60"><span>英雄联盟&nbsp;</span></div>
-                            </div>
-                            <div style="clear:both">
-                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="layui-icon">&#xe612;</i>马老师</span>
-                                </div>
-                                <div style="float:right"><i class="layui-icon" style="color: red"> &#xe756;</i>110万&nbsp;
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li style="margin-right: 20px" >
-                        <div class="show" >
-                            <div style="position:relative;" id="fuck">
-                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:110px;top:70px;">
-
-                                    <i class="layui-icon" id="star" style="font-size:50px;color: white;display: none">&#xe652;</i>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="float: left"><span>&nbsp;高高兴兴来玩</span></div>
-                                <div style="float: right;color:#f60"><span>英雄联盟&nbsp;</span></div>
-                            </div>
-                            <div style="clear:both">
-                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="layui-icon">&#xe612;</i>马老师</span>
-                                </div>
-                                <div style="float:right"><i class="layui-icon" style="color: red"> &#xe756;</i>110万&nbsp;
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li style="margin-right: 20px" >
-                        <div class="show" >
-                            <div style="position:relative;" id="fuck">
-                                <img src="https://rpic.douyucdn.cn/alrpic/171221/787579_2100.jpg" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:110px;top:70px;">
-
-                                    <i class="layui-icon" id="star" style="font-size:50px;color: white;display: none">&#xe652;</i>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="float: left"><span>&nbsp;高高兴兴来玩</span></div>
-                                <div style="float: right;color:#f60"><span>英雄联盟&nbsp;</span></div>
-                            </div>
-                            <div style="clear:both">
-                                <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="layui-icon">&#xe612;</i>马老师</span>
-                                </div>
-                                <div style="float:right"><i class="layui-icon" style="color: red"> &#xe756;</i>110万&nbsp;
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                </a>
-
-
-
-
 
             </ul>
 
@@ -253,7 +177,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © layui.com - 底部固定区域
+        © lethean.top - 聚合直播
     </div>
 </div>
 <script src="layui.js"></script>
@@ -265,20 +189,66 @@
 
     });
 </script>
-
 <script>
-    $("#fuck").mouseover(
-        function(){
-            $("#star").fadeIn("slow");
-        }
-    );
-    $("#fuck").mouseleave(
-        function(){
-            $("#star").fadeOut("slow");
-        }
-    );
 
 
+    $(".play").mouseover(
+        function () {
+            $(this).find(".star").fadeIn("slow");
+        }
+    );
+    $(".play").mouseleave(
+        function () {
+            $(this).find(".star").fadeOut("slow");
+        }
+    );
+    /**
+     * @param string
+     * @returns
+     * 截取过长字符串
+     */
+    function subLimit(string) {
+        var objLength = string.length;
+        var num = 12;
+        if (objLength > num) {
+            string = string.substring(0, num) + "...";
+        }
+        return string;
+    }
 </script>
+<script>
+
+    $(function () {
+
+        $.post("/getLiveList", function (data) {
+            ""
+            $.each(data, function (index, live) {
+                $(".site-doc-icon").append('<a class="play" href="#">' +
+                    ' <li style="margin-right: 20px" >' +
+                    ' <div class="show" >' +
+                    ' <div style="position:relative;" >' +
+                    ' <img src="' + live.picUrl + '" height="180px" width="280px"/>' +
+                    ' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">' +
+                    ' <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>' +
+                    ' </div>' +
+                    ' </div>' +
+                    ' <div>' +
+                    ' <div style="float: left"><span>&nbsp;' + subLimit(live.liveTitle) + '</span></div>' +
+                    ' <div style="float: right;color:#23ade5"><span>' + live.type + '&nbsp;</span></div>' +
+                    ' </div>' +
+                    ' <div style="clear:both">' +
+                    ' <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="ion-android-contact"></i>' + live.personName + '</span>' +
+                    ' </div>' +
+                    ' <div style="float:right"><i class="ion-fireball" style="color: #23ade5"></i>&nbsp;' + live.showNum + '&nbsp;' +
+                    ' </div>' +
+                    ' </div>' +
+                    ' </div>' +
+                    ' </li>' +
+                    ' </a>');
+            })
+        })
+    });
+</script>
+
 </body>
 </html>

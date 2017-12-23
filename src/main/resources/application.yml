@@ -3,7 +3,12 @@ server:
 
 spring:
   thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    #开发时关闭缓存,不然没法看到实时页面
     cache: false
+
   datasource:
     name: test
     url: jdbc:mysql://localhost:3306/concentrate_tv?useUnicode=true&characterEncoding=UTF-8
