@@ -14,3 +14,15 @@
     text-align: center;
     margin-top: 5px;
 }
+.room-video{
+    width: 70%;
+    height: 580px;
+    float: left
+}
+.chat-list{
+    width: 25%;
+    height: 580px;
+    float: left;
+    background-color: white;
+    margin-left: 20px
+}

@@ -3,7 +3,7 @@ package com.zz.model;
 /**
  * Created by lethean on 2017/12/22.
  */
-public class LiveShow {
+public class LiveShow implements Comparable<LiveShow>{
     private int id;
     private String personName;
     private String picUrl;
@@ -12,6 +12,7 @@ public class LiveShow {
     private String liveTitle;
     private String showNum;
     private String msgChannel;
+    private int isShow;
 
     public int getId() {
         return id;
@@ -77,6 +78,15 @@ public class LiveShow {
         this.msgChannel = msgChannel;
     }
 
+
+    public int getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(int isShow) {
+        this.isShow = isShow;
+    }
+
     @Override
     public String toString() {
         return "LiveShow{" +
@@ -89,5 +99,14 @@ public class LiveShow {
                 ", showNum='" + showNum + '\'' +
                 ", msgChannel='" + msgChannel + '\'' +
                 '}';
+    }
+
+    //重写排序方法 按直播人数降序
+    @Override
+    public int compareTo(LiveShow o) {
+        if(Double.valueOf(this.getShowNum())<Double.valueOf(o.getShowNum())){
+            return 1;
+        }
+        return -1;
     }
 }

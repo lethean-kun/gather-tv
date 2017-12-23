@@ -16,4 +16,10 @@ public interface LiveShowService {
      * @return
      */
     List<LiveShow> getLiveList();
+
+    /**
+     * 获取直播详情
+     * @return
+     */
+    LiveShow getLiveDetail(int id);
 }

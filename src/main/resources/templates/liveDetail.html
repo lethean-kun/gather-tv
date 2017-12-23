@@ -1,11 +1,11 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>layout 后台大布局 - Layui</title>
-    <link rel="stylesheet" href="css/layui.css"/>
-    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" th:href="${ctx}+'css/layui.css'" />
+    <link rel="stylesheet" th:href="${ctx}+'css/index.css'"/>
     <!--ioc图标库-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
 
@@ -32,7 +32,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-gray">
-        <div class="layui-logo"><img src="images/logo.svg" style="float: left;margin-left: 0px"/></div>
+        <div class="layui-logo"><img th:src="${ctx}+'images/logo.svg'" style="float: left;margin-left: 0px"/></div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left ">
             <li class="layui-nav-item layui-font-black"><a href=""><font style="color:#23ade5">全部直播</font></a></li>
@@ -137,12 +137,16 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
 
-            <h1><i class="ion-social-youtube" style="color:#23ade5;font-size: 30px; "></i>&nbsp;全部直播</h1>
+            <h1 th:text="${liveShow.liveTitle}"><i class="ion-social-youtube" style="color:#23ade5;font-size: 30px; "></i>&nbsp;直播详情</h1>
+            <i class="ion-android-contact"></i>&nbsp;<span th:text="${liveShow.personName}"></span>&nbsp;&nbsp;
+            <i class="ion-fireball" style="color: #23ade5"></i>&nbsp;<span th:text="${liveShow.showNum}"></span>
             <hr class="layui-bg-blue"/>
-            <ul class="site-doc-icon" style="margin-left:10px">
+            <div class="room-video" >
+                <embed	 width="100%" 	height="100%" wmode="opaque" allowfullscreen="true" allowscriptaccess="always" th:src="${liveShow.liveUrl}"/>
+            </div>
+            <div class="chat-list">
 
-            </ul>
-
+            </div>
 
         </div>
     </div>
@@ -152,7 +156,7 @@
         © lethean.top - 聚合直播
     </div>
 </div>
-<script src="layui.js"></script>
+<script th:src="${ctx}+'layui.js'"></script>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
     //JavaScript代码区域
@@ -161,69 +165,7 @@
 
     });
 </script>
-<script>
 
-
-    /**
-     * @param string
-     * @returns
-     * 截取过长字符串
-     */
-    function subLimit(string) {
-        var objLength = string.length;
-        var num = 12;
-        if (objLength > num) {
-            string = string.substring(0, num) + "...";
-        }
-        return string;
-    }
-</script>
-<script>
-
-    $(function () {
-
-        $.post("/getLiveList", function (data) {
-            ""
-            $.each(data, function (index, live) {
-                $(".site-doc-icon").append('<a class="play" href="/liveDetail/'+live.id+'">' +
-                    ' <li style="margin-right: 20px" >' +
-                    ' <div class="show" >' +
-                    ' <div style="position:relative;" >' +
-                    ' <img src="' + live.picUrl + '" height="180px" width="280px"/>' +
-                    ' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">' +
-                    ' <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' <div>' +
-                    ' <div style="float: left"><span>&nbsp;' + subLimit(live.liveTitle) + '</span></div>' +
-                    ' <div style="float: right;color:#23ade5"><span>' + live.type + '&nbsp;</span></div>' +
-                    ' </div>' +
-                    ' <div style="clear:both">' +
-                    ' <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="ion-android-contact"></i>' + live.personName + '</span>' +
-                    ' </div>' +
-                    ' <div style="float:right"><i class="ion-fireball" style="color: #23ade5"></i>&nbsp;' + live.showNum + '&nbsp;' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' </li>' +
-                    ' </a>');
-            })
-            //  加载完后添加事件（有点气）
-            $(".play").mouseover(
-                function () {
-                    $(this).find(".star").fadeIn("slow");
-                }
-            );
-            $(".play").mouseleave(
-                function () {
-                    $(this).find(".star").fadeOut("slow");
-                }
-            );
-        })
-
-    });
-
-</script>
 
 </body>
 </html>

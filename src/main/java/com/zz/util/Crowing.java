@@ -23,6 +23,11 @@ import java.util.List;
  */
 public class Crowing {
 
+    public static String HuYa = "虎牙直播";
+    public static String QuanMin = "全民直播";
+    public static String ZanQi = "战旗直播";
+    public static String LongZhu = "龙珠直播";
+
     public static void main(String[] args) throws Exception {
         crowingHuya();
     }
@@ -96,8 +101,8 @@ public class Crowing {
             liveShow.setLiveTitle(tilte);
             liveShow.setLiveUrl(url);
             liveShow.setType(type);
-            liveShow.setShowNum(livenum);
-            liveShow.setMsgChannel("虎牙");
+            liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
+            liveShow.setMsgChannel(HuYa);
             //将每一个对象的值，保存到List集合中
             data.add(liveShow);
         }

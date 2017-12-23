@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by lethean on 2017/12/22.
  */
-//@Component
+@Component
 public class SpiderServiceImpl implements SpiderService {
 
     private final Logger logger = LoggerFactory.getLogger(SpiderServiceImpl.class);
@@ -29,6 +29,9 @@ public class SpiderServiceImpl implements SpiderService {
     public int forInsertLive() throws Exception {
 
         logger.info("50秒抓取一次数据");
+
+        //设置状态为未播
+        liveShowMapper.updateLiveIsShow();
         List<LiveShow> liveShows = Crowing.crowingHuya();
         for(LiveShow liveShow:liveShows){
             logger.info(liveShow.toString());
