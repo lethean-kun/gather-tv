@@ -1,6 +1,7 @@
 package com.zz.mapper;
 
 import com.zz.model.LiveShow;
+import com.zz.model.Parameter;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -18,9 +19,14 @@ public interface LiveShowMapper {
      * 获取所有直播列表
      * @return
      */
-    @Select("SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
-            "FROM live_show where is_show=1 order by show_num desc")
-    List<LiveShow> getAllLive();
+    @Select({"<script>",
+                "SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
+                "FROM live_show where is_show=1",
+                "<when test='type!=null'>",
+                    "and type=#{type}",
+                "</when>",
+            "</script>"})
+    List<LiveShow> getAllLive(Parameter parameter);
 
     /**
      * 获取直播详情

@@ -2,9 +2,12 @@ package com.zz.service.impl;
 
 
 import com.zz.mapper.LiveShowMapper;
+import com.zz.mapper.TypeMapper;
 import com.zz.model.LiveShow;
+import com.zz.model.LiveType;
 import com.zz.service.SpiderService;
-import com.zz.util.Crowing;
+import com.zz.util.CrowingLiveList;
+import com.zz.util.CrowingLiveType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +27,31 @@ public class SpiderServiceImpl implements SpiderService {
     @Autowired
     LiveShowMapper liveShowMapper;
 
+    @Autowired
+    TypeMapper typeMapper;
+
     @Override
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 250000)
     public int forInsertLive() throws Exception {
 
-        logger.info("50秒抓取一次数据");
+        logger.info("250秒抓取一次数据");
 
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
-        List<LiveShow> liveShows = Crowing.crowingHuya();
+        List<LiveShow> liveShows = CrowingLiveList.crowingHuya();
         for(LiveShow liveShow:liveShows){
             logger.info(liveShow.toString());
             liveShowMapper.updateLive(liveShow);
+        }
+        return 0;
+    }
+
+    @Override
+//    @Scheduled(fixedRate = 50000000)
+    public int forInsertType() throws Exception {
+        List<LiveType> liveTypes = CrowingLiveType.getLiveTypes();
+        for (LiveType liveType:liveTypes) {
+            typeMapper.insertType(liveType);
         }
         return 0;
     }

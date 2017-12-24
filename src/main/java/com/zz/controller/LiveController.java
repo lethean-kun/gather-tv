@@ -1,7 +1,11 @@
 package com.zz.controller;
 
+import com.zz.mapper.TypeMapper;
 import com.zz.model.LiveShow;
+import com.zz.model.LiveType;
+import com.zz.model.Parameter;
 import com.zz.service.LiveShowService;
+import com.zz.service.LiveTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,9 @@ public class LiveController {
     @Resource
     LiveShowService liveShowService;
 
+    @Resource
+    LiveTypeService liveTypeService;
+
 
     @RequestMapping("index")
     public String toIndex(){
@@ -31,17 +38,26 @@ public class LiveController {
         return "index";
     }
 
+    @RequestMapping("toLiveType")
+    public String toLiveType(HttpServletRequest request){
+        request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
+        List<LiveType> liveTypes = liveTypeService.getAllType();
+        request.setAttribute("liveTypes",liveTypes);
+
+        return "liveType";
+    }
+
     @ResponseBody
     @RequestMapping("getLiveList")
-    public List<LiveShow> getLiveList(){
+    public List<LiveShow> getLiveList(Parameter parameter){
 
-        List list = liveShowService.getLiveList();
+        List list = liveShowService.getLiveList(parameter);
 
         return list;
     }
 
     @RequestMapping("liveDetail/{id}")
-    public String liveDetail(@PathVariable int id,
+    public String liveDetail(@PathVariable("id") int id,
                              HttpServletRequest request){
         request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
         logger.info("http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");

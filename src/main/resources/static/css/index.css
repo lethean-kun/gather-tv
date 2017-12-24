@@ -26,3 +26,11 @@
     background-color: white;
     margin-left: 20px
 }
+.js-game-list-item{
+    margin-left: 20px;
+    margin-top:20px;
+    float: left;
+    width: 180px;
+    height: 290px;
+
+}

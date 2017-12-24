@@ -2,8 +2,9 @@ package com.zz.service.impl;
 
 import com.zz.mapper.LiveShowMapper;
 import com.zz.model.LiveShow;
+import com.zz.model.Parameter;
 import com.zz.service.LiveShowService;
-import com.zz.util.Crowing;
+import com.zz.util.CrowingLiveList;
 import com.zz.util.ShowNumFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,8 @@ public class LiveShowServiceImpl implements LiveShowService {
     LiveShowMapper liveShowMapper;
 
     @Override
-    public List<LiveShow> getLiveList() {
-        List<LiveShow> list = liveShowMapper.getAllLive();
+    public List<LiveShow> getLiveList(Parameter parameter) {
+        List<LiveShow> list = liveShowMapper.getAllLive(parameter);
         //对list进行按观看人数降序排序
         Collections.sort(list);
         for(LiveShow liveShow:list){
@@ -39,7 +40,7 @@ public class LiveShowServiceImpl implements LiveShowService {
     public LiveShow getLiveDetail(int id) {
         LiveShow liveShow = liveShowMapper.getLiveDetail(id);
         //不同来源直播对应不同的处理
-        if(liveShow.getMsgChannel().equals(Crowing.HuYa)){
+        if(liveShow.getMsgChannel().equals(CrowingLiveList.HuYa)){
             String[] str = liveShow.getLiveUrl().split("/");
             String url = str[str.length-1];
             url = "http://liveshare.huya.com/"+url+"/huyacoop.swf";
