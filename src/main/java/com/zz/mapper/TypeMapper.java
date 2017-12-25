@@ -32,4 +32,12 @@ public interface TypeMapper {
             "FROM live_type order by heat desc")
     List<LiveType> getLiveTypes();
 
+    /**
+     * 获取热门分类 按火热度降序
+     * @return
+     */
+    @Select("SELECT id,type_pic as typePic,type_name as typeName,msg_channel as msgChannel " +
+            "FROM live_type order by heat desc limit 0,9")
+    List<LiveType> getCateTypes();
+
 }

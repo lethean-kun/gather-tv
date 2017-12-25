@@ -48,6 +48,15 @@ public class LiveController {
     }
 
     @ResponseBody
+    @RequestMapping("toCateType")
+    public List<LiveType> toCateType(){
+
+        List<LiveType> liveTypes = liveTypeService.getCateType();
+
+        return liveTypes;
+    }
+
+    @ResponseBody
     @RequestMapping("getLiveList")
     public List<LiveShow> getLiveList(Parameter parameter){
 

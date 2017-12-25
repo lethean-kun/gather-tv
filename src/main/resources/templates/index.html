@@ -95,26 +95,11 @@
                         <i class="ion-ios-flame" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;热门分类
                     </a>
-                    <dl class="layui-nav-child">
+                    <dl class="cateType layui-nav-child">
+
                         <dd class="button" style="background-color:transparent;">
                             <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
+                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">DNF</button>
                         </dd>
 
                     </dl>
@@ -181,9 +166,19 @@
 <script>
 
     $(function () {
+        
+        $.post("/toCateType",function (data) {
+            $.each(data, function (index, type){
+                $(".cateType").append('<dd class="button" style="background-color:transparent;">'+
+                                                 ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+type.typeName+'</button>'+
+                                             '</dd>'
+                     )
+                })
+
+        })
 
         $.post("/getLiveList", function (data) {
-            ""
+
             $.each(data, function (index, live) {
                 $(".site-doc-icon").append('<a class="play" href="/liveDetail/'+live.id+'">' +
                     ' <li style="margin-right: 20px" >' +

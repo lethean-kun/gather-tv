@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by lethean on 2017/12/22.
  */
-@Component
+//@Component
 public class SpiderServiceImpl implements SpiderService {
 
     private final Logger logger = LoggerFactory.getLogger(SpiderServiceImpl.class);

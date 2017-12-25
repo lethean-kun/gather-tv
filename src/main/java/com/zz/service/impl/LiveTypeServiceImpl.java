@@ -23,4 +23,11 @@ public class LiveTypeServiceImpl implements LiveTypeService {
         List<LiveType> liveTypes = typeMapper.getLiveTypes();
         return liveTypes;
     }
+
+    @Override
+    public List<LiveType> getCateType() {
+
+        List<LiveType> liveTypes = typeMapper.getCateTypes();
+        return liveTypes;
+    }
 }

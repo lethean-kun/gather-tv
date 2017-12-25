@@ -17,4 +17,11 @@ public interface LiveTypeService {
      */
     List<LiveType> getAllType();
 
+    /**
+     * 热门直播类型
+     * @param
+     * @return
+     */
+    List<LiveType> getCateType();
+
 }
