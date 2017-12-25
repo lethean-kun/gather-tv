@@ -1,6 +1,5 @@
 package com.zz.controller;
 
-import com.zz.mapper.TypeMapper;
 import com.zz.model.LiveShow;
 import com.zz.model.LiveType;
 import com.zz.model.Parameter;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/21.
  */
 @Controller

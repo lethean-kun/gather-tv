@@ -1,6 +1,7 @@
 package com.zz.model;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/22.
  */
 public class LiveShow implements Comparable<LiveShow>{

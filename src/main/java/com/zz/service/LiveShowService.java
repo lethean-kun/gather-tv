@@ -6,6 +6,7 @@ import com.zz.model.Parameter;
 import java.util.List;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/23.
  */
 public interface LiveShowService {

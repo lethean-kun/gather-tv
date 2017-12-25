@@ -4,11 +4,11 @@ import com.zz.model.LiveType;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/24.
  */
 @Mapper

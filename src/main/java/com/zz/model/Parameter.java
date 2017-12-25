@@ -1,6 +1,7 @@
 package com.zz.model;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/24.
  */
 public class Parameter {
