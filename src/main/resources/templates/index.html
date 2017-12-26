@@ -97,10 +97,6 @@
                     </a>
                     <dl class="cateType layui-nav-child">
 
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">DNF</button>
-                        </dd>
 
                     </dl>
                 </li>
@@ -168,13 +164,22 @@
     $(function () {
         
         $.post("/toCateType",function (data) {
-            $.each(data, function (index, type){
+            //在for循环语句前后添加/* <![CDATA[ */ 和 /* ]]> */避免与Thymeleaf冲突
+            /* <![CDATA[ */
+            for(var i = 0;i<data.length;i = i + 2){
                 $(".cateType").append('<dd class="button" style="background-color:transparent;">'+
-                                                 ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+type.typeName+'</button>'+
-                                             '</dd>'
-                     )
-                })
-
+                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+data[i].typeName+'</button>'+
+                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+data[i+1].typeName+'</button>'+
+                    '</dd>'
+                )
+            }
+            /* ]]> */
+//            $.each(data, function (index, type){
+//                $(".cateType").append('<dd class="button" style="background-color:transparent;">'+
+//                                            ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+type.typeName+'</button>'+
+//                                      '</dd>'
+//                     )
+//                })
         })
 
         $.post("/getLiveList", function (data) {

@@ -76,27 +76,7 @@
                         <i class="ion-ios-flame" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;热门分类
                     </a>
-                    <dl class="layui-nav-child">
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
-                        <dd class="button" style="background-color:transparent;">
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">英雄联盟</button>
-                            <button class="layui-btn-sm layui-btn-normal layui-btn-radius">王者荣耀</button>
-                        </dd>
+                    <dl class="cateType layui-nav-child">
 
                     </dl>
                 </li>
@@ -149,6 +129,21 @@
         var element = layui.element;
 
     });
+
+    $(function () {
+        $.post("/toCateType", function (data) {
+            //在for循环语句前后添加/* <![CDATA[ */ 和 /* ]]> */避免与Thymeleaf冲突
+            /* <![CDATA[ */
+            for (var i = 0; i < data.length; i = i + 2) {
+                $(".cateType").append('<dd class="button" style="background-color:transparent;">' +
+                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i].typeName + '</button>' +
+                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i + 1].typeName + '</button>' +
+                    '</dd>'
+                )
+            }
+            /* ]]> */
+        })
+    })
 </script>
 
 
