@@ -16,12 +16,12 @@
 }
 .room-video{
     width: 70%;
-    height: 470px;
+    height: 530px;
     float: left
 }
 .chat-list{
     width: 25%;
-    height: 470px;
+    height: 530px;
     float: left;
     background-color: white;
     margin-left: 20px

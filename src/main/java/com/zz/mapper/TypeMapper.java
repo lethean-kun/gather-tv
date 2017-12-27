@@ -37,7 +37,7 @@ public interface TypeMapper {
      * @return
      */
     @Select("SELECT id,type_pic as typePic,type_name as typeName,msg_channel as msgChannel " +
-            "FROM live_type order by heat desc limit 0,9")
+            "FROM live_type order by heat desc limit 0,10")
     List<LiveType> getCateTypes();
 
 }
