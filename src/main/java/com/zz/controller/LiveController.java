@@ -55,7 +55,7 @@ public class LiveController {
 
         return liveTypes;
     }
-
+    //先前写法 已不用
     @ResponseBody
     @RequestMapping("getLiveList")
     public List<LiveShow> getLiveList(Parameter parameter){
@@ -63,6 +63,17 @@ public class LiveController {
         List list = liveShowService.getLiveList(parameter);
 
         return list;
+    }
+
+    @RequestMapping("toLiveList")
+    public String toLiveList(HttpServletRequest request,
+                             Parameter parameter){
+        request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
+//        request.getSession().setAttribute("user", "123");
+        List list = liveShowService.getLiveList(parameter);
+        request.setAttribute("liveList",list);
+
+        return "allLive";
     }
 
     @RequestMapping("liveDetail/{id}")

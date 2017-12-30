@@ -1,11 +1,11 @@
-﻿<!DOCTYPE HTML>
+﻿﻿<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>全部直播-Lethean</title>
-    <link rel="stylesheet" href="css/layui.css"/>
-    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" th:href="${ctx}+'css/layui.css'"/>
+    <link rel="stylesheet" th:href="${ctx}+'css/index.css'"/>
     <!--ioc图标库-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
 
@@ -32,10 +32,12 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-gray">
-        <div class="layui-logo"><img src="images/logo.svg" style="float: left;margin-left: 0px"/></div>
+        <div class="layui-logo"><a href="/toLiveList"><img th:src="${ctx}+'images/logo.svg'"
+                                                           style="float: left;margin-left: 0px"/></a></div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left ">
-            <li class="layui-nav-item layui-font-black"><a href=""><font style="color:#23ade5">全部直播</font></a></li>
+            <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font
+                    style="color:#23ade5">全部直播</font></a></li>
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
             <li class="layui-nav-item">
@@ -48,7 +50,9 @@
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
+
             <li class="layui-nav-item">
+                <span id="user" style="display: none" th:text="${session.user}"></span>
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
                     贤心</font>
@@ -67,7 +71,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="/index">
+                    <a class="" href="/toLiveList">
                         <i class="ion-ios-videocam" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;全部直播
                     </a>
@@ -85,7 +89,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">
+                    <a class="myFollow" href="/myFollow">
                         <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;我的关注
                     </a>
@@ -120,8 +124,36 @@
 
             <h1><i class="ion-social-youtube" style="color:#23ade5;font-size: 30px; "></i>&nbsp;全部直播</h1>
             <hr class="layui-bg-blue"/>
-            <ul class="site-doc-icon" style="margin-left:10px">
-
+            <ul class="site-doc-icon" style="margin-left:10px" th:each="live:${liveList}">
+                <a class="play" th:href="'/liveDetail/'+${live.id}">
+                    <li style="margin-right: 20px">
+                        <div class="show">
+                            <div style="position:relative;">
+                                <img th:src="${live.picUrl}" height="180px" width="280px"/>
+                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">
+                                    <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="float: left"><span class="title" th:title="${live.liveTitle}"
+                                                               th:text="'&nbsp;'+${live.liveTitle}"></span>
+                                </div>
+                                <div style="float: right;color:#23ade5"><span th:text="${live.type}+'&nbsp;'"></span>
+                                </div>
+                            </div>
+                            <div style="clear:both">
+                                <div style="float: left">
+                                    &nbsp;<i class="ion-android-contact"></i>
+                                    <span style="color: #C9C5C5" th:text="${live.personName}"></span>
+                                </div>
+                                <div style="float:right">
+                                    <i class="ion-fireball" style="color: #23ade5"></i>
+                                    <span th:text="'&nbsp;'+${live.showNum}+'&nbsp;'"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </a>
             </ul>
 
 
@@ -133,7 +165,7 @@
         © lethean.top - 聚合直播
     </div>
 </div>
-<script src="layui.js"></script>
+<script th:src="${ctx}+'layui.js'"></script>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
     //JavaScript代码区域
@@ -141,6 +173,35 @@
         var element = layui.element;
 
     });
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 5){
+                    return '标题至少得5个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+    });
+
 </script>
 <script>
 
@@ -158,78 +219,79 @@
         }
         return string;
     }
+    //title过长处理
+    $(function () {
+        $(".title").each(function (index, el) {
+            var li = $(this);
+            li.text(subLimit(li.text()))
+        })
+    })
 </script>
 <script>
 
     $(function () {
-        
-        $.post("/toCateType",function (data) {
+
+        $.post("/toCateType", function (data) {
             //在for循环语句前后添加/* <![CDATA[ */ 和 /* ]]> */避免与Thymeleaf冲突
             /* <![CDATA[ */
-            for(var i = 0;i<data.length;i = i + 2){
-                $(".cateType").append('<dd class="button" style="background-color:transparent;">'+
-                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">'+data[i].typeName+'</button>'+
-                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">'+data[i+1].typeName+'</button>'+
+            for (var i = 0; i < data.length; i = i + 2) {
+                $(".cateType").append('<dd class="button" style="background-color:transparent;">' +
+                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i].typeName + '</button>' +
+                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i + 1].typeName + '</button>' +
                     '</dd>'
                 )
             }
             /* ]]> */
-//            $.each(data, function (index, type){
-//                $(".cateType").append('<dd class="button" style="background-color:transparent;">'+
-//                                            ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">'+type.typeName+'</button>'+
-//                                      '</dd>'
-//                     )
-//                })
-            $(".type-button").click(function(){
+            $(".type-button").click(function () {
                 var type = $(this).html();
-                var para = {"type":type};
-                getLiveShow(para);
+                var para = {"type": type};
+                window.location.href = "/toLiveList?type=" + type;
             })
         })
-        getLiveShow();
+
+
+        var username = $("#user").text();
+        console.log(username);
+        if (username == "") {
+            $(".myFollow").attr("href", "javascript:;");
+            $(".myFollow").attr("onclick", "login()")
+        }
+
 
     });
-    function getLiveShow(parameter) {
-        $(".site-doc-icon").html("");
-        $.post("/getLiveList",parameter,function (data) {
-            $.each(data, function (index, live) {
 
-                $(".site-doc-icon").append('<a class="play" href="/liveDetail/'+live.id+'">' +
-                    ' <li style="margin-right: 20px" >' +
-                    ' <div class="show" >' +
-                    ' <div style="position:relative;" >' +
-                    ' <img src="' + live.picUrl + '" height="180px" width="280px"/>' +
-                    ' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">' +
-                    ' <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' <div>' +
-                    ' <div style="float: left"><span>&nbsp;' + subLimit(live.liveTitle) + '</span></div>' +
-                    ' <div style="float: right;color:#23ade5"><span>' + live.type + '&nbsp;</span></div>' +
-                    ' </div>' +
-                    ' <div style="clear:both">' +
-                    ' <div style="float: left"><span style="color: #C9C5C5">&nbsp;<i class="ion-android-contact"></i>' + live.personName + '</span>' +
-                    ' </div>' +
-                    ' <div style="float:right"><i class="ion-fireball" style="color: #23ade5"></i>&nbsp;' + live.showNum + '&nbsp;' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' </div>' +
-                    ' </li>' +
-                    ' </a>');
-            })
-            //  加载完后添加事件（有点气）
-            $(".play").mouseover(
-                function () {
-                    $(this).find(".star").fadeIn("slow");
-                }
-            );
-            $(".play").mouseleave(
-                function () {
-                    $(this).find(".star").fadeOut("slow");
-                }
-            );
-        })
+    function login() {
+        var login = '  <div class="layui-form-item">'+
+            '<div class="layui-inline">'+
+            ' <label class="layui-form-label">验证手机</label>'+
+            '<div class="layui-input-inline">'+
+            ' <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input"/>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+        var register = ''
+        layer.tab({
+            area: ['600px', '300px'],
+            tab: [{
+                title: '登录',
+                content: login
+            }, {
+                title: '注册',
+                content: '内容2'
+            }]
+        });
     }
+
+    $(".play").mouseover(
+        function () {
+            $(this).find(".star").fadeIn("slow");
+        }
+    );
+    $(".play").mouseleave(
+        function () {
+            $(this).find(".star").fadeOut("slow");
+        }
+    );
 
 </script>
 

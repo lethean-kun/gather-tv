@@ -13,10 +13,10 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-gray">
-        <div class="layui-logo"><img th:src="${ctx}+'images/logo.svg'" style="float: left;margin-left: 0px"/></div>
+        <div class="layui-logo"><a href="/toLiveList"><img th:src="${ctx}+'images/logo.svg'" style="float: left;margin-left: 0px"/></a></div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left ">
-            <li class="layui-nav-item layui-font-black"><a href=""><font style="color:#23ade5">全部直播</font></a></li>
+            <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font style="color:#23ade5">全部直播</font></a></li>
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
             <li class="layui-nav-item">
@@ -48,7 +48,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="/index">
+                    <a class="" href="/toLiveList">
                         <i class="ion-ios-videocam" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;全部直播
                     </a>
@@ -101,7 +101,7 @@
                 &nbsp;全部分类</h1>
             <hr class="layui-bg-blue"/>
             <ul class="site-doc-icon" style="margin-left:10px" th:each="type:${liveTypes}">
-                <a th:href="'/getLiveList/'+${type.typeName}">
+                <a th:href="'/toLiveList/?type='+${type.typeName}">
                     <li class="js-game-list-item" style="">
                         <div style="width: 100%;height: 85%">
                             <img width="100%" height="100%" th:src="${type.typePic}"/>
@@ -136,12 +136,18 @@
             /* <![CDATA[ */
             for (var i = 0; i < data.length; i = i + 2) {
                 $(".cateType").append('<dd class="button" style="background-color:transparent;">' +
-                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i].typeName + '</button>' +
-                    ' <button class="layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i + 1].typeName + '</button>' +
+                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i].typeName + '</button>' +
+                    ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i + 1].typeName + '</button>' +
                     '</dd>'
                 )
             }
             /* ]]> */
+
+            $(".type-button").click(function () {
+                var type = $(this).html();
+                var para = {"type": type};
+                window.location.href="/toLiveList?type="+type;
+            })
         })
     })
 </script>
