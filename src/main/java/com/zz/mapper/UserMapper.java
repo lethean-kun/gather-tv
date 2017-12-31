@@ -3,6 +3,7 @@ package com.zz.mapper;
 import com.zz.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author dzk
@@ -17,8 +18,26 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    @Insert("INSERT INTO user (nice_name,phone,email) " +
-            "VALUES(#{nickName},#{phone},#{email})")
+    @Insert("INSERT INTO user (nick_name,password,phone,email) " +
+            "VALUES(#{username},#{password},#{phone},#{email})")
     int insertUser(User user);
+
+    /**
+     * 动态判断用户名是否可用
+     * @param username
+     * @return
+     */
+    @Select("SELECT id,nick_name as username,phone,email " +
+            "FROM user WHERE nick_name=#{username}")
+    User selectUserName(String username);
+
+    /**
+     * 用户手机登陆
+     * @param user
+     * @return
+     */
+    @Select("SELECT id,nick_name as username,password,phone,email " +
+            "FROM user WHERE phone=#{phone}")
+    User selectUser(User user);
 
 }

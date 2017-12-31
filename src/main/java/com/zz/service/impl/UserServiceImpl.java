@@ -21,4 +21,32 @@ public class UserServiceImpl implements UserService{
         int status = userMapper.insertUser(user);
         return status;
     }
+
+    @Override
+    public User getUserName(String username) {
+
+
+        return userMapper.selectUserName(username);
+    }
+
+    @Override
+    public int getUser(User user) {
+        User cUser = userMapper.selectUser(user);
+
+        if(cUser==null){
+            //用户不存在
+            return 0;
+        }else if(cUser.getPassword().equals(user.getPassword())){
+            //登陆成功
+            return 1;
+        }
+        //密码错误
+        return -1;
+    }
+
+    @Override
+    public User togetUser(User user) {
+
+        return userMapper.selectUser(user);
+    }
 }

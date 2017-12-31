@@ -28,19 +28,21 @@
                 </dl>
             </li>
         </ul>
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <span id="user" style="display: none" th:text="${session.user}"></span>
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
-                    贤心</font>
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
-                    <dd><a href=""><font style="color:#23ade5">安全设置</font></a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">退了</font></a></li>
+        <span id="user" style="display: none" th:text="${session.user}"></span>
+        <ul class="user-msg layui-nav layui-layout-right">
+            <div th:if="${session.user} != null">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
+                        <span th:text="${session.user.username}">贤心</span></font>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
+                        <dd><a href=""><font style="color:#23ade5">安全设置</font></a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href=""><font style="color:#23ade5">退了</font></a></li>
+            </div>
         </ul>
     </div>
 
@@ -153,10 +155,48 @@
         });
 
         //监听提交
-        form.on('submit(demo1)', function(data){
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
+        form.on('submit(login)', function (data) {
+            var phone = $("#loginun").val();
+            var password = $("#loginpw").val();
+            $.post("/login",{"phone":phone,"password":password},function(result){
+
+                if(result.status==1){
+                    layer.msg(result.message);
+                    window.location.href = "/toLiveList";
+                }else if(result.status==0){
+                    layer.tips(result.message, '#loginun');
+                }else if(result.status==-1){
+                    layer.tips(result.message, '#loginpw');
+                }
+
             })
+
+            return false;
+        });
+
+        form.on('submit(register)', function (data) {
+
+            var phone = $("#phone").val();
+            var username = $("#username").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+
+//            var json = JSON.stringify(data.field);
+            console.log(username);
+            $.post("/register", {
+                "username": username,
+                "phone": phone,
+                "email": email,
+                "password": password
+            }, function (result) {
+
+                layer.msg(result.message);
+                window.location.href = "/toLiveList";
+
+            })
+//            layer.alert(JSON.stringify(data.field), {
+//                title: '最终的提交信息'
+//            })
             return false;
         });
     });
@@ -187,19 +227,20 @@
         if (username == "") {
             $(".myFollow").attr("href", "javascript:;");
             $(".myFollow").attr("onclick", "login()")
+            $(".user-msg").html('<li class="layui-nav-item"><a href="javascript:;" onclick="login()"><font style="color:#23ade5">登录/注册</font></a></li>');
         }
     })
 
     function login() {
-        var login = '<form class="layui-form layui-form-pane" style="text-align:center" action="">'+
-            ' <div class="layui-form-item" style="margin-top: 50px">'+
-            ' <div class="layui-inline">'+
-            ' <label class="layui-form-label">手机号码</label>'+
-            ' <div class="layui-input-inline">'+
-            ' <input type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>'+
-            ' </div>'+
-            ' </div>'+
-            ' </div>'+
+        var login = '<form class="layui-form layui-form-pane" style="text-align:center" action="">' +
+            ' <div class="layui-form-item" style="margin-top: 80px">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">手机号码</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="loginun" type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+            ' </div>' +
 //            ' <div class="layui-form-item">'+
 //            ' <div class="layui-inline">'+
 //            ' <label class="layui-form-label">验证邮箱</label>'+
@@ -208,48 +249,56 @@
 //            ' </div>'+
 //            ' </div>'+
 //            ' </div>'+
-            ' <div class="layui-form-item">'+
-            ' <div class="layui-inline">'+
-            ' <label class="layui-form-label">密码</label>'+
-            ' <div class="layui-input-inline">'+
-            ' <input type="password" name="password" lay-verify="pass" placeholder="密码" autocomplete="off" class="layui-input"/>'+
-            ' </div>'+
-            ' </div>'+
-            ' </div>'+
+            ' <div class="layui-form-item">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">密码</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="loginpw" type="password" name="password" lay-verify="pass" placeholder="密码" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+            ' </div>' +
 
-            ' <div class="layui-form-item">'+
-            ' <div class="layui-input-block">'+
-            ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="demo1">登录</button>'+
-            ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>'+
-            ' </div>'+
-            ' </div>'+
+            ' <div class="layui-form-item">' +
+            ' <div class="layui-input-block">' +
+            ' <button id="loginbt" class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="login">登录</button>' +
+            ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>' +
+            ' </div>' +
+            ' </div>' +
             ' </form>';
-        var register = '<form class="layui-form layui-form-pane" style="text-align:center" action="">'+
-            ' <div class="layui-form-item" style="margin-top: 20px">'+
-            ' <div class="layui-inline">'+
-            ' <label class="layui-form-label">手机号码</label>'+
-            ' <div class="layui-input-inline">'+
-            ' <input type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>'+
-            ' </div>'+
-            ' </div>'+
-            ' </div>'+
-            ' <div class="layui-form-item">'+
-            ' <div class="layui-inline">'+
-            ' <label class="layui-form-label">邮箱</label>'+
-            ' <div class="layui-input-inline">'+
-            ' <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>'+
-            ' </div>'+
-            ' </div>'+
-            ' </div>'+
-            ' <div class="layui-form-item">'+
-            ' <div class="layui-inline">'+
-            ' <label class="layui-form-label">密码</label>'+
-            ' <div class="layui-input-inline">'+
-            ' <input type="password" name="password" lay-verify="pass" placeholder="请填写6到12位密码" autocomplete="off" class="layui-input"/>'+
-            ' </div>'+
-            ' </div>'+
-//            ' <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>'+
-            ' </div>'+
+        var register = '<form class="layui-form layui-form-pane" style="text-align:center" action="">' +
+            ' <div class="layui-form-item" style="margin-top: 20px">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">手机号码</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="phone" type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+            ' </div>' +
+            '<div class="layui-form-item">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">昵称</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="username" type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+            ' </div>' +
+            ' <div class="layui-form-item">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">邮箱</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="email" type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+            ' </div>' +
+            ' <div class="layui-form-item">' +
+            ' <div class="layui-inline">' +
+            ' <label class="layui-form-label">密码</label>' +
+            ' <div class="layui-input-inline">' +
+            ' <input id="password" type="password" name="password" lay-verify="pass" placeholder="请填写6到12位密码" autocomplete="off" class="layui-input"/>' +
+            ' </div>' +
+            ' </div>' +
+//            ' <div class="layui-form-mid layui-word-aux">请填写6</div>'+
+            ' </div>' +
 //            ' <div class="layui-form-item">'+
 //            ' <label class="layui-form-label">单选框</label>'+
 //            ' <div class="layui-input-block">'+
@@ -258,15 +307,15 @@
 //            ' <input type="radio" name="sex" value="禁" title="禁用" disabled=""/>'+
 //            ' </div>'+
 //            ' </div>'+
-            ' <div class="layui-form-item">'+
-            ' <div class="layui-input-block">'+
-            ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="demo1">注册</button>'+
-            ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>'+
-            ' </div>'+
-            ' </div>'+
+            ' <div class="layui-form-item">' +
+            ' <div class="layui-input-block">' +
+            ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="register">注册</button>' +
+            ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>' +
+            ' </div>' +
+            ' </div>' +
             ' </form>';
         layer.tab({
-            area: ['400px', '300px'],
+            area: ['400px', '350px'],
             tab: [{
                 title: '登录',
                 content: login
@@ -274,6 +323,18 @@
                 title: '注册',
                 content: register
             }]
+        });
+        //确认昵称输入事件
+
+        $('#username').bind(' input propertychange ', function () {
+
+            var username = $("#username").val();
+            console.log(username);
+            $.post("/check", {"username": username}, function (result) {
+                layer.tips(result.message, '#username');
+
+            })
+
         });
     }
 </script>

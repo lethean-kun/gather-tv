@@ -14,4 +14,25 @@ public interface UserService {
      * @return
      */
     int register(User user);
+
+    /**
+     * 动态判断用户名是否可用
+     * @param username
+     * @return
+     */
+    User getUserName(String username);
+
+    /**
+     * 用户登陆
+     * @param user
+     * @return
+     */
+    int getUser(User user);
+
+    /**
+     * 获取user对象
+     * @param user
+     * @return
+     */
+    User togetUser(User user);
 }
