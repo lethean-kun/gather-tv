@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author dzk
@@ -55,6 +57,13 @@ public class UserController {
             result.setMessage("用户不存在");
         }
         return result;
+    }
+
+    @RequestMapping("logout")
+    public void logout(HttpServletRequest request,HttpServletResponse response) throws IOException {
+
+        request.getSession().invalidate();
+        response.sendRedirect("/toLiveList");
     }
 
     @ResponseBody

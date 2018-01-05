@@ -72,14 +72,14 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
-                        <span th:text="${session.user.username}">贤心</span></font>
+                        <span id="session-name" th:text="${session.user.username}">贤心</span></font>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
                         <dd><a href=""><font style="color:#23ade5">安全设置</font></a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href=""><font style="color:#23ade5">退了</font></a></li>
+                <li class="layui-nav-item"><a href="/logout"><font style="color:#23ade5">登出</font></a></li>
             </div>
         </ul>
     </div>
@@ -138,14 +138,24 @@
     <div class="layui-body" style="background-color: #e4e4e4 ">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
-            <blockquote class="layui-elem-quote layui-quote-nm">
+            <div class="layui-form">
+                <blockquote class="layui-elem-quote layui-quote-nm">
 
-                <input id="topic_pub" type="hidden" th:value="${liveShow.id}"/>
-                <h1 th:text="${liveShow.liveTitle}"><i class="ion-social-youtube"
-                                                       style="color:#23ade5;font-size: 30px; "></i>&nbsp;直播详情</h1>
-                <i class="ion-android-contact"></i>&nbsp;<span th:text="${liveShow.personName}"></span>&nbsp;&nbsp;
-                <i class="ion-fireball" style="color: #23ade5"></i>&nbsp;<span th:text="${liveShow.showNum}"></span>
-            </blockquote>
+                    <div style="float: left">
+                        <input id="topic_pub" type="hidden" th:value="${liveShow.id}"/>
+                        <h1 th:text="${liveShow.liveTitle}"></h1>
+                        <br/>
+                        <i class="ion-android-contact"></i>&nbsp;<span th:text="${liveShow.personName}"></span>&nbsp;&nbsp;
+                        <i class="ion-fireball" style="color: #23ade5"></i>&nbsp;<span
+                            th:text="${liveShow.showNum}"></span>
+                    </div>
+                    <div class="layui-input-block" title="关注" style="margin-left: 66%">
+                        <input type="checkbox" checked="" name="open" lay-skin="switch"
+                               lay-text="关注|已关"/>
+                    </div>
+
+                </blockquote>
+            </div>
             <hr class="layui-bg-blue"/>
             <div class="room-video">
                 <embed width="100%" height="100%" wmode="opaque" allowfullscreen="true" allowscriptaccess="always"
@@ -157,7 +167,7 @@
                         <div id="msg_end" style="height:0px; overflow:hidden"></div>
                     </div>
                 </div>
-                <div style="width:90%;height:15%;margin: 0 auto">
+                <div class="send-emg" style="width:90%;height:15%;margin: 0 auto">
                     <div style="float: left;width: 80%">
 
                         <input id="message" type="text" name="title" lay-verify="title" autocomplete="off"
@@ -215,14 +225,14 @@
         form.on('submit(login)', function (data) {
             var phone = $("#loginun").val();
             var password = $("#loginpw").val();
-            $.post("/login",{"phone":phone,"password":password},function(result){
+            $.post("/login", {"phone": phone, "password": password}, function (result) {
 
-                if(result.status==1){
+                if (result.status == 1) {
                     layer.msg(result.message);
                     window.location.href = "/toLiveList";
-                }else if(result.status==0){
+                } else if (result.status == 0) {
                     layer.tips(result.message, '#loginun');
-                }else if(result.status==-1){
+                } else if (result.status == -1) {
                     layer.tips(result.message, '#loginpw');
                 }
 
@@ -256,6 +266,7 @@
 //            })
             return false;
         });
+        form.render();
     });
     /* ]]> */
 
@@ -285,6 +296,7 @@
             $(".myFollow").attr("href", "javascript:;");
             $(".myFollow").attr("onclick", "login()")
             $(".user-msg").html('<li class="layui-nav-item"><a href="javascript:;" onclick="login()"><font style="color:#23ade5">登录/注册</font></a></li>');
+            $(".send-emg").html('<input id="message" type="text" name="title" lay-verify="title" readonly="readonly" autocomplete="off" placeholder="登录和大家一起聊天吧！" class="layui-input"/>');
         }
     })
 
@@ -395,6 +407,7 @@
         });
     }
 
+
 </script>
 <script>
     /* <![CDATA[ */
@@ -417,8 +430,10 @@
 
     //接收消息
     yunba.set_message_cb(function (data) {
+        var name = $("#session-name").text();
+        console.log(name)
         var $msg = $('<p />');
-        $msg.html('<font color="#23ade5">频道' + data.topic + '</font>' + '：' + data.msg);
+        $msg.html('<font color="#23ade5">' + name + '</font>' + '：' + data.msg);
         if (data.presence) {
             console.log(data.presence);
         }
