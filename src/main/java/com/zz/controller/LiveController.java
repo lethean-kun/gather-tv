@@ -40,7 +40,6 @@ public class LiveController {
 
     @RequestMapping("toLiveType")
     public String toLiveType(HttpServletRequest request){
-        request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
         List<LiveType> liveTypes = liveTypeService.getAllType();
         request.setAttribute("liveTypes",liveTypes);
 
@@ -68,8 +67,6 @@ public class LiveController {
     @RequestMapping("toLiveList")
     public String toLiveList(HttpServletRequest request,
                              Parameter parameter){
-        request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
-//        request.getSession().setAttribute("user", "123");
         List list = liveShowService.getLiveList(parameter);
         request.setAttribute("liveList",list);
 
@@ -79,8 +76,6 @@ public class LiveController {
     @RequestMapping("liveDetail/{id}")
     public String liveDetail(@PathVariable("id") int id,
                              HttpServletRequest request){
-        request.setAttribute("ctx", "http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
-        logger.info("http://"+request.getRemoteHost()+":"+request.getLocalPort()+"/");
         LiveShow liveShow = liveShowService.getLiveDetail(id);
         request.setAttribute("liveShow",liveShow);
         return "liveDetail";
