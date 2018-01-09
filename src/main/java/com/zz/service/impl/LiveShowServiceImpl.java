@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/23.
  */
 @Service
@@ -44,6 +45,12 @@ public class LiveShowServiceImpl implements LiveShowService {
             String[] str = liveShow.getLiveUrl().split("/");
             String url = str[str.length-1];
             url = "http://liveshare.huya.com/"+url+"/huyacoop.swf";
+            logger.info("url为"+url);
+            liveShow.setLiveUrl(url);
+        }else if(liveShow.getMsgChannel().equals(CrowingLiveList.LongZhu)){
+            String[] str = liveShow.getLiveUrl().split("-");
+            String url = str[str.length-1];
+            url = "http://r.plures.net/proton/flash/streaming-ifp2rgic.swf?autoPlay=1&roomId="+url;
             logger.info("url为"+url);
             liveShow.setLiveUrl(url);
         }

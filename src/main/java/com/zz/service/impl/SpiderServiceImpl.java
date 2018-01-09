@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author dzk
  * Created by lethean on 2017/12/22.
  */
-//@Component
+@Component
 public class SpiderServiceImpl implements SpiderService {
 
     private final Logger logger = LoggerFactory.getLogger(SpiderServiceImpl.class);
@@ -38,7 +40,12 @@ public class SpiderServiceImpl implements SpiderService {
 
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
-        List<LiveShow> liveShows = CrowingLiveList.crowingHuya();
+        List<LiveShow> hYList = CrowingLiveList.crowingHuya();
+        List<LiveShow> lZList = CrowingLiveList.crowingLongZhu();
+
+        List<LiveShow> liveShows = new ArrayList<>();
+        liveShows.addAll(hYList);
+        liveShows.addAll(lZList);
         for(LiveShow liveShow:liveShows){
             logger.info(liveShow.toString());
             liveShowMapper.updateLive(liveShow);

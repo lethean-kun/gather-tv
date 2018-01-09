@@ -431,10 +431,9 @@
 
     //接收消息
     yunba.set_message_cb(function (data) {
-        var name = $("#session-name").text();
-        console.log(name)
+
         var $msg = $('<p />');
-        $msg.html('<font color="#23ade5">' + name + '</font>' + '：' + data.msg);
+        $msg.html( data.msg);
         if (data.presence) {
             console.log(data.presence);
         }
@@ -464,7 +463,10 @@
     }
     //发送消息
     function mqtt_publish() {
+        var name = $("#session-name").text();
+        console.log(name)
         var message = $('#message').val();
+        message ='<font color="#23ade5">' + name + '</font>' + '：' +message;
         var topic = $('#topic_pub').val();
         yunba.publish({'topic': topic, 'msg': message}, function (success, msg) {
             if (success) {
