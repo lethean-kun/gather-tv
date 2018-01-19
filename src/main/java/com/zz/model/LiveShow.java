@@ -14,6 +14,8 @@ public class LiveShow implements Comparable<LiveShow>{
     private String showNum;
     private String msgChannel;
     private int isShow;
+    //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+    private int status;
 
     public int getId() {
         return id;
@@ -79,13 +81,20 @@ public class LiveShow implements Comparable<LiveShow>{
         this.msgChannel = msgChannel;
     }
 
-
     public int getIsShow() {
         return isShow;
     }
 
     public void setIsShow(int isShow) {
         this.isShow = isShow;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

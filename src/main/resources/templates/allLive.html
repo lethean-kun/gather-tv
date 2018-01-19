@@ -134,6 +134,9 @@
                                 <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">
                                     <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>
                                 </div>
+                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">
+                                    <span style="background-color: #23ade5" th:text="${live.msgChannel}"></span>
+                                </div>
                             </div>
                             <div>
                                 <div style="float: left"><span class="title" th:title="${live.liveTitle}"
@@ -199,14 +202,14 @@
         form.on('submit(login)', function (data) {
             var phone = $("#loginun").val();
             var password = $("#loginpw").val();
-            $.post("/login",{"phone":phone,"password":password},function(result){
+            $.post("/login", {"phone": phone, "password": password}, function (result) {
 
-                if(result.status==1){
+                if (result.status == 1) {
                     layer.msg(result.message);
                     window.location.href = "/toLiveList";
-                }else if(result.status==0){
+                } else if (result.status == 0) {
                     layer.tips(result.message, '#loginun');
-                }else if(result.status==-1){
+                } else if (result.status == -1) {
                     layer.tips(result.message, '#loginpw');
                 }
 

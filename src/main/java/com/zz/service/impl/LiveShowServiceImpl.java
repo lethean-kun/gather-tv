@@ -46,12 +46,32 @@ public class LiveShowServiceImpl implements LiveShowService {
             String url = str[str.length-1];
             url = "http://liveshare.huya.com/"+url+"/huyacoop.swf";
             logger.info("url为"+url);
+            //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+            liveShow.setStatus(1);
             liveShow.setLiveUrl(url);
         }else if(liveShow.getMsgChannel().equals(CrowingLiveList.LongZhu)){
             String[] str = liveShow.getLiveUrl().split("-");
             String url = str[str.length-1];
             url = "http://r.plures.net/proton/flash/streaming-ifp2rgic.swf?autoPlay=1&roomId="+url;
             logger.info("url为"+url);
+            //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+            liveShow.setStatus(1);
+            liveShow.setLiveUrl(url);
+        }else if(liveShow.getMsgChannel().equals(CrowingLiveList.ZanQi)){
+
+            String url = "http://www.zhanqi.tv/live/embed?roomId="+liveShow.getLiveUrl();
+            logger.info("url为"+url);
+            //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+            liveShow.setStatus(2);
+            liveShow.setLiveUrl(url);
+        }else if(liveShow.getMsgChannel().equals(CrowingLiveList.QuanMin)){
+            //www.quanmin.tv/42416
+            String[] str = liveShow.getLiveUrl().split("/");
+            String url = str[str.length-1];
+            url = "http://www.quanmin.tv/embed/"+url;
+            logger.info("url为"+url);
+            //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+            liveShow.setStatus(2);
             liveShow.setLiveUrl(url);
         }
         return liveShow;

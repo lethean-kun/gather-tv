@@ -66,6 +66,34 @@ public class CrowingLiveList {
 
     }
 
+    public static List<LiveShow> crowingZanQi() throws Exception {
+
+        //初始化一个httpclient
+        HttpClient client = new DefaultHttpClient();
+        //我们要爬取的一个地址，这里可以从数据库中抽取数据，然后利用循环，可以爬取一个URL队列
+        String url = "http://www.zhanqi.tv/lives";
+        //获取网站响应的html，这里调用了HTTPUtils类
+        String html = getRawHtml(client, url);
+        //抓取的数据
+        List<LiveShow> liveShows = getZanQiData(html);
+        return liveShows;
+
+    }
+
+    public static List<LiveShow> crowingQuanMin() throws Exception {
+
+        //初始化一个httpclient
+        HttpClient client = new DefaultHttpClient();
+        //我们要爬取的一个地址，这里可以从数据库中抽取数据，然后利用循环，可以爬取一个URL队列
+        String url = "https://www.quanmin.tv/game/all";
+        //获取网站响应的html，这里调用了HTTPUtils类
+        String html = getRawHtml(client, url);
+        //抓取的数据
+        List<LiveShow> liveShows = getQuanMinData(html);
+        return liveShows;
+
+    }
+
 
     public static String getRawHtml(HttpClient client, String personalUrl) throws IOException {
         //获取响应文件，即html，采用get方法获取响应数据
@@ -153,6 +181,72 @@ public class CrowingLiveList {
             liveShow.setType(type);
             liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
             liveShow.setMsgChannel(LongZhu);
+            //将每一个对象的值，保存到List集合中
+            data.add(liveShow);
+        }
+        //返回数据
+        return data;
+    }
+
+    public static List<LiveShow> getZanQiData(String html) throws Exception {
+        //获取的数据，存放在集合中
+        List<LiveShow> data = new ArrayList<LiveShow>();
+        //采用Jsoup解析
+        Document doc = Jsoup.parse(html);
+        //获取html标签中的内容
+        Elements elements = doc.select("ul[class=clearfix js-room-list-ul]").select("li");
+        for (Element ele : elements) {
+            String url = ele.attr("data-room-id");
+            String picurl = ele.select("a[class=js-jump-link]").select("div[class=imgBox]").select("img").attr("src");
+            String tilte = ele.select("a[class=js-jump-link]").select("div[class=info-area]").select("span[class=name]").text();
+            String name = ele.select("a[class=js-jump-link]").select("div[class=info-area]").select("div[class=meat]").select("span[class=anchor anchor-to-cut dv]").text();
+//            String headpic = ele.select("img[class=livecard-avatar]").attr("src");
+            String type = ele.select("a[class=js-jump-link]").select("div[class=info-area]").select("div[class=meat]").select("span[class=game-name dv]").text();
+            String livenum = ele.select("a[class=js-jump-link]").select("div[class=info-area]").select("div[class=meat]").select("span[class=views]").select("span[class=dv]").text();
+
+            //创建一个对象，这里可以看出，使用Model的优势，直接进行封装
+            LiveShow liveShow = new LiveShow();
+            //对象的值
+            liveShow.setPicUrl(picurl);
+            liveShow.setPersonName(name);
+            liveShow.setLiveTitle(tilte);
+            liveShow.setLiveUrl(url);
+            liveShow.setType(type);
+            liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
+            liveShow.setMsgChannel(ZanQi);
+            //将每一个对象的值，保存到List集合中
+            data.add(liveShow);
+        }
+        //返回数据
+        return data;
+    }
+
+    public static List<LiveShow> getQuanMinData(String html) throws Exception {
+        //获取的数据，存放在集合中
+        List<LiveShow> data = new ArrayList<LiveShow>();
+        //采用Jsoup解析
+        Document doc = Jsoup.parse(html);
+        //获取html标签中的内容
+        Elements elements = doc.select("ul[class=list_w-videos_video-list]").select("li[class=list_w-video]");
+        for (Element ele : elements) {
+            String url = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").attr("href");
+            String picurl = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_cover-wrap]").select("img[class=common_w-card_cover]").attr("src");
+            String tilte = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("p[class=common_w-card_title]").text();
+            String name = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("div[class=common_w-card_info]").select("span[class=common_w-card_host-name]").text();
+//            String headpic = ele.select("img[class=livecard-avatar]").attr("src");
+            String type = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_category]").text();
+            String livenum = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("div[class=common_w-card_info]").select("span[class=common_w-card_views-num]").text();
+
+            //创建一个对象，这里可以看出，使用Model的优势，直接进行封装
+            LiveShow liveShow = new LiveShow();
+            //对象的值
+            liveShow.setPicUrl(picurl);
+            liveShow.setPersonName(name);
+            liveShow.setLiveTitle(tilte);
+            liveShow.setLiveUrl(url);
+            liveShow.setType(type);
+            liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
+            liveShow.setMsgChannel(QuanMin);
             //将每一个对象的值，保存到List集合中
             data.add(liveShow);
         }

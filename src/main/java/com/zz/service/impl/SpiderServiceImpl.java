@@ -21,7 +21,7 @@ import java.util.List;
  * @author dzk
  * Created by lethean on 2017/12/22.
  */
-@Component
+//@Component
 public class SpiderServiceImpl implements SpiderService {
 
     private final Logger logger = LoggerFactory.getLogger(SpiderServiceImpl.class);
@@ -42,10 +42,15 @@ public class SpiderServiceImpl implements SpiderService {
         liveShowMapper.updateLiveIsShow();
         List<LiveShow> hYList = CrowingLiveList.crowingHuya();
         List<LiveShow> lZList = CrowingLiveList.crowingLongZhu();
+        List<LiveShow> ZQList = CrowingLiveList.crowingZanQi();
+        List<LiveShow> QMList = CrowingLiveList.crowingQuanMin();
 
         List<LiveShow> liveShows = new ArrayList<>();
         liveShows.addAll(hYList);
         liveShows.addAll(lZList);
+        liveShows.addAll(ZQList);
+        liveShows.addAll(QMList);
+        //未做成全部插入，虽然循环很消耗性能，日后再做
         for(LiveShow liveShow:liveShows){
             logger.info(liveShow.toString());
             liveShowMapper.updateLive(liveShow);
