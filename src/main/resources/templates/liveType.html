@@ -69,7 +69,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="myFollow" href="/myFollow">
+                    <a class="myFollow" th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
                         <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;我的关注
                     </a>
