@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-01-08 20:16:55
+Date: 2018-01-28 17:50:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,17 +21,17 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `live_show`;
 CREATE TABLE `live_show` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
-  `person_name` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '主播名',
-  `pic_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '主播延时截图',
-  `type` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '直播类型',
-  `live_title` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '直播标题',
-  `show_num` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '观看人数',
-  `msg_channel` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '直播平台',
-  `live_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '直播地址、房间号',
+  `person_name` varchar(16) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '主播昵称',
+  `pic_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播间隙图片',
+  `type` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播类型',
+  `live_title` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播标题',
+  `show_num` varchar(60) COLLATE utf8mb4_bin DEFAULT '0' COMMENT '直播人数',
+  `msg_channel` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '获取渠道',
+  `live_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播地址（房间号）',
   `is_show` int(11) DEFAULT '0' COMMENT '是否在播（0：未直播、1：在播）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_channel` (`person_name`,`msg_channel`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- ----------------------------
 -- Table structure for `live_type`
@@ -39,8 +39,8 @@ CREATE TABLE `live_show` (
 DROP TABLE IF EXISTS `live_type`;
 CREATE TABLE `live_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '图片地址',
-  `type_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '类型名称',
+  `type_pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '直播分类图片',
+  `type_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '分类名称',
   `msg_channel` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '获取渠道',
   `heat` int(11) DEFAULT '0' COMMENT '类型热度',
   PRIMARY KEY (`id`),
@@ -148,5 +148,22 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT '1' COMMENT '用户状态（0：封号、1：未封号）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_channel` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('0', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '1');
+
+-- ----------------------------
+-- Table structure for `user_follow`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_follow`;
+CREATE TABLE `user_follow` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `room_id` int(11) NOT NULL COMMENT '房间id',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '是否关注（1：关注，0：取消关注）',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_channel` (`user_id`,`room_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;

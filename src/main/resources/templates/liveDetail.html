@@ -70,10 +70,11 @@
         <span id="user" style="display: none" th:text="${session.user}"></span>
         <ul class="user-msg layui-nav layui-layout-right">
             <div th:if="${session.user} != null">
+                <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
-                        <span id="session-name" th:text="${session.user.username}">贤心</span></font>
+                        <span id="session-name" th:text="${session.user.username}"></span></font>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
@@ -108,7 +109,8 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="myFollow" th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
+                    <a class="myFollow"
+                       th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
                         <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;我的关注
                     </a>
@@ -150,22 +152,23 @@
                         <i class="ion-fireball" style="color: #23ade5"></i>&nbsp;<span
                             th:text="${liveShow.showNum}"></span>
                     </div>
-                    <div class="layui-input-block" title="关注" style="margin-left: 66%">
-                        <input type="checkbox" checked="" name="open" lay-skin="switch"
-                               lay-text="关注|已关"/>
+                    <div th:if="${session.user} != null">
+                        <div id="my-follow" class="layui-input-block" title="关注" style="margin-left: 66%">
+                            <input id="is-follow" type="checkbox" checked="" name="open" lay-skin="switch" lay-text="关注|已关"/>
+                        </div>
                     </div>
 
                 </blockquote>
             </div>
             <hr class="layui-bg-blue"/>
             <div th:if="${liveShow.status} == 1">
-                <div  class="room-video">
+                <div class="room-video">
                     <embed width="100%" height="100%" wmode="opaque" allowfullscreen="true" allowscriptaccess="always"
                            th:src="${liveShow.liveUrl}"/>
                 </div>
             </div>
             <div th:if="${liveShow.status} == 2">
-                <div  class="room-video">
+                <div class="room-video">
                     <iframe frameborder="0" th:src="${liveShow.liveUrl}" style="width:100%;height:100%;"></iframe>
                 </div>
             </div>
@@ -279,6 +282,17 @@
     /* ]]> */
 
     $(function () {
+        //判断是否关注
+        var user_id = $("#user-id").text();
+        var room_id = $("#topic_pub").val();
+        $.post("/isMyFollow",{"userId":user_id,"roomId":room_id},function (data) {
+            if(data.status==1){
+                $("#is-follow").removeAttr("checked");
+            }
+        })
+
+
+        //获取热门分类
         $.post("/toCateType", function (data) {
             //在for循环语句前后添加/* <![CDATA[ */ 和 /* ]]> */避免与Thymeleaf冲突
             /* <![CDATA[ */
@@ -415,8 +429,21 @@
         });
     }
 
-
 </script>
+
+<script>
+    var user_id = $("#user-id").text();
+    var room_id = $("#topic_pub").val();
+
+    $("#my-follow").click(function () {
+        console.log("关注成功"+user_id)
+        console.log("关注成功"+room_id)
+        $.post("/subFollow", {"userId": user_id, "roomId": room_id}, function () {
+            console.log("关注成功")
+        })
+    });
+</script>
+
 <script>
     /* <![CDATA[ */
     var topic = $('#topic_pub').val();

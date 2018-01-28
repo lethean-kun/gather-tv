@@ -73,15 +73,6 @@ public class LiveController {
         return "allLive";
     }
 
-    @RequestMapping("myFollow/{id}")
-    public String myFollow(HttpServletRequest request,
-                           @PathVariable("id") int id){
-        List list = liveShowService.getFollowList(id);
-        request.setAttribute("liveList",list);
-
-        return "allLive";
-    }
-
     @RequestMapping("liveDetail/{id}")
     public String liveDetail(@PathVariable("id") int id,
                              HttpServletRequest request){

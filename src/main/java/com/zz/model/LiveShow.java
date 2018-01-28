@@ -1,10 +1,12 @@
 package com.zz.model;
 
+import java.io.Serializable;
+
 /**
  * @author dzk
  * Created by lethean on 2017/12/22.
  */
-public class LiveShow implements Comparable<LiveShow>{
+public class LiveShow implements Comparable<LiveShow>,Serializable {
     private int id;
     private String personName;
     private String picUrl;

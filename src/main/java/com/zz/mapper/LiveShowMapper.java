@@ -29,16 +29,6 @@ public interface LiveShowMapper {
             "</script>"})
     List<LiveShow> getAllLive(Parameter parameter);
 
-
-    /**
-     * 获取用户关注列表
-     * @param id
-     * @return
-     */
-    @Select("SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
-            "FROM live_show where is_show=1 and id in (select room_id from user_follow where user_id = #{id})")
-    List<LiveShow> selectFollowLive(int id);
-
     /**
      * 获取直播详情
      * @return

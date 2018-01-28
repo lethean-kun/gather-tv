@@ -19,13 +19,6 @@ public interface LiveShowService {
     List<LiveShow> getLiveList(Parameter parameter);
 
     /**
-     * 获取所有关注直播列表
-     * @param id 用户id
-     * @return
-     */
-    List<LiveShow> getFollowList(int id);
-
-    /**
      * 获取直播详情
      * @param id room_id
      * @return

@@ -1,10 +1,12 @@
 package com.zz.model;
 
+import java.io.Serializable;
+
 /**
  * @author dzk
  * Created by lethean on 2017/12/24.
  */
-public class LiveType {
+public class LiveType implements Serializable{
 
     private int id;
     private String typePic;

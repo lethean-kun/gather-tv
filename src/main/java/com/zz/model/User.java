@@ -1,10 +1,12 @@
 package com.zz.model;
 
+import java.io.Serializable;
+
 /**
  * @author dzk
  * Created by lethean on 2017/12/31.
  */
-public class User {
+public class User implements Serializable{
     private int id;
     private String username;
     private String password;

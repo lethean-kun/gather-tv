@@ -38,17 +38,6 @@ public class LiveShowServiceImpl implements LiveShowService {
     }
 
     @Override
-    public List<LiveShow> getFollowList(int id) {
-        List<LiveShow> list = liveShowMapper.selectFollowLive(id);
-        //对list进行按观看人数降序排序
-        Collections.sort(list);
-        for(LiveShow liveShow:list){
-            liveShow.setShowNum(ShowNumFormat.returnCount(liveShow.getShowNum()));
-        }
-        return list;
-    }
-
-    @Override
     public LiveShow getLiveDetail(int id) {
         LiveShow liveShow = liveShowMapper.getLiveDetail(id);
         //不同来源直播对应不同的处理
