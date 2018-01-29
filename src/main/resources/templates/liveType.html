@@ -162,11 +162,15 @@
 
                 if(result.status==1){
                     layer.msg(result.message);
-                    window.location.href = "/toLiveList";
-                }else if(result.status==0){
-                    layer.tips(result.message, '#loginun');
-                }else if(result.status==-1){
-                    layer.tips(result.message, '#loginpw');
+                    window.location.href = "/toLiveType";
+                } else if (result.status == 0) {
+                    layer.tips(result.message, '#loginun',{
+                        tips: [2, '#23ade5'],
+                    });
+                } else if (result.status == -1) {
+                    layer.tips(result.message, '#loginpw',{
+                        tips: [2, '#23ade5'],
+                    });
                 }
 
             })
@@ -191,7 +195,7 @@
             }, function (result) {
 
                 layer.msg(result.message);
-                window.location.href = "/toLiveList";
+                window.location.href = "/toLiveType";
 
             })
 //            layer.alert(JSON.stringify(data.field), {
@@ -299,14 +303,6 @@
             ' </div>' +
 //            ' <div class="layui-form-mid layui-word-aux">请填写6</div>'+
             ' </div>' +
-//            ' <div class="layui-form-item">'+
-//            ' <label class="layui-form-label">单选框</label>'+
-//            ' <div class="layui-input-block">'+
-//            ' <input type="radio" name="sex" value="男" title="男" checked=""/>'+
-//            ' <input type="radio" name="sex" value="女" title="女"/>'+
-//            ' <input type="radio" name="sex" value="禁" title="禁用" disabled=""/>'+
-//            ' </div>'+
-//            ' </div>'+
             ' <div class="layui-form-item">' +
             ' <div class="layui-input-block">' +
             ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="register">注册</button>' +
@@ -331,8 +327,9 @@
             var username = $("#username").val();
             console.log(username);
             $.post("/check", {"username": username}, function (result) {
-                layer.tips(result.message, '#username');
-
+                layer.tips(result.message, '#username', {
+                    tips: [2, '#23ade5'],
+                });
             })
 
         });

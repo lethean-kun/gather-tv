@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
@@ -55,7 +55,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
-                        <span th:text="${session.user.username}">贤心</span></font>
+                        <span th:text="${session.user.username}"></span></font>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
@@ -90,7 +90,8 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="myFollow" th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
+                    <a class="myFollow"
+                       th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
                         <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
                         &nbsp;我的关注
                     </a>
@@ -125,40 +126,46 @@
 
             <h1><i class="ion-social-youtube" style="color:#23ade5;font-size: 30px; "></i>&nbsp;全部直播</h1>
             <hr class="layui-bg-blue"/>
-            <ul class="site-doc-icon" style="margin-left:15px" th:each="live:${liveList}">
-                <a class="play" th:href="'/liveDetail/'+${live.id}">
-                    <li style="margin-right: 20px">
-                        <div class="show">
-                            <div style="position:relative;">
-                                <img th:src="${live.picUrl}" height="180px" width="280px"/>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">
-                                    <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>
+            <div th:if="${not #lists.isEmpty(liveList)}">
+                <ul class="site-doc-icon" style="margin-left:15px" th:each="live:${liveList}">
+                    <a class="play" th:href="'/liveDetail/'+${live.id}">
+                        <li style="margin-right: 20px">
+                            <div class="show">
+                                <div style="position:relative;">
+                                    <img th:src="${live.picUrl}" height="180px" width="280px"/>
+                                    <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">
+                                        <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>
+                                    </div>
+                                    <div style="position:absolute;width:100px;height:100px;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">
+                                        <span style="background-color: #23ade5" th:text="${live.msgChannel}"></span>
+                                    </div>
                                 </div>
-                                <div style="position:absolute;width:100px;height:100px;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">
-                                    <span style="background-color: #23ade5" th:text="${live.msgChannel}"></span>
+                                <div>
+                                    <div style="float: left"><span class="title" th:title="${live.liveTitle}"
+                                                                   th:text="'&nbsp;'+${live.liveTitle}"></span>
+                                    </div>
+                                    <div style="float: right;color:#23ade5"><span
+                                            th:text="${live.type}+'&nbsp;'"></span>
+                                    </div>
+                                </div>
+                                <div style="clear:both">
+                                    <div style="float: left">
+                                        &nbsp;<i class="ion-android-contact"></i>
+                                        <span style="color: #C9C5C5" th:text="${live.personName}"></span>
+                                    </div>
+                                    <div style="float:right">
+                                        <i class="ion-fireball" style="color: #23ade5"></i>
+                                        <span th:text="'&nbsp;'+${live.showNum}+'&nbsp;'"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <div style="float: left"><span class="title" th:title="${live.liveTitle}"
-                                                               th:text="'&nbsp;'+${live.liveTitle}"></span>
-                                </div>
-                                <div style="float: right;color:#23ade5"><span th:text="${live.type}+'&nbsp;'"></span>
-                                </div>
-                            </div>
-                            <div style="clear:both">
-                                <div style="float: left">
-                                    &nbsp;<i class="ion-android-contact"></i>
-                                    <span style="color: #C9C5C5" th:text="${live.personName}"></span>
-                                </div>
-                                <div style="float:right">
-                                    <i class="ion-fireball" style="color: #23ade5"></i>
-                                    <span th:text="'&nbsp;'+${live.showNum}+'&nbsp;'"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-            </ul>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div th:if="${#lists.isEmpty(liveList)}" style="text-align: center;margin-top: 15%">
+                <span style="font-size: 120px;color:#23ade5;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;">空空如也</span>
+            </div>
 
 
         </div>
@@ -208,9 +215,13 @@
                     layer.msg(result.message);
                     window.location.href = "/toLiveList";
                 } else if (result.status == 0) {
-                    layer.tips(result.message, '#loginun');
+                    layer.tips(result.message, '#loginun',{
+                        tips: [2, '#23ade5'],
+                    });
                 } else if (result.status == -1) {
-                    layer.tips(result.message, '#loginpw');
+                    layer.tips(result.message, '#loginpw',{
+                        tips: [2, '#23ade5'],
+                    });
                 }
 
             })
@@ -262,6 +273,7 @@
         }
         return string;
     }
+
     //title过长处理
     $(function () {
         $(".title").each(function (index, el) {
@@ -313,8 +325,6 @@
 //                ' </li>')
 //            /* ]]> */
 //        }
-
-
     });
 
     function login() {
@@ -327,14 +337,14 @@
             ' </div>' +
             ' </div>' +
             ' </div>' +
-//            ' <div class="layui-form-item">'+
-//            ' <div class="layui-inline">'+
-//            ' <label class="layui-form-label">验证邮箱</label>'+
-//            ' <div class="layui-input-inline">'+
-//            ' <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>'+
-//            ' </div>'+
-//            ' </div>'+
-//            ' </div>'+
+            //            ' <div class="layui-form-item">'+
+            //            ' <div class="layui-inline">'+
+            //            ' <label class="layui-form-label">验证邮箱</label>'+
+            //            ' <div class="layui-input-inline">'+
+            //            ' <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>'+
+            //            ' </div>'+
+            //            ' </div>'+
+            //            ' </div>'+
             ' <div class="layui-form-item">' +
             ' <div class="layui-inline">' +
             ' <label class="layui-form-label">密码</label>' +
@@ -383,16 +393,8 @@
             ' <input id="password" type="password" name="password" lay-verify="pass" placeholder="请填写6到12位密码" autocomplete="off" class="layui-input"/>' +
             ' </div>' +
             ' </div>' +
-//            ' <div class="layui-form-mid layui-word-aux">请填写6</div>'+
+            //            ' <div class="layui-form-mid layui-word-aux">请填写6</div>'+
             ' </div>' +
-//            ' <div class="layui-form-item">'+
-//            ' <label class="layui-form-label">单选框</label>'+
-//            ' <div class="layui-input-block">'+
-//            ' <input type="radio" name="sex" value="男" title="男" checked=""/>'+
-//            ' <input type="radio" name="sex" value="女" title="女"/>'+
-//            ' <input type="radio" name="sex" value="禁" title="禁用" disabled=""/>'+
-//            ' </div>'+
-//            ' </div>'+
             ' <div class="layui-form-item">' +
             ' <div class="layui-input-block">' +
             ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="register">注册</button>' +
@@ -417,7 +419,9 @@
             var username = $("#username").val();
             console.log(username);
             $.post("/check", {"username": username}, function (result) {
-                layer.tips(result.message, '#username');
+                layer.tips(result.message, '#username', {
+                    tips: [2, '#23ade5'],
+                });
 
             })
 

@@ -1,6 +1,9 @@
 package com.zz.util;
 
+import java.text.DecimalFormat;
+
 /**
+ * @author dzk
  * Created by lethean on 2017/12/23.
  */
 public class ShowNumFormat {
@@ -25,7 +28,8 @@ public class ShowNumFormat {
         if(Double.valueOf(showNum)>limt){
 
             Double num = Double.parseDouble(showNum)/10000;
-            showNum = String.valueOf(num)+status;
+            DecimalFormat df = new DecimalFormat("#.0");
+            showNum = String.valueOf(df.format(num))+status;
         }
         return showNum;
     }

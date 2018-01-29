@@ -21,7 +21,7 @@ import java.util.List;
  * @author dzk
  * Created by lethean on 2017/12/22.
  */
-//@Component
+@Component
 public class SpiderServiceImpl implements SpiderService {
 
     private final Logger logger = LoggerFactory.getLogger(SpiderServiceImpl.class);
@@ -33,7 +33,7 @@ public class SpiderServiceImpl implements SpiderService {
     TypeMapper typeMapper;
 
     @Override
-    @Scheduled(fixedRate = 250000)
+    @Scheduled(fixedRate = 2500000)
     public int forInsertLive() throws Exception {
 
         logger.info("250秒抓取一次数据");
@@ -50,11 +50,15 @@ public class SpiderServiceImpl implements SpiderService {
         liveShows.addAll(lZList);
         liveShows.addAll(ZQList);
         liveShows.addAll(QMList);
+        Long star = System.currentTimeMillis();
         //未做成全部插入，虽然循环很消耗性能，日后再做
-        for(LiveShow liveShow:liveShows){
-            logger.info(liveShow.toString());
-            liveShowMapper.updateLive(liveShow);
-        }
+        // for(LiveShow liveShow:liveShows){
+        //     liveShowMapper.updateLive(liveShow);
+        // }
+        //质的提升 相对于循环快了100多倍
+        liveShowMapper.newUpdateLive(liveShows);
+        Long end = System.currentTimeMillis();
+        logger.info("耗时"+(end-star));
         return 0;
     }
 

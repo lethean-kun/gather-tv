@@ -2,10 +2,8 @@ package com.zz.mapper;
 
 import com.zz.model.LiveShow;
 import com.zz.model.Parameter;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.zz.provider.LiveShowProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -46,6 +44,14 @@ public interface LiveShowMapper {
             "VALUES(#{personName}, #{picUrl}, #{type},#{liveTitle},#{showNum},#{msgChannel},#{liveUrl},1)" +
             "ON DUPLICATE KEY UPDATE pic_url=#{picUrl},show_num=#{showNum},type=#{type},live_title=#{liveTitle},is_show=1")
     int updateLive(LiveShow liveShow);
+
+    /**
+     *爬取数据存入数据库 名称和平台相同则更新
+     * @param liveShows
+     * @return
+     */
+    @InsertProvider(type = LiveShowProvider.class, method = "insertAll")
+    int newUpdateLive(@Param("list") List<LiveShow> liveShows);
 
     /**
      * 每次抓取之前 类似心跳吧所有直播状态改为0（未播）

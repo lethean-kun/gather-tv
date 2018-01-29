@@ -35,6 +35,7 @@ public class CrowingLiveList {
 
     /**
      * 先简单写 实现功能 之后优化 相关写入配置文件
+     *
      * @return
      * @throws Exception
      */
@@ -233,22 +234,23 @@ public class CrowingLiveList {
             String picurl = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_cover-wrap]").select("img[class=common_w-card_cover]").attr("src");
             String tilte = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("p[class=common_w-card_title]").text();
             String name = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("div[class=common_w-card_info]").select("span[class=common_w-card_host-name]").text();
-//            String headpic = ele.select("img[class=livecard-avatar]").attr("src");
+            //保留 String headpic = ele.select("img[class=livecard-avatar]").attr("src");
             String type = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_category]").text();
             String livenum = ele.select("div").select("div[class=common_w-card]").select("a[class=common_w-card_href]").select("div[class=common_w-card_bottom]").select("div[class=common_w-card_bottom-no-avatar]").select("div[class=common_w-card_info]").select("span[class=common_w-card_views-num]").text();
-
-            //创建一个对象，这里可以看出，使用Model的优势，直接进行封装
-            LiveShow liveShow = new LiveShow();
-            //对象的值
-            liveShow.setPicUrl(picurl);
-            liveShow.setPersonName(name);
-            liveShow.setLiveTitle(tilte);
-            liveShow.setLiveUrl(url);
-            liveShow.setType(type);
-            liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
-            liveShow.setMsgChannel(QuanMin);
-            //将每一个对象的值，保存到List集合中
-            data.add(liveShow);
+            if (livenum != null && livenum.length()>0) {
+                //创建一个对象，这里可以看出，使用Model的优势，直接进行封装
+                LiveShow liveShow = new LiveShow();
+                //对象的值
+                liveShow.setPicUrl(picurl);
+                liveShow.setPersonName(name);
+                liveShow.setLiveTitle(tilte);
+                liveShow.setLiveUrl(url);
+                liveShow.setType(type);
+                liveShow.setShowNum(ShowNumFormat.forGetCount(livenum));
+                liveShow.setMsgChannel(QuanMin);
+                //将每一个对象的值，保存到List集合中
+                data.add(liveShow);
+            }
         }
         //返回数据
         return data;

@@ -16,7 +16,9 @@ public class LiveShow implements Comparable<LiveShow>,Serializable {
     private String showNum;
     private String msgChannel;
     private int isShow;
-    //不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+    /**
+     *  不同类别直播平台标识(1-虎牙龙珠、2-全民战旗)
+     */
     private int status;
 
     public int getId() {
