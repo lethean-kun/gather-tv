@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="body">
+    <div class="layui-header layui-bg-gray">
+        <div class="layui-logo"><a href="/toLiveList"><img src="/images/logo.svg"
+                                                           style="float: left;margin-left: 0px"/></a></div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font
+                    style="color:#23ade5">全部直播</font></a></li>
+            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
+            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><font style="color:#23ade5">分类</font></a>
+                <dl class="layui-nav-child">
+                    <dd><a href=""><font style="color:#23ade5">英雄联盟</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">王者荣耀</font></a></dd>
+                    <dd><a href=""><font style="color:#23ade5">绝地求生</font></a></dd>
+                </dl>
+            </li>
+        </ul>
+        <span id="user" style="display: none" th:text="${session.user}"></span>
+        <ul class="user-msg layui-nav layui-layout-right">
+            <div th:if="${session.user} != null">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
+                        <span th:text="${session.user.username}"></span></font>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
+                        <dd><a href=""><font style="color:#23ade5">我的账户</font></a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="/logout"><font style="color:#23ade5">登出</font></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="/toLiveList">
+                        <i class="ion-ios-videocam" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;全部直播
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="/toLiveType">
+                        <i class="ion-social-windows" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;全部分类
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">
+                        <i class="ion-trophy" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;主播排行
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="myFollow"
+                       th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'">
+                        <i class="ion-ios-heart" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;我的关注
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">
+                        <i class="ion-ios-flame" style="color: #23ade5;font-size: 15px;"/>
+                        &nbsp;热门分类
+                    </a>
+                    <dl class="cateType layui-nav-child">
+
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">单机游戏</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">手机游戏</a></li>
+                <li class="layui-nav-item"><a href="">主机游戏</a></li>
+            </ul>
+        </div>
+    </div>
+</th:block>
+<th:block th:fragment="foot">
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © lethean.top - 聚合直播
+    </div>
+</th:block>
+
+</html>

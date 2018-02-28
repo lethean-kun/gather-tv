@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="resources">
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="/css/layui.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <!--ioc图标库-->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+
+    <script src="/layui.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+
+        });
+        layui.use('layer', function () {
+            var layer = layui.layer;
+        });
+        /* <![CDATA[ */
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+
+            //自定义验证规则
+            form.verify({
+                title: function (value) {
+                    if (value.length < 5) {
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                , pass: [/(.+){6,12}$/, '密码必须6到12位']
+                , content: function (value) {
+                    layedit.sync(editIndex);
+                }
+            });
+
+            //监听提交
+            form.on('submit(login)', function (data) {
+                var phone = $("#loginun").val();
+                var password = $("#loginpw").val();
+                $.post("/login", {"phone": phone, "password": password}, function (result) {
+
+                    if (result.status == 1) {
+                        layer.msg(result.message);
+                        window.location.href = "/toLiveList";
+                    } else if (result.status == 0) {
+                        layer.tips(result.message, '#loginun', {
+                            tips: [2, '#23ade5'],
+                        });
+                    } else if (result.status == -1) {
+                        layer.tips(result.message, '#loginpw', {
+                            tips: [2, '#23ade5'],
+                        });
+                    }
+
+                })
+
+                return false;
+            });
+
+            form.on('submit(register)', function (data) {
+
+                var phone = $("#phone").val();
+                var username = $("#username").val();
+                var email = $("#email").val();
+                var password = $("#password").val();
+
+//            var json = JSON.stringify(data.field);
+                console.log(username);
+                $.post("/register", {
+                    "username": username,
+                    "phone": phone,
+                    "email": email,
+                    "password": password
+                }, function (result) {
+
+                    layer.msg(result.message);
+                    window.location.href = "/toLiveList";
+
+                })
+//            layer.alert(JSON.stringify(data.field), {
+//                title: '最终的提交信息'
+//            })
+                return false;
+            });
+        });
+        /* ]]> */
+
+        $(function () {
+
+            $.post("/toCateType", function (data) {
+                //在for循环语句前后添加/* <![CDATA[ */ 和 /* ]]> */避免与Thymeleaf冲突
+                /* <![CDATA[ */
+                for (var i = 0; i < data.length; i = i + 2) {
+                    $(".cateType").append('<dd class="button" style="background-color:transparent;">' +
+                        ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i].typeName + '</button>' +
+                        ' <button class="type-button layui-btn-sm layui-btn-normal layui-btn-radius">' + data[i + 1].typeName + '</button>' +
+                        '</dd>'
+                    )
+                }
+                /* ]]> */
+                $(".type-button").click(function () {
+                    var type = $(this).html();
+                    var para = {"type": type};
+                    window.location.href = "/toLiveList?type=" + type;
+                })
+            })
+
+
+            var username = $("#user").text();
+            console.log(username);
+            if (username == "") {
+                $(".myFollow").attr("href", "javascript:;");
+                $(".myFollow").attr("onclick", "login()");
+                $(".user-msg").html('<li class="layui-nav-item"><a href="javascript:;" onclick="login()"><font style="color:#23ade5">登录/注册</font></a></li>');
+            }
+//        else {
+//            console.log("why")
+//            /* <![CDATA[ */
+//            $(".user-msg").html('<li class="layui-nav-item">'+
+//                ' <a href="javascript:;">'+
+//                ' <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">'+
+//                ' <span th:text="${session.user.username}"></span></font>'+
+//                ' </a>'+
+//                ' </li>')
+//            /* ]]> */
+//        }
+        });
+
+        function login() {
+            var login = '<form class="layui-form layui-form-pane" style="text-align:center" action="">' +
+                ' <div class="layui-form-item" style="margin-top: 80px">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">手机号码</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="loginun" type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                ' </div>' +
+                //            ' <div class="layui-form-item">'+
+                //            ' <div class="layui-inline">'+
+                //            ' <label class="layui-form-label">验证邮箱</label>'+
+                //            ' <div class="layui-input-inline">'+
+                //            ' <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>'+
+                //            ' </div>'+
+                //            ' </div>'+
+                //            ' </div>'+
+                ' <div class="layui-form-item">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">密码</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="loginpw" type="password" name="password" lay-verify="pass" placeholder="密码" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                ' </div>' +
+
+                ' <div class="layui-form-item">' +
+                ' <div class="layui-input-block">' +
+                ' <button id="loginbt" class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="login">登录</button>' +
+                ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>' +
+                ' </div>' +
+                ' </div>' +
+                ' </form>';
+            var register = '<form class="layui-form layui-form-pane" style="text-align:center" action="">' +
+                ' <div class="layui-form-item" style="margin-top: 20px">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">手机号码</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="phone" type="tel" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                ' </div>' +
+                '<div class="layui-form-item">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">昵称</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="username" type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                ' </div>' +
+                ' <div class="layui-form-item">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">邮箱</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="email" type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                ' </div>' +
+                ' <div class="layui-form-item">' +
+                ' <div class="layui-inline">' +
+                ' <label class="layui-form-label">密码</label>' +
+                ' <div class="layui-input-inline">' +
+                ' <input id="password" type="password" name="password" lay-verify="pass" placeholder="请填写6到12位密码" autocomplete="off" class="layui-input"/>' +
+                ' </div>' +
+                ' </div>' +
+                //            ' <div class="layui-form-mid layui-word-aux">请填写6</div>'+
+                ' </div>' +
+                ' <div class="layui-form-item">' +
+                ' <div class="layui-input-block">' +
+                ' <button class="layui-btn layui-btn-normal layui-btn-radius" style="background-color: #23ade5" lay-submit="" lay-filter="register">注册</button>' +
+                ' <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>' +
+                ' </div>' +
+                ' </div>' +
+                ' </form>';
+            layer.tab({
+                area: ['400px', '350px'],
+                tab: [{
+                    title: '登录',
+                    content: login
+                }, {
+                    title: '注册',
+                    content: register
+                }]
+            });
+            //确认昵称输入事件
+
+            $('#username').bind(' input propertychange ', function () {
+
+                var username = $("#username").val();
+                console.log(username);
+                $.post("/check", {"username": username}, function (result) {
+                    layer.tips(result.message, '#username', {
+                        tips: [2, '#23ade5'],
+                    });
+
+                })
+
+            });
+        }
+
+    </script>
+</th:block>
+</html>
+
