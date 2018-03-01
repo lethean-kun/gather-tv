@@ -12,17 +12,16 @@
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
             <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
             <li class="layui-nav-item">
-                <a href="javascript:;"><font style="color:#23ade5">分类</font></a>
-                <dl class="layui-nav-child">
-                    <dd><a href=""><font style="color:#23ade5">英雄联盟</font></a></dd>
-                    <dd><a href=""><font style="color:#23ade5">王者荣耀</font></a></dd>
-                    <dd><a href=""><font style="color:#23ade5">绝地求生</font></a></dd>
+                <a href="javascript:;"><font style="color:#23ade5">热门分类</font></a>
+                <dl class="hoot layui-nav-child">
+
                 </dl>
             </li>
         </ul>
         <span id="user" style="display: none" th:text="${session.user}"></span>
         <ul class="user-msg layui-nav layui-layout-right">
             <div th:if="${session.user} != null">
+                <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">

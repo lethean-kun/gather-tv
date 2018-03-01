@@ -43,7 +43,7 @@ public class LiveController {
         List<LiveType> liveTypes = liveTypeService.getAllType();
         request.setAttribute("liveTypes",liveTypes);
 
-        return "liveType";
+        return "live-show/liveType";
     }
 
     @ResponseBody
@@ -70,7 +70,7 @@ public class LiveController {
         List list = liveShowService.getLiveList(parameter);
         request.setAttribute("liveList",list);
 
-        return "allLive";
+        return "live-show/allLive";
     }
 
     @RequestMapping("liveDetail/{id}")
@@ -78,7 +78,7 @@ public class LiveController {
                              HttpServletRequest request){
         LiveShow liveShow = liveShowService.getLiveDetail(id);
         request.setAttribute("liveShow",liveShow);
-        return "liveDetail";
+        return "live-show/liveDetail";
     }
 
 

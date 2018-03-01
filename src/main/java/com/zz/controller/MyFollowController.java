@@ -28,7 +28,7 @@ public class MyFollowController {
         List list = userFollowService.getFollowList(id);
         request.setAttribute("liveList",list);
 
-        return "allLive";
+        return "live-show/allLive";
     }
 
     @ResponseBody

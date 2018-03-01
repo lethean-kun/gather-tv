@@ -103,7 +103,11 @@
                         '</dd>'
                     )
                 }
+                for(var i = 0; i < 3; i++){
+                    $(".hoot").append('<dd><a class="type-button">'+data[i].typeName+'</a></dd>')
+                }
                 /* ]]> */
+
                 $(".type-button").click(function () {
                     var type = $(this).html();
                     var para = {"type": type};
