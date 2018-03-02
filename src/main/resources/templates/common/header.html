@@ -8,9 +8,12 @@
                                                                style="float: left;margin-left: 0px"/></a></div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <ul class="layui-nav layui-layout-left ">
-                <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font
-                        style="color:#23ade5">全部直播</font></a></li>
-                <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
+                <li class="layui-nav-item layui-font-black">
+                    <a href="/toLiveList"><font style="color:#23ade5">全部直播</font></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="myFollow" th:href="${session.user != null}? '/myFollow/'+${session.user.id} : 'javascript:;'"><font style="color:#23ade5">我的订阅</font></a>
+                </li>
                 <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;"><font style="color:#23ade5">热门分类</font></a>
@@ -26,7 +29,7 @@
                     <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
                     <li class="layui-nav-item">
                         <a href="javascript:;">
-                            <img src="images/testHead.jpg" class="layui-nav-img"/><font style="color:#23ade5">
+                            <img th:src="@{/images/testHead.jpg}" class="layui-nav-img"/><font style="color:#23ade5">
                             <span id="session-name" th:text="${session.user.username}"></span></font>
                         </a>
                         <dl class="layui-nav-child">

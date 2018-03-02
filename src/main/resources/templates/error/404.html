@@ -7,15 +7,20 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
 
-    <th:block th:include="common/header::body"/>
+    <th:block th:include="common/header::nav"/>
 
-    <div class="layui-body" style="background-color: #e4e4e4 ">
-        <div style="text-align: center;margin-top: 15%">
-            <span style="font-size: 100px;color:#23ade5;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;">啊哦，页面没有找到</span>
+    <div class="layui-row layui-col-space5">
+        <div class="layui-col-xs3">
+        </div>
+        <div class="layui-col-xs6">
+            <div style="text-align: center;margin-top: 30%">
+                <span style="font-size: 70px;color:#23ade5;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;">啊哦，页面没有找到</span>
+            </div>
+        </div>
+        <div class="layui-col-xs3">
         </div>
     </div>
 
-    <th:block th:include="common/header::foot"/>
 </div>
 
 </body>
