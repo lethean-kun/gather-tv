@@ -2,41 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="body">
-    <div class="layui-header layui-bg-gray">
-        <div class="layui-logo"><a href="/toLiveList"><img src="/images/logo.svg"
-                                                           style="float: left;margin-left: 0px"/></a></div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left ">
-            <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font
-                    style="color:#23ade5">全部直播</font></a></li>
-            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
-            <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:;"><font style="color:#23ade5">热门分类</font></a>
-                <dl class="hoot layui-nav-child">
-
-                </dl>
-            </li>
-        </ul>
-        <span id="user" style="display: none" th:text="${session.user}"></span>
-        <ul class="user-msg layui-nav layui-layout-right">
-            <div th:if="${session.user} != null">
-                <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
+    <th:block th:fragment="nav">
+        <div class="layui-header layui-bg-gray">
+            <div class="layui-logo"><a href="/toLiveList"><img src="/images/logo.svg"
+                                                               style="float: left;margin-left: 0px"/></a></div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left ">
+                <li class="layui-nav-item layui-font-black"><a href="/toLiveList"><font
+                        style="color:#23ade5">全部直播</font></a></li>
+                <li class="layui-nav-item"><a href=""><font style="color:#23ade5">我的订阅</font></a></li>
+                <li class="layui-nav-item"><a href=""><font style="color:#23ade5">用户</font></a></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/><font style="color:#23ade5">
-                        <span th:text="${session.user.username}"></span></font>
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
-                        <dd><a href=""><font style="color:#23ade5">我的账户</font></a></dd>
+                    <a href="javascript:;"><font style="color:#23ade5">热门分类</font></a>
+                    <dl class="hoot layui-nav-child">
+
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="/logout"><font style="color:#23ade5">登出</font></a></li>
-            </div>
-        </ul>
-    </div>
-
+                <li class="layui-nav-item"><a href="/toAllDynamic"><font style="color:#23ade5">杂谈区</font></a></li>
+            </ul>
+            <span id="user" style="display: none" th:text="${session.user}"></span>
+            <ul class="user-msg layui-nav layui-layout-right">
+                <div th:if="${session.user} != null">
+                    <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <img src="images/testHead.jpg" class="layui-nav-img"/><font style="color:#23ade5">
+                            <span id="session-name" th:text="${session.user.username}"></span></font>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href=""><font style="color:#23ade5">基本资料</font></a></dd>
+                            <dd><a href=""><font style="color:#23ade5">我的账户</font></a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="/logout"><font style="color:#23ade5">登出</font></a></li>
+                </div>
+            </ul>
+        </div>
+    </th:block>
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->

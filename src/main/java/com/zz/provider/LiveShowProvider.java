@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public class LiveShowProvider {
 
+    /**
+     * 爬取的数据存入数据库 名称和平台相同则更新
+     * @param map
+     * @return
+     */
     public String insertAll(Map map) {
         List<LiveShow> users = (List<LiveShow>) map.get("list");
         StringBuilder sb = new StringBuilder();
