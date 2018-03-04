@@ -12,6 +12,7 @@ public class User implements Serializable{
     private String password;
     private String phone;
     private String email;
+    private String headPic;
     private int status;
 
     public int getId() {
@@ -52,6 +53,14 @@ public class User implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
     }
 
     public int getStatus() {

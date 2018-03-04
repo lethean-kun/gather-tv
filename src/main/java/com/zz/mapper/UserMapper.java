@@ -36,7 +36,7 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    @Select("SELECT id,nick_name as username,password,phone,email " +
+    @Select("SELECT id,nick_name as username,password,phone,email,head_pic as headPic " +
             "FROM user WHERE phone=#{phone}")
     User selectUser(User user);
 

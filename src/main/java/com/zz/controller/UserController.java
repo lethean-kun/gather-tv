@@ -1,16 +1,25 @@
 package com.zz.controller;
 
+import com.zz.model.Parameter;
 import com.zz.model.Result;
 import com.zz.model.User;
 import com.zz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dzk
@@ -21,6 +30,14 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    /**
+     * 文件上传根目录(在Spring的application.yml的配置文件中配置):<br>
+     * web:
+     * upload-path: （jar包所在目录）/resources/static/
+     */
+    @Value("${web.upload-path}")
+    private String webUploadPath;
 
     @ResponseBody
     @RequestMapping("register")
@@ -82,4 +99,73 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping("toUserInfo")
+    public String toUserInfo(HttpServletRequest request,
+                               Parameter parameter){
+
+        return "users-dynamic/userIngo";
+    }
+
+    /**
+     * 基于用户标识的头像上传
+     * @param file 图片
+     * @param userId 用户标识
+     * @return
+     */
+    @RequestMapping(value = "headUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Result headUpload(@RequestParam("file") MultipartFile file, @RequestParam("userId") Integer userId) {
+        Result resultVo = new Result();
+        if (!file.isEmpty()) {
+            if (file.getContentType().contains("image")) {
+                try {
+                    String temp = "images" + File.separator + "upload" + File.separator;
+                    // 获取图片的文件名
+                    String fileName = file.getOriginalFilename();
+                    // 获取图片的扩展名
+                    String extensionName = StringUtils.substringAfter(fileName, ".");
+                    // 新的图片文件名 = 获取时间戳+"."图片扩展名
+                    String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
+                    // 数据库保存的目录
+                    String datdDirectory = temp.concat(String.valueOf(userId)).concat(File.separator);
+                    // 文件路径
+                    String filePath = webUploadPath.concat(datdDirectory);
+
+                    File dest = new File(filePath, newFileName);
+                    if (!dest.getParentFile().exists()) {
+                        dest.getParentFile().mkdirs();
+                    }
+                    // 判断是否有旧头像，如果有就先删除旧头像，再上传
+//                    User userInfo = sUserService.findUserInfo(userId.toString());
+//                    if (StringUtils.isNotBlank(userInfo.getUserHead())) {
+//                        String oldFilePath = webUploadPath.concat(userInfo.getHeadPic());
+//                        File oldFile = new File(oldFilePath);
+//                        if (oldFile.exists()) {
+//                            oldFile.delete();
+//                        }
+//                    }
+                    // 上传到指定目录
+                    file.transferTo(dest);
+
+                    // 将图片流转换进行BASE64加码
+                    //BASE64Encoder encoder = new BASE64Encoder();
+                    //String data = encoder.encode(file.getBytes());
+
+                    // 将反斜杠转换为正斜杠
+                    String data = datdDirectory.replaceAll("\\\\", "/") + newFileName;
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("file", data);
+                    resultVo.setData(resultMap);
+                    resultVo.setMessage("上传成功!");
+                } catch (IOException e) {
+                    resultVo.setMessage("上传失败!");
+                }
+            } else {
+                resultVo.setMessage("上传的文件不是图片类型，请重新上传!");
+            }
+            return resultVo;
+        } else {
+            resultVo.setMessage("上传失败，请选择要上传的图片!");
+            return resultVo;
+        }
+    }
 }

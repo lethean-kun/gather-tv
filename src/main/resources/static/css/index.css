@@ -22,9 +22,9 @@
     margin-top: 5px;
 
 }
-/*.type-button{*/
-    /*background-color: #23ade5;*/
-/*}*/
+.type-button{
+    background-color: #23ade5;
+}
 .room-video{
     width: 70%;
     height: 530px;

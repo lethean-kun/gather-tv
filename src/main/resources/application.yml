@@ -33,3 +33,7 @@ spring:
 #mybatis:
 #  mapper-locations: classpath:mapping/*.xml
 #  type-aliases-package: com.winter.model
+
+#头像上传目录
+web:
+  upload-path: upLoad/head-pic
