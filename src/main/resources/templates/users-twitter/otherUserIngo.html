@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>用户资料</title>
+    <th:block th:include="common/common_resource::resources"/>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <th:block th:include="common/header::nav"/>
+
+    <div style="margin-top: 10px;position:absolute; height:650px; width: 100%;overflow:auto"
+         class="layui-row layui-col-space5">
+        <div class="layui-col-xs3">
+            <div style="position:fixed;margin-top: 100px;text-align: center">
+            </div>
+        </div>
+        <div class="layui-col-xs6">
+            <div style="position:fixed;margin-left: 15%;margin-top: 5%">
+                <div>
+                    <form class="layui-form layui-form-pane" style="text-align:center" action="">
+                        <div class="layui-form-item" style="margin-top: 20px">
+                            <div class="layui-upload">
+                                <button type="button" class="e-button layui-btn" id="test1">上传头像</button>
+                                <div class="layui-upload-list">
+                                    <img class="layui-upload-img" th:src="'/upLoad/head-pic/'+${session.user.headPic}" height="100px" width="100px" id="demo1" />
+                                    <p id="demoText" ></p>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">手机号码</label>
+                                <div class="layui-input-inline">
+                                    <input id="phone" type="tel" name="phone" th:placeholder="${session.user.phone}"
+                                           lay-verify="required|phone" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">昵称</label>
+                                <div class="layui-input-inline">
+                                    <input id="username" type="text" name="username" lay-verify="required"
+                                           th:placeholder="${session.user.username}" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input id="email" type="text" name="email" lay-verify="email" th:placeholder="${session.user.email}"
+                                           autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-normal layui-btn-radius"
+                                        style="background-color: #23ade5" lay-submit="" lay-filter="register">用户动态
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs3">
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+    /* <![CDATA[ */
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: '/headUpload'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.status > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="e-button layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+    /* ]]> */
+</script>
+</html>

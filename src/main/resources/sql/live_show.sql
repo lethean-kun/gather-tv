@@ -10,10 +10,42 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-01-28 17:50:18
+Date: 2018-03-05 21:22:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `comment`
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `dynamic_id` int(11) DEFAULT NULL COMMENT '动态id',
+  `content` varchar(50) DEFAULT NULL COMMENT '评论内容',
+  `comment_date` datetime DEFAULT NULL COMMENT '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `live_impression`
+-- ----------------------------
+DROP TABLE IF EXISTS `live_impression`;
+CREATE TABLE `live_impression` (
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) DEFAULT NULL COMMENT '主播房间id',
+  `label` varchar(20) DEFAULT NULL COMMENT '标签',
+  `heat` int(11) unsigned zerofill DEFAULT NULL COMMENT '标签热度（只显示前三）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of live_impression
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `live_show`
@@ -32,6 +64,7 @@ CREATE TABLE `live_show` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_channel` (`person_name`,`msg_channel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 
 -- ----------------------------
 -- Table structure for `live_type`
@@ -145,6 +178,9 @@ CREATE TABLE `user` (
   `password` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户密码',
   `phone` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户手机号',
   `email` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户邮箱',
+  `registration_time` datetime DEFAULT NULL COMMENT '注册时间',
+  `last_login` datetime DEFAULT NULL COMMENT '最后登入时间',
+  `head_pic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户头像',
   `status` int(11) DEFAULT '1' COMMENT '用户状态（0：封号、1：未封号）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_channel` (`phone`)
@@ -153,7 +189,27 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('0', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '1');
+INSERT INTO `user` VALUES ('1', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '2018-01-01 21:15:47', '2018-03-01 21:15:54', 'testHead.jpg', '1');
+
+-- ----------------------------
+-- Table structure for `user_dynamic`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_twitter`;
+CREATE TABLE `user_dynamic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `feeling` varchar(255) DEFAULT NULL COMMENT '心情动态（说说）',
+  `creat_date` datetime DEFAULT NULL COMMENT '发表时间',
+  `delete_date` datetime DEFAULT NULL COMMENT '删除时间',
+  `like_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被赞次数',
+  `dislike_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被踩次数',
+  `reply_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '回复次数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_dynamic
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `user_follow`
@@ -166,4 +222,8 @@ CREATE TABLE `user_follow` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '是否关注（1：关注，0：取消关注）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_channel` (`user_id`,`room_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_follow
+-- ----------------------------

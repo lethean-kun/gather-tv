@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
  * Created by lethean on 2018/3/2.
  */
 @Controller
-public class DynamicController {
+public class TwitterController {
 
-    @RequestMapping("toAllDynamic")
-    public String toAllDynamic(HttpServletRequest request,
+    @RequestMapping("toAllTwitter")
+    public String toAllTwitter(HttpServletRequest request,
                              Parameter parameter){
 
-        return "users-dynamic/allDynamic";
+        return "users-twitter/allTwitter";
     }
 
 }

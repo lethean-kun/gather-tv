@@ -103,7 +103,7 @@ public class UserController {
     public String toUserInfo(HttpServletRequest request,
                                Parameter parameter){
 
-        return "users-dynamic/userIngo";
+        return "users-twitter/userIngo";
     }
 
     /**

@@ -1,0 +1,82 @@
+package com.zz.model;
+
+import java.util.Date;
+
+/**
+ * @author dzk
+ * Created by lethean on 2018/3/5.
+ */
+public class Twitter {
+    private int id;
+    private int userId;
+    private String feeling;
+    private Date creatData;
+    private Date deleteDate;
+    private int likeHit;
+    private int dislikeHit;
+    private int replyHit;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getFeeling() {
+        return feeling;
+    }
+
+    public void setFeeling(String feeling) {
+        this.feeling = feeling;
+    }
+
+    public Date getCreatData() {
+        return creatData;
+    }
+
+    public void setCreatData(Date creatData) {
+        this.creatData = creatData;
+    }
+
+    public Date getDeleteDate() {
+        return deleteDate;
+    }
+
+    public void setDeleteDate(Date deleteDate) {
+        this.deleteDate = deleteDate;
+    }
+
+    public int getLikeHit() {
+        return likeHit;
+    }
+
+    public void setLikeHit(int likeHit) {
+        this.likeHit = likeHit;
+    }
+
+    public int getDislikeHit() {
+        return dislikeHit;
+    }
+
+    public void setDislikeHit(int dislikeHit) {
+        this.dislikeHit = dislikeHit;
+    }
+
+    public int getReplyHit() {
+        return replyHit;
+    }
+
+    public void setReplyHit(int replyHit) {
+        this.replyHit = replyHit;
+    }
+}
