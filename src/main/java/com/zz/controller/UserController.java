@@ -146,17 +146,25 @@ public class UserController {
                     // 上传到指定目录
                     file.transferTo(dest);
 
-                    // 将图片流转换进行BASE64加码
-                    //BASE64Encoder encoder = new BASE64Encoder();
-                    //String data = encoder.encode(file.getBytes());
+//
+//                    {
+//                        "code": 0,
+//                        "msg": "",
+//                        "data": {
+//                            "src": "http://cdn.layui.com/123.jpg"
+//                        }
+//                    }
+
 
                     // 将反斜杠转换为正斜杠
                     String data = datdDirectory.replaceAll("\\\\", "/") + newFileName;
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("file", data);
+                    resultVo.setStatus(0);
                     resultVo.setData(resultMap);
                     resultVo.setMessage("上传成功!");
                 } catch (IOException e) {
+                    resultVo.setStatus(1);
                     resultVo.setMessage("上传失败!");
                 }
             } else {
