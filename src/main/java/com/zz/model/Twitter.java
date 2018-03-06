@@ -1,5 +1,7 @@
 package com.zz.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -15,6 +17,15 @@ public class Twitter {
     private int likeHit;
     private int dislikeHit;
     private int replyHit;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getId() {
         return id;
@@ -78,5 +89,20 @@ public class Twitter {
 
     public void setReplyHit(int replyHit) {
         this.replyHit = replyHit;
+    }
+
+    @Override
+    public String toString() {
+        return "Twitter{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", feeling='" + feeling + '\'' +
+                ", creatData=" + creatData +
+                ", deleteDate=" + deleteDate +
+                ", likeHit=" + likeHit +
+                ", dislikeHit=" + dislikeHit +
+                ", replyHit=" + replyHit +
+                ", user=" + user.getUsername() +
+                '}';
     }
 }

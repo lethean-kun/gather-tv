@@ -17,17 +17,17 @@
             </div>
         </div>
         <div class="layui-col-xs6">
-            <div>
+            <div th:each="twitter:${twitters}">
                 <blockquote class="layui-elem-quote layui-quote-nm">
                     <div>
-                        <img src="images/testHead.jpg" class="layui-nav-img"/>
-                        <font style="color:#23ade5">lethean </font>
+                        <img th:src="'upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
+                        <font style="color:#23ade5"><th:block th:text="${twitter.user.username}"></th:block> </font>
                     </div>
                     <div>
-                        &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5">2017年11月5日</span>
+                        &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.creatData}">2017年11月5日</span>
                     </div>
                     <div>
-                        不戴金箍，如何救你；戴了金箍，如何爱你。
+                        <span th:text="${twitter.feeling}"></span>
                     </div>
                     <br/>
                     <div>
@@ -35,37 +35,14 @@
                     </div>
                     <br/>
                     <div style="width: 100%">
-                        <a href="#" class="type-button layui-btn-normal"><span style="float:left;width: 30%;"><i
-                                class="layui-icon">&#xe611;</i>&nbsp;9</span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;20</span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;1</span></a>
+                        <a href="#"><span style="float:left;width: 30%;"><i class="layui-icon">&#xe611;</i>&nbsp;<th:block th:text="${twitter.replyHit}"></th:block></span></a>
+                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;<th:block th:text="${twitter.likeHit}"></th:block></span></a>
+                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;<th:block th:text="${twitter.dislikeHit}"></th:block></span></a>
 
                     </div>
                     <br/>
                 </blockquote>
-                <blockquote class="layui-elem-quote layui-quote-nm">
-                    <div>
-                        <img src="images/testHead.jpg" class="layui-nav-img"/>
-                        <font style="color:#23ade5">lethean </font>
-                    </div>
-                    <div>
-                        &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5">2017年10月8日</span>
-                    </div>
-                    <div>
-                        白晶晶爱的是孙悟空，爱白晶晶的是至尊宝，紫霞爱的是至尊宝，爱紫霞的是孙悟空，你以为是同一个人，其实已经相隔500年。
-                    </div>
-                    <br/>
-                    <div>
-                    </div>
-                    <div style="width: 100%">
-                        <a href="#" class="type-button layui-btn-normal"><span style="float:left;width: 30%;"><i
-                                class="layui-icon">&#xe611;</i>&nbsp;9</span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;20</span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;1</span></a>
 
-                    </div>
-                    <br/>
-                </blockquote>
             </div>
         </div>
         <div class="layui-col-xs3">

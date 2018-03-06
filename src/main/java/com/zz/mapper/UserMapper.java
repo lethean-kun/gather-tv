@@ -40,4 +40,9 @@ public interface UserMapper {
             "FROM user WHERE phone=#{phone}")
     User selectUser(User user);
 
+
+    @Select("SELECT id,nick_name as username,password,phone,email,head_pic as headPic " +
+            "FROM user where id=#{userId}")
+    User selectUserById(int userId);
+
 }

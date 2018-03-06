@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
-  `dynamic_id` int(11) DEFAULT NULL COMMENT '动态id',
+  `twitter_id` int(11) DEFAULT NULL COMMENT '动态id',
   `content` varchar(50) DEFAULT NULL COMMENT '评论内容',
   `comment_date` datetime DEFAULT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -195,7 +195,7 @@ INSERT INTO `user` VALUES ('1', 'lethean', '123456', '15563866317', 'dzkwork@126
 -- Table structure for `user_dynamic`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_twitter`;
-CREATE TABLE `user_dynamic` (
+CREATE TABLE `user_twitter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT '用户id',
   `feeling` varchar(255) DEFAULT NULL COMMENT '心情动态（说说）',
