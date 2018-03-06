@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-03-05 21:22:31
+Date: 2018-03-06 23:09:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,16 +20,32 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
-  `id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `twitter_id` int(11) DEFAULT NULL COMMENT '动态id',
   `content` varchar(50) DEFAULT NULL COMMENT '评论内容',
-  `comment_date` datetime DEFAULT NULL COMMENT '创建时间'
+  `comment_date` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comment
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `hit_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `hit_record`;
+CREATE TABLE `hit_record` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `twitter_id` int(11) DEFAULT NULL COMMENT '说说id',
+  `hit_date` datetime DEFAULT NULL COMMENT '点赞（点踩）时间',
+  `is_like` int(11) DEFAULT NULL COMMENT '点赞或踩（0：为操作，1：点踩，2：点赞）',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hit_onlyone` (`user_id`,`twitter_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 -- Table structure for `live_impression`
@@ -64,7 +80,6 @@ CREATE TABLE `live_show` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_channel` (`person_name`,`msg_channel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
 
 -- ----------------------------
 -- Table structure for `live_type`
@@ -184,32 +199,12 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT '1' COMMENT '用户状态（0：封号、1：未封号）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_channel` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES ('1', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '2018-01-01 21:15:47', '2018-03-01 21:15:54', 'testHead.jpg', '1');
-
--- ----------------------------
--- Table structure for `user_dynamic`
--- ----------------------------
-DROP TABLE IF EXISTS `user_twitter`;
-CREATE TABLE `user_twitter` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '用户id',
-  `feeling` varchar(255) DEFAULT NULL COMMENT '心情动态（说说）',
-  `creat_date` datetime DEFAULT NULL COMMENT '发表时间',
-  `delete_date` datetime DEFAULT NULL COMMENT '删除时间',
-  `like_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被赞次数',
-  `dislike_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被踩次数',
-  `reply_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '回复次数',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user_dynamic
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `user_follow`
@@ -222,8 +217,30 @@ CREATE TABLE `user_follow` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '是否关注（1：关注，0：取消关注）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_channel` (`user_id`,`room_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_follow
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `user_twitter`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_twitter`;
+CREATE TABLE `user_twitter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `feeling` varchar(255) DEFAULT NULL COMMENT '心情动态（说说）',
+  `creat_date` datetime DEFAULT NULL COMMENT '发表时间',
+  `delete_date` datetime DEFAULT NULL COMMENT '删除时间',
+  `like_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被赞次数',
+  `dislike_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被踩次数',
+  `reply_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '回复次数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_twitter
+-- ----------------------------
+INSERT INTO `user_twitter` VALUES ('1', '1', '末将于禁，原为曹家世代赴汤蹈火。', '2018-03-06 22:18:09', null, '0000000005', '0000000000', '0000000002');
+INSERT INTO `user_twitter` VALUES ('2', '1', '不戴紧箍，如何救你；带上紧箍，如何爱你', '2018-03-06 22:19:38', null, '0000000050', '0000000000', '0000000005');

@@ -29,5 +29,25 @@ public interface TwitterMapper {
     })
     List<Twitter> allTwitter();
 
+    /**
+     * 点赞
+     * @return
+     */
+    @Update("UPDATE user_twitter SET like_hit = like_hit+1 WHERE id=#{twitterId}")
+    int updateLikeHit(int twitterId);
+
+    /**
+     * 点踩
+     * @return
+     */
+    @Update("UPDATE user_twitter SET dislike_hit = dislike_hit+1 WHERE id=#{twitterId}")
+    int updateDisLikeHit(int twitterId);
+
+    /**
+     * 回复
+     * @return
+     */
+    @Update("UPDATE user_twitter SET reply_hit = reply_hit+1 WHERE id=#{twitterId}")
+    int updateReplyHit(int twitterId);
 
 }
