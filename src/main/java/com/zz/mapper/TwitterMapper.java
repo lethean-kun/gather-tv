@@ -30,6 +30,22 @@ public interface TwitterMapper {
     List<Twitter> allTwitter();
 
     /**
+     * 查询动态
+     * @return
+     */
+    @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
+            "FROM user_twitter WHERE id=#{twitterId}")
+    @Results({
+            @Result(column = "user_id",property = "userId"),
+            @Result(column = "user_id",property = "user",one = @One(
+                    select = "com.zz.mapper.UserMapper.selectUserById",
+                    fetchType= FetchType.EAGER
+            ))
+
+    })
+    Twitter getTwitter(int twitterId);
+
+    /**
      * 点赞
      * @return
      */

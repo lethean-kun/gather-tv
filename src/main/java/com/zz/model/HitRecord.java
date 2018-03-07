@@ -57,4 +57,15 @@ public class HitRecord {
     public void setIsLike(int isLike) {
         this.isLike = isLike;
     }
+
+    @Override
+    public String toString() {
+        return "HitRecord{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", twitterId=" + twitterId +
+                ", hitDate=" + hitDate +
+                ", isLike=" + isLike +
+                '}';
+    }
 }

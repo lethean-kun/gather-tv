@@ -38,4 +38,14 @@ public class TwitterServiceImpl implements TwitterService {
         }
         return twitters;
     }
+
+    @Override
+    public Twitter getTwitter(int twitterId) {
+
+        Twitter twitter = twitterMapper.getTwitter(twitterId);
+        twitter.setLikeHit(hitRecordMapper.getLikeHit(twitter.getId()));
+        twitter.setDislikeHit(hitRecordMapper.getDisLikeHit(twitter.getId()));
+        twitter.setReplyHit(commentMapper.getCommentCount(twitter.getId()));
+        return twitter;
+    }
 }

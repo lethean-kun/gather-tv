@@ -19,6 +19,7 @@
         <div class="layui-col-xs6">
             <div th:each="twitter:${twitters}">
                 <blockquote class="layui-elem-quote layui-quote-nm">
+                    <span class="twitter_id" style="display: none" th:text="${twitter.id}"></span>
                     <div>
                         <img th:src="'upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
                         <font style="color:#23ade5"><th:block th:text="${twitter.user.username}"></th:block> </font>
@@ -35,9 +36,9 @@
                     </div>
                     <br/>
                     <div style="width: 100%">
-                        <a href="#"><span style="float:left;width: 30%;"><i class="layui-icon">&#xe611;</i>&nbsp;<th:block th:text="${twitter.replyHit}"></th:block></span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;<th:block th:text="${twitter.likeHit}"></th:block></span></a>
-                        <a href="#"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;<th:block th:text="${twitter.dislikeHit}"></th:block></span></a>
+                        <a href="javascript:;"><span style="float:left;width: 30%;"><i class="layui-icon">&#xe611;</i>&nbsp;<th:block th:text="${twitter.replyHit}"></th:block></span></a>
+                        <a href="javascript:;" th:onclick="'hit(2,'+${twitter.id}+')'"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;<span id="like" th:text="${twitter.likeHit}"></span></span></a>
+                        <a href="javascript:;" th:onclick="'hit(1,'+${twitter.id}+')'"><span style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;<span id="dislike" th:text="${twitter.dislikeHit}"></span></span></a>
 
                     </div>
                     <br/>
@@ -57,4 +58,17 @@
 </div>
 
 </body>
+<script>
+    function hit(status,twitter_id) {
+        var user_id = $("#user-id").text();
+        if(""==user_id){
+            login();
+            return;
+        }
+        $.post("/hitIt",{"isLike":status,"userId":user_id,"twitterId":twitter_id},function(result){
+            $("#like").text(result.data.likeHit);
+            $("#dislike").text(result.data.dislikeHit);
+        })
+    }
+</script>
 </html>

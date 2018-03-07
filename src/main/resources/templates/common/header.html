@@ -29,7 +29,7 @@
                     <span id="user-id" th:text="${session.user.id}" style="display: none"></span>
                     <li class="layui-nav-item">
                         <a href="javascript:;">
-                            <img th:src="${session.user.headPic != null}? 'upLoad/head-pic/'+${session.user.headPic} : '/upLoad/head-pic/testHead.jpg'" class="layui-nav-img"/><font style="color:#23ade5">
+                            <img th:src="${session.user.headPic != null}? '/upLoad/head-pic/'+${session.user.headPic} : '/upLoad/head-pic/testHead.jpg'" class="layui-nav-img"/><font style="color:#23ade5">
                             <span id="session-name" th:text="${session.user.username}"></span></font>
                         </a>
                         <dl class="layui-nav-child">
