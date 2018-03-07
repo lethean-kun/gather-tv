@@ -4,6 +4,7 @@ import com.zz.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @author dzk
@@ -44,5 +45,14 @@ public interface UserMapper {
     @Select("SELECT id,nick_name as username,password,phone,email,head_pic as headPic " +
             "FROM user where id=#{userId}")
     User selectUserById(int userId);
+
+
+    /**
+     * 更新用户头像 （简单加了）
+     * @param user
+     * @return
+     */
+    @Update("UPDATE user set head_pic = #{headPic} WHERE id = #{id}")
+    int updateUserHeadPic(User user);
 
 }

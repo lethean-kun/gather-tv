@@ -30,7 +30,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">手机号码</label>
                                 <div class="layui-input-inline">
-                                    <input id="phone" type="tel" name="phone" th:placeholder="${session.user.phone}"
+                                    <input id="phone" type="tel" name="phone" th:value="${session.user.phone}"
                                            lay-verify="required|phone" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                                 <label class="layui-form-label">昵称</label>
                                 <div class="layui-input-inline">
                                     <input id="username" type="text" name="username" lay-verify="required"
-                                           th:placeholder="${session.user.username}" autocomplete="off" class="layui-input"/>
+                                           th:value="${session.user.username}" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">邮箱</label>
                                 <div class="layui-input-inline">
-                                    <input id="email" type="text" name="email" lay-verify="email" th:placeholder="${session.user.email}"
+                                    <input id="email" type="text" name="email" lay-verify="email" th:value="${session.user.email}"
                                            autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                 <label class="layui-form-label">密码</label>
                                 <div class="layui-input-inline">
                                     <input id="password" type="password" name="password" lay-verify="pass"
-                                           th:placeholder="${session.user.password}" autocomplete="off" class="layui-input"/>
+                                           th:value="${session.user.password}" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                             <!--<div class="layui-form-mid layui-word-aux">请填写6</div>-->
@@ -66,7 +66,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn layui-btn-normal layui-btn-radius"
-                                        style="background-color: #23ade5" lay-submit="" lay-filter="register">注册
+                                        style="background-color: #23ade5" lay-submit="" lay-filter="register">修改资料
                                 </button>
                                 <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>
                             </div>
@@ -88,11 +88,12 @@
     layui.use('upload', function () {
         var $ = layui.jquery
             , upload = layui.upload;
-
+        var user_id = $("#user-id").text();
         //普通图片上传
         var uploadInst = upload.render({
             elem: '#test1'
             , url: '/headUpload'
+            ,data: {"id":user_id} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
             , before: function (obj) {
                 //预读本地文件示例，不支持ie8
                 obj.preview(function (index, file, result) {
@@ -103,6 +104,8 @@
                 //如果上传失败
                 if (res.status > 0) {
                     return layer.msg('上传失败');
+                }else {
+                    return layer.msg('修改成功');
                 }
                 //上传成功
             }

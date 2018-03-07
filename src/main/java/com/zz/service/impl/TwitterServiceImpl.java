@@ -48,4 +48,9 @@ public class TwitterServiceImpl implements TwitterService {
         twitter.setReplyHit(commentMapper.getCommentCount(twitter.getId()));
         return twitter;
     }
+
+    @Override
+    public int publishTwitter(Twitter twitter) {
+        return twitterMapper.insertTwitter(twitter);
+    }
 }

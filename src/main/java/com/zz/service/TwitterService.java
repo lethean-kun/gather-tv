@@ -23,5 +23,12 @@ public interface TwitterService {
      */
     Twitter getTwitter(int twitterId);
 
+    /**
+     * 发布动态
+     * @param twitter
+     * @return
+     */
+    int publishTwitter(Twitter twitter);
+
 
 }

@@ -30,4 +30,11 @@ public class TwitterController {
         return "users-twitter/allTwitter";
     }
 
+    @RequestMapping("publishTwitter")
+    public String publishTwitter(Twitter twitter){
+
+
+        return "users-twitter/allTwitter";
+    }
+
 }

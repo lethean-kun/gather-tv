@@ -13,6 +13,15 @@ import java.util.List;
 @Mapper
 public interface TwitterMapper {
 
+
+    /**
+     * 发布动态
+     * @param twitter
+     * @return
+     */
+    @Insert("INSERT INTO user_twitter(user_id,feeling,creat_date) VALUE(#{userId},#{feeling},now())")
+    int insertTwitter(Twitter twitter);
+
     /**
      * 查询所有动态
      * @return

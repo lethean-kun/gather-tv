@@ -4,10 +4,13 @@ import com.zz.model.Parameter;
 import com.zz.model.Result;
 import com.zz.model.User;
 import com.zz.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +31,8 @@ import java.util.Map;
 @Controller
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     UserService userService;
 
@@ -41,15 +46,15 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("register")
-    public Result register(User user,HttpServletRequest request){
+    public Result register(User user, HttpServletRequest request) {
         Result result = new Result();
         String username = request.getParameter("username");
         int status = userService.register(user);
-        if(status>0){
+        if (status > 0) {
             result.setStatus(1);
             result.setMessage("注册成功");
-            request.getSession().setAttribute("user",user);
-        }else {
+            request.getSession().setAttribute("user", user);
+        } else {
             result.setStatus(0);
             result.setMessage("注册失败");
         }
@@ -58,18 +63,18 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("login")
-    public Result login(User user,HttpServletRequest request){
+    public Result login(User user, HttpServletRequest request) {
         Result result = new Result();
         int status = userService.getUser(user);
-        if(status==1){
+        if (status == 1) {
             result.setStatus(1);
             result.setMessage("登陆成功");
             User zUser = userService.togetUser(user);
-            request.getSession().setAttribute("user",zUser);
-        }else if(status==-1){
+            request.getSession().setAttribute("user", zUser);
+        } else if (status == -1) {
             result.setStatus(-1);
             result.setMessage("密码错误");
-        }else if(status==0){
+        } else if (status == 0) {
             result.setStatus(0);
             result.setMessage("用户不存在");
         }
@@ -77,7 +82,7 @@ public class UserController {
     }
 
     @RequestMapping("logout")
-    public void logout(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         request.getSession().invalidate();
         response.sendRedirect("/toLiveList");
@@ -85,14 +90,14 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("check")
-    public Result check(String username,HttpServletRequest request){
+    public Result check(String username, HttpServletRequest request) {
         Result result = new Result();
 
         User user = userService.getUserName(username);
-        if(user==null){
+        if (user == null) {
             result.setStatus(1);
             result.setMessage("昵称可用");
-        }else {
+        } else {
             result.setStatus(0);
             result.setMessage("昵称不可用");
         }
@@ -101,34 +106,40 @@ public class UserController {
 
     @RequestMapping("toUserInfo")
     public String toUserInfo(HttpServletRequest request,
-                               Parameter parameter){
+                             Parameter parameter) {
 
         return "users-twitter/userIngo";
     }
 
     /**
      * 基于用户标识的头像上传
+     *
      * @param file 图片
-     * @param userId 用户标识
      * @return
      */
-    @RequestMapping(value = "headUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Result headUpload(@RequestParam("file") MultipartFile file, @RequestParam("userId") Integer userId) {
+    @ResponseBody
+    @RequestMapping(value = "headUpload")
+    public Result headUpload(@RequestParam("file") MultipartFile file,
+                             User user,
+                             HttpServletRequest request) {
         Result resultVo = new Result();
         if (!file.isEmpty()) {
             if (file.getContentType().contains("image")) {
                 try {
-                    String temp = "images" + File.separator + "upload" + File.separator;
                     // 获取图片的文件名
                     String fileName = file.getOriginalFilename();
                     // 获取图片的扩展名
                     String extensionName = StringUtils.substringAfter(fileName, ".");
                     // 新的图片文件名 = 获取时间戳+"."图片扩展名
                     String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
-                    // 数据库保存的目录
-                    String datdDirectory = temp.concat(String.valueOf(userId)).concat(File.separator);
+
                     // 文件路径
-                    String filePath = webUploadPath.concat(datdDirectory);
+                    File path = new File(ResourceUtils.getURL("classpath:").getPath());
+                    //如果上传目录为/static/images/upload/，则可以如下获取：
+//                    File upload = new File(path.getAbsolutePath(),webUploadPath);
+//                    logger.info("upload url:"+upload.getAbsolutePath());
+                    String filePath = path.getAbsolutePath() + webUploadPath;
+                    logger.info("上传图片路径" + filePath);
 
                     File dest = new File(filePath, newFileName);
                     if (!dest.getParentFile().exists()) {
@@ -154,12 +165,16 @@ public class UserController {
 //                            "src": "http://cdn.layui.com/123.jpg"
 //                        }
 //                    }
+                    //更新user头像
+                    user.setHeadPic(newFileName);
+                    userService.updateUserHeadPic(user);
+                    //刷新session
+                    User user1 = (User)request.getSession().getAttribute("user");
+                    user1.setHeadPic(newFileName);
+                    request.getSession().setAttribute("user",user1);
 
 
-                    // 将反斜杠转换为正斜杠
-                    String data = datdDirectory.replaceAll("\\\\", "/") + newFileName;
                     Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("file", data);
                     resultVo.setStatus(0);
                     resultVo.setData(resultMap);
                     resultVo.setMessage("上传成功!");

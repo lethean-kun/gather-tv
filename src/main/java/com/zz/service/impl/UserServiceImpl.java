@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService{
 
         return userMapper.selectUser(user);
     }
+
+    @Override
+    public int updateUserHeadPic(User user) {
+        return userMapper.updateUserHeadPic(user);
+    }
 }

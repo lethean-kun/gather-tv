@@ -35,4 +35,10 @@ public interface UserService {
      * @return
      */
     User togetUser(User user);
+
+    /**
+     * 更新用户头像
+     * @return
+     */
+    int updateUserHeadPic(User user);
 }
