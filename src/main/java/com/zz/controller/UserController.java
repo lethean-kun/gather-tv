@@ -53,7 +53,8 @@ public class UserController {
         if (status > 0) {
             result.setStatus(1);
             result.setMessage("注册成功");
-            request.getSession().setAttribute("user", user);
+            User zUser = userService.togetUser(user);
+            request.getSession().setAttribute("user", zUser);
         } else {
             result.setStatus(0);
             result.setMessage("注册失败");

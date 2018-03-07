@@ -36,4 +36,6 @@ spring:
 
 #头像上传目录
 web:
-  upload-path: upLoad/head-pic
+  upload-path: /static/upLoad/head-pic
+  picupload-path: /static/upLoad/pic
+  return-path: /upLoad/pic

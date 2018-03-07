@@ -29,12 +29,11 @@
                     <div>
                         &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.creatData}">2017年11月5日</span>
                     </div>
-                    <div>
-                        <span th:text="${twitter.feeling}"></span>
+                    <div th:utext="${twitter.feeling}">
                     </div>
                     <br/>
                     <div>
-                        <img src="images/test.png"/>
+                        <!--<img src="images/test.png"/>-->
                     </div>
                     <br/>
                     <div style="width: 100%">
@@ -55,12 +54,17 @@
         </div>
         <div class="layui-col-xs3">
             <div style="position:fixed;">
-                <div style="margin-left: 150px;margin-top: 200%">
+                <div style="margin-left: 150px;margin-top: 140%">
                     <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>
+                    <button  class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
                 </div>
             </div>
         </div>
     </div>
+    <form id="form" action="/publishTwitter" method="post">
+        <input style="display: none" type="text" id="userId" name="userId"/>
+        <input style="display: none" type="text" id="feeling" name="feeling"/>
+    </form>
 
 
 </div>
@@ -88,7 +92,7 @@
         '        <div id="editor">' +
         '        </div>' +
         '        <div style="float: right">' +
-        '            <button class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>' +
+        '            <button id="publishTwitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>' +
         '        </div>' +
         '    </div>';
     $("#publish").click(function () {
@@ -97,7 +101,7 @@
             return;
         }
         layer.open({
-            title:'发布动态',
+            title: '发布动态',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
             area: ['60%', '60%'], //宽高
@@ -105,7 +109,14 @@
         });
         var E = window.wangEditor
         var editor = new E('#editor')
+        editor.customConfig.uploadImgServer = '/picUpload'  // 上传图片到服务器
+        editor.customConfig.uploadFileName = 'file'
         editor.create()
+        $("#publishTwitter").click(function () {
+            $("#userId").val(user_id);
+            $("#feeling").val(editor.txt.html());
+            $("#form").submit();
+        })
     })
 
 </script>

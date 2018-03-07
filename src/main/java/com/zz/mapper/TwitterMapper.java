@@ -27,7 +27,7 @@ public interface TwitterMapper {
      * @return
      */
     @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
-            "FROM user_twitter")
+            "FROM user_twitter order by creat_date desc")
     @Results({
             @Result(column = "user_id",property = "userId"),
             @Result(column = "user_id",property = "user",one = @One(

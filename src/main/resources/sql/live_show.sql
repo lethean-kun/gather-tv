@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-03-06 23:09:14
+Date: 2018-03-07 23:07:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
-  `id` int(11) NOT NULL,
+  `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `twitter_id` int(11) DEFAULT NULL COMMENT '动态id',
   `content` varchar(50) DEFAULT NULL COMMENT '评论内容',
@@ -37,15 +37,22 @@ CREATE TABLE `comment` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hit_record`;
 CREATE TABLE `hit_record` (
-  `id` int(11) NOT NULL,
+  `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `twitter_id` int(11) DEFAULT NULL COMMENT '说说id',
   `hit_date` datetime DEFAULT NULL COMMENT '点赞（点踩）时间',
   `is_like` int(11) DEFAULT NULL COMMENT '点赞或踩（0：为操作，1：点踩，2：点赞）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hit_onlyone` (`user_id`,`twitter_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Records of hit_record
+-- ----------------------------
+INSERT INTO `hit_record` VALUES ('00000000001', '1', '1', '2018-03-06 22:48:32', '1');
+INSERT INTO `hit_record` VALUES ('00000000002', '1', '2', '2018-03-06 22:48:46', '1');
+INSERT INTO `hit_record` VALUES ('00000000003', '2', '5', '2018-03-07 22:34:40', '2');
+INSERT INTO `hit_record` VALUES ('00000000004', '2', '4', '2018-03-07 22:34:41', '2');
 
 -- ----------------------------
 -- Table structure for `live_impression`
@@ -80,6 +87,7 @@ CREATE TABLE `live_show` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_channel` (`person_name`,`msg_channel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 
 -- ----------------------------
 -- Table structure for `live_type`
@@ -199,12 +207,14 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT '1' COMMENT '用户状态（0：封号、1：未封号）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_channel` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '2018-01-01 21:15:47', '2018-03-01 21:15:54', 'testHead.jpg', '1');
+INSERT INTO `user` VALUES ('1', 'lethean', '123456', '15563866317', 'dzkwork@126.com', '2018-01-01 21:15:47', '2018-03-01 21:15:54', '1520431861910.jpg', '1');
+INSERT INTO `user` VALUES ('2', '傻子', '123456', '15555555555', '1434745143@qq.com', null, null, '1520433119921.png', '1');
+INSERT INTO `user` VALUES ('3', '一条狗', '123456', '16666666666', 'dzkwork@126.com', null, null, 'testHead.jpg', '1');
 
 -- ----------------------------
 -- Table structure for `user_follow`
@@ -237,10 +247,14 @@ CREATE TABLE `user_twitter` (
   `dislike_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被踩次数',
   `reply_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '回复次数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user_twitter
 -- ----------------------------
 INSERT INTO `user_twitter` VALUES ('1', '1', '末将于禁，原为曹家世代赴汤蹈火。', '2018-03-06 22:18:09', null, '0000000005', '0000000000', '0000000002');
 INSERT INTO `user_twitter` VALUES ('2', '1', '不戴紧箍，如何救你；带上紧箍，如何爱你', '2018-03-06 22:19:38', null, '0000000050', '0000000000', '0000000005');
+INSERT INTO `user_twitter` VALUES ('3', '1', '<p>這是一個簡單的測試，<span style=\"color: rgb(249, 150, 59); font-weight: bold;\">我愛你</span></p>', '2018-03-07 21:53:53', null, '0000000000', '0000000000', '0000000000');
+INSERT INTO `user_twitter` VALUES ('4', '2', '<p><span style=\"color: rgb(70, 172, 200);\">人各有命，上天注定，有人天生为王，有人落草为寇。脚下的路，如果不是你自己的选择，那么旅程的终点在哪，也没人知道。你会走到哪，会遇到谁，都不一定。&nbsp;&nbsp;</span>?<br></p>', '2018-03-07 22:28:08', null, '0000000000', '0000000000', '0000000000');
+INSERT INTO `user_twitter` VALUES ('5', '2', '<p>test</p>', '2018-03-07 22:32:10', null, '0000000000', '0000000000', '0000000000');
+INSERT INTO `user_twitter` VALUES ('6', '1', '<p>发表图片测试</p><p><img src=\"/upLoad/pic/1520435203207.jpg\" style=\"max-width:100%;\"><br></p>', '2018-03-07 23:06:45', null, '0000000000', '0000000000', '0000000000');
