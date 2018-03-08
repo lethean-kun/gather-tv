@@ -29,23 +29,35 @@
                     <div>
                         &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.creatData}">2017年11月5日</span>
                     </div>
-                    <div th:utext="${twitter.feeling}">
-                    </div>
-                    <br/>
-                    <div>
-                        <!--<img src="images/test.png"/>-->
-                    </div>
-                    <br/>
-                    <div style="width: 100%">
-                        <a href="javascript:;"><span style="float:left;width: 30%;"><i class="layui-icon">&#xe611;</i>&nbsp;<th:block
-                                th:text="${twitter.replyHit}"></th:block></span></a>
-                        <a href="javascript:;" th:onclick="'hit(2,'+${twitter.id}+')'"><span
-                                style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c6;</i>&nbsp;<span
-                                id="like" th:text="${twitter.likeHit}"></span></span></a>
-                        <a href="javascript:;" th:onclick="'hit(1,'+${twitter.id}+')'"><span
-                                style="float:right;width: 30%;text-align: center"><i class="layui-icon">&#xe6c5;</i>&nbsp;<span
-                                id="dislike" th:text="${twitter.dislikeHit}"></span></span></a>
 
+
+                    <div id="feel" th:utext="${twitter.feeling}">
+                    </div>
+
+                    <br/>
+                    <div th:each="image:${twitter.imagesList}">
+                        <span style="float: left;margin-left: 15px" class="image" th:utext="${image}"></span>
+                    </div>
+                    <div style="width: 100%;clear:both ">
+                        <br/>
+                        <a href="javascript:;">
+                            <span style="float:left;width: 30%;">
+                                <i class="layui-icon">&#xe611;</i>&nbsp;
+                                <th:block th:text="${twitter.replyHit}"></th:block>
+                            </span>
+                        </a>
+                        <a href="javascript:;" th:onclick="'hit(2,'+${twitter.id}+')'">
+                            <span style="float:right;width: 30%;text-align: center">
+                                <i class="layui-icon">&#xe6c6;</i>&nbsp;
+                                <span id="like" th:text="${twitter.likeHit}"></span>
+                            </span>
+                        </a>
+                        <a href="javascript:;" th:onclick="'hit(1,'+${twitter.id}+')'">
+                            <span style="float:right;width: 30%;text-align: center">
+                                <i class="layui-icon">&#xe6c5;</i>&nbsp;
+                                <span id="dislike" th:text="${twitter.dislikeHit}"></span>
+                            </span>
+                        </a>
                     </div>
                     <br/>
                 </blockquote>
@@ -56,7 +68,7 @@
             <div style="position:fixed;">
                 <div style="margin-left: 150px;margin-top: 140%">
                     <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>
-                    <button  class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
+                    <button class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
                 </div>
             </div>
         </div>
@@ -71,12 +83,20 @@
 
 </body>
 <script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
-
+<script>
+    $(function () {
+        // layer.load();
+        $("#feel img").remove();
+        $(".image img").each(function (i) {
+            $(this).css("width", 150, "height", 150);
+        });
+    })
+</script>
 <script>
     var user_id = $("#user-id").text();
 
     function hit(status, twitter_id) {
-
+        layer.load();
         if ("" == user_id) {
             login();
             return;
@@ -84,6 +104,7 @@
         $.post("/hitIt", {"isLike": status, "userId": user_id, "twitterId": twitter_id}, function (result) {
             $("#like").text(result.data.likeHit);
             $("#dislike").text(result.data.dislikeHit);
+            layer.closeAll('loading');
         })
     }
 

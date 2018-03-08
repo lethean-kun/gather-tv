@@ -7,6 +7,10 @@ import com.zz.model.Result;
 import com.zz.model.Twitter;
 import com.zz.model.User;
 import com.zz.service.TwitterService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +54,23 @@ public class TwitterController {
                                Parameter parameter) {
         //所有用户动态
         List<Twitter> twitters = twitterService.getAllTwitter();
+        //筛选出三张图片下方显示
+        for(Twitter twitter:twitters){
+            List<String> imagesList= new ArrayList<>();
+            String blogInfo=twitter.getFeeling();
+            Document doc= Jsoup.parse(blogInfo);
+            Elements jpgs=doc.select("img[src]"); //　查找图片
+            for(int i=0;i<jpgs.size();i++){
+                Element jpg=jpgs.get(i);
+                logger.info(jpg.toString());
+                String temp = jpg.toString();
+                imagesList.add(temp);
+                if(i==2){
+                    break;
+                }
+            }
+            twitter.setImagesList(imagesList);
+        }
         request.setAttribute("twitters", twitters);
 
         return "users-twitter/allTwitter";

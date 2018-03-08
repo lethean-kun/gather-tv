@@ -3,6 +3,7 @@ package com.zz.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author dzk
@@ -18,6 +19,7 @@ public class Twitter {
     private int dislikeHit;
     private int replyHit;
     private User user;
+    private List<String> imagesList;
 
     public User getUser() {
         return user;
@@ -89,6 +91,14 @@ public class Twitter {
 
     public void setReplyHit(int replyHit) {
         this.replyHit = replyHit;
+    }
+
+    public List<String> getImagesList() {
+        return imagesList;
+    }
+
+    public void setImagesList(List<String> imagesList) {
+        this.imagesList = imagesList;
     }
 
     @Override
