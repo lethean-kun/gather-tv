@@ -18,7 +18,7 @@
         </div>
         <div class="layui-col-xs6">
             <div th:each="twitter:${twitters}">
-                <blockquote class="layui-elem-quote layui-quote-nm">
+                <blockquote class="twitter layui-elem-quote layui-quote-nm">
                     <span class="twitter_id" style="display: none" th:text="${twitter.id}"></span>
                     <div>
                         <img th:src="'upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
@@ -35,29 +35,55 @@
                     </div>
 
                     <br/>
-                    <div th:each="image:${twitter.imagesList}">
-                        <span style="float: left;margin-left: 15px" class="image" th:utext="${image}"></span>
+                    <div class="image" th:each="image:${twitter.imagesList}">
+                        <a href="javascript:;" style="float: left;margin-left: 15px" th:utext="${image}"></a>
                     </div>
                     <div style="width: 100%;clear:both ">
                         <br/>
-                        <a href="javascript:;">
+                        <a href="javascript:;" class="reply">
                             <span style="float:left;width: 30%;">
                                 <i class="layui-icon">&#xe611;</i>&nbsp;
                                 <th:block th:text="${twitter.replyHit}"></th:block>
                             </span>
                         </a>
-                        <a href="javascript:;" th:onclick="'hit(2,'+${twitter.id}+')'">
+                        <a class="hit" href="javascript:;">
+                            <span class="twitter-id" style="display: none" th:text="${twitter.id}"></span>
+                            <span class="status" style="display: none">2</span>
                             <span style="float:right;width: 30%;text-align: center">
                                 <i class="layui-icon">&#xe6c6;</i>&nbsp;
-                                <span id="like" th:text="${twitter.likeHit}"></span>
+                                <span class="like" th:text="${twitter.likeHit}"></span>
                             </span>
                         </a>
-                        <a href="javascript:;" th:onclick="'hit(1,'+${twitter.id}+')'">
+                        <a class="hit" href="javascript:;">
+                            <span class="twitter-id" style="display: none" th:text="${twitter.id}"></span>
+                            <span class="status" style="display: none">1</span>
                             <span style="float:right;width: 30%;text-align: center">
                                 <i class="layui-icon">&#xe6c5;</i>&nbsp;
-                                <span id="dislike" th:text="${twitter.dislikeHit}"></span>
+                                <span class="dislike" th:text="${twitter.dislikeHit}"></span>
                             </span>
                         </a>
+                    </div>
+
+                    <div class="comment" style="clear: both;display: none">
+                        <br/>
+                        <th:block th:each="comment:${twitter.comments}">
+                            &#12288;&#12288;<img th:src="'upLoad/head-pic/'+${comment.user.headPic}"
+                                                 class="layui-nav-img"/>
+                            <font style="color:#23ade5">
+                                <th:block th:text="${comment.user.username}"></th:block>
+                            </font>：
+                            <th:block th:text="${comment.content}"></th:block>
+                            <br/>
+                        </th:block>
+                        <br/>
+                        <input id="message" type="text" name="title" lay-verify="title" autocomplete="off"
+                               placeholder="快来评论吧~" class="layui-input"/>
+                        <div style="float: right">
+                            <button class="e-button layui-btn layui-btn-small layui-btn-normal layui-btn-radius"
+                                    value="Subscribe"
+                                    onclick="mqtt_publish();">发送
+                            </button>
+                        </div>
                     </div>
                     <br/>
                 </blockquote>
@@ -91,22 +117,33 @@
             $(this).css("width", 150, "height", 150);
         });
     })
+    layer.photos({
+        photos: '.image'
+        , anim: 0 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+    });
 </script>
 <script>
     var user_id = $("#user-id").text();
 
-    function hit(status, twitter_id) {
+    $(".hit").click(function () {
+        var twitter_id = $(this).find(".twitter-id").text();
+        var status = $(this).find(".status").text();
+        console.log("twitter_id:" + twitter_id);
+        console.log("status:" + status);
         layer.load();
         if ("" == user_id) {
             login();
             return;
         }
         $.post("/hitIt", {"isLike": status, "userId": user_id, "twitterId": twitter_id}, function (result) {
-            $("#like").text(result.data.likeHit);
-            $("#dislike").text(result.data.dislikeHit);
+            console.log($(">span:nth-child(3)", this).find(".like").text());
+            $(">span:nth-child(3)", this).find(".like").text(result.data.likeHit);
+            $(">span:nth-child(3)", this).find(".dislike").text(result.data.dislikeHit);
             layer.closeAll('loading');
         })
-    }
+
+    })
+
 
     var publish =
         '    <div style="width: 95%;margin: 0 auto;margin-top: 10px">' +
@@ -138,6 +175,9 @@
             $("#feeling").val(editor.txt.html());
             $("#form").submit();
         })
+    })
+    $(".reply").click(function () {
+        $(this).parent().next().slideToggle("fast");
     })
 
 </script>

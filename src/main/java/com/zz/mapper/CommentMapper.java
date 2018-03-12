@@ -1,7 +1,10 @@
 package com.zz.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.zz.model.Comment;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
+
+import java.util.List;
 
 /**
  * @author dzk
@@ -17,4 +20,21 @@ public interface CommentMapper {
      */
     @Select("SELECT count(*) FROM comment WHERE twitter_id=#{twitterId}")
     int getCommentCount(int twitterId);
+
+    /**
+     * 获取文章所有评论
+     * @param twitterId
+     * @return
+     */
+    @Select("SELECT id,user_id,twitter_id as twitterId,content,comment_date as commentDate " +
+            "FROM comment WHERE twitter_id=#{twitterId}")
+    @Results({
+            @Result(column = "user_id",property = "userId"),
+            @Result(column = "user_id",property = "user",one = @One(
+                    select = "com.zz.mapper.UserMapper.selectUserById",
+                    fetchType= FetchType.EAGER
+            ))
+
+    })
+    List<Comment> selectCommentsByTwitter(int twitterId);
 }

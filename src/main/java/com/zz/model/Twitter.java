@@ -19,15 +19,9 @@ public class Twitter {
     private int dislikeHit;
     private int replyHit;
     private User user;
+    private List<Comment> comments;
     private List<String> imagesList;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public int getId() {
         return id;
@@ -91,6 +85,22 @@ public class Twitter {
 
     public void setReplyHit(int replyHit) {
         this.replyHit = replyHit;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public List<String> getImagesList() {
