@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   thymeleaf:
@@ -13,7 +13,7 @@ spring:
     name: test
     url: jdbc:mysql://localhost:3306/concentrate_tv?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password:
+    password: root
 
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
@@ -39,3 +39,16 @@ web:
   upload-path: /static/upLoad/head-pic
   picupload-path: /static/upLoad/pic
   return-path: /upLoad/pic
+liveShow:
+  hu-ya:
+    name: 虎牙直播
+    url: http://www.huya.com/l?areafib=1
+  quan-min:
+    name: 全民直播
+    url: https://www.quanmin.tv/game/all
+  zan-qi:
+    name: 战旗直播
+    url: http://www.zhanqi.tv/lives
+  long-zhu:
+    name: 龙珠直播
+    url: http://longzhu.com/channels/all?from=rmlive

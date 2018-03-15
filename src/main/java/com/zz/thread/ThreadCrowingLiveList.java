@@ -1,6 +1,8 @@
-package com.zz.util;
+package com.zz.thread;
 
 import com.zz.model.LiveShow;
+import com.zz.util.ForHttpClient;
+import com.zz.util.ShowNumFormat;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -13,17 +15,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * @author dzk
  * Created by lethean on 2017/12/22.
  */
-public class CrowingLiveList {
+@Component
+public class ThreadCrowingLiveList {
 
     @Value("${liveShow.hu-ya.name}")
     private String HuYa;
@@ -56,8 +62,8 @@ public class CrowingLiveList {
      * @return
      * @throws Exception
      */
-
-    public List<LiveShow> crowingHuya() throws Exception {
+    @Async("getExecutor")
+    public Future<List<LiveShow>> crowingHuya() throws Exception {
 
         HttpClient client = ForHttpClient.getHttpClientInstance();
         //获取网站响应的html，这里调用了HTTPUtils类
@@ -65,38 +71,38 @@ public class CrowingLiveList {
         //抓取的数据
         List<LiveShow> liveShows = getHuYaData(html);
 
-        return liveShows;
+        return new AsyncResult<>(liveShows);
 
     }
 
-
-    public List<LiveShow> crowingLongZhu() throws Exception {
+    @Async("getExecutor")
+    public Future<List<LiveShow>> crowingLongZhu() throws Exception {
 
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, LongZhuUrl);
         List<LiveShow> liveShows = getLongZhuData(html);
-        return liveShows;
+        return new AsyncResult<>(liveShows);
 
 
     }
 
-
-    public List<LiveShow> crowingZanQi() throws Exception {
+    @Async("getExecutor")
+    public Future<List<LiveShow>> crowingZanQi() throws Exception {
 
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, ZanQiUrl);
         List<LiveShow> liveShows = getZanQiData(html);
-        return liveShows;
+        return new AsyncResult<>(liveShows);
 
     }
 
-
-    public List<LiveShow> crowingQuanMin() throws Exception {
+    @Async("getExecutor")
+    public Future<List<LiveShow>> crowingQuanMin() throws Exception {
 
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, QuanMinUrl);
         List<LiveShow> liveShows = getQuanMinData(html);
-        return liveShows;
+        return new AsyncResult<>(liveShows);
 
     }
 

@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,15 @@ import java.util.List;
  */
 public class CrowingLiveType {
 
+    @Value("${liveShow.zan-qi.url}")
+    private static String url;
+
+    @Value("${liveShow.zan-qi.name}")
+    private static String ZanQi;
+
     public static List<LiveType> getLiveTypes() throws Exception {
 
-        //初始化一个httpclient
-        HttpClient client = new DefaultHttpClient();
-        //我们要爬取的一个地址，这里可以从数据库中抽取数据，然后利用循环，可以爬取一个URL队列
-        String url = "http://www.zhanqi.tv/games";
+        HttpClient client = ForHttpClient.getHttpClientInstance();
         //获取网站响应的html
         String html = CrowingLiveList.getRawHtml(client, url);
         List<LiveType> liveTypes = getData(html);
@@ -45,7 +49,7 @@ public class CrowingLiveType {
             //对象的值
             liveType.setTypeName(type);
             liveType.setTypePic(picurl);
-            liveType.setMsgChannel(CrowingLiveList.ZanQi);
+            liveType.setMsgChannel(ZanQi);
             //将每一个对象的值，保存到List集合中
             data.add(liveType);
         }

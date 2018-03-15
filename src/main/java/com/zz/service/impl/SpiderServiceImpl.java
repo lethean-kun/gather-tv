@@ -6,6 +6,7 @@ import com.zz.mapper.TypeMapper;
 import com.zz.model.LiveShow;
 import com.zz.model.LiveType;
 import com.zz.service.SpiderService;
+import com.zz.thread.ThreadCrowingLiveList;
 import com.zz.util.CrowingLiveList;
 import com.zz.util.CrowingLiveType;
 import org.slf4j.Logger;
@@ -15,7 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * @author dzk
@@ -30,22 +33,54 @@ public class SpiderServiceImpl implements SpiderService {
     LiveShowMapper liveShowMapper;
 
     @Autowired
+    CrowingLiveList crowingLiveList;
+
+    @Autowired
+    ThreadCrowingLiveList threadCrowingLiveList;
+
+    @Autowired
     TypeMapper typeMapper;
 
     @Override
-    @Scheduled(fixedRate = 2500000)
+    @Scheduled(cron="0 0/10 * * * ? ")
     public int forInsertLive() throws Exception {
 
-        logger.info("250秒抓取一次数据");
+        logger.info("10分钟抓取一次数据");
+
 
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
-        List<LiveShow> hYList = CrowingLiveList.crowingHuya();
-        List<LiveShow> lZList = CrowingLiveList.crowingLongZhu();
-        List<LiveShow> ZQList = CrowingLiveList.crowingZanQi();
-        List<LiveShow> QMList = CrowingLiveList.crowingQuanMin();
+        Long s = System.currentTimeMillis();
+//        Future<List<LiveShow>> hYList = threadCrowingLiveList.crowingHuya();
+//        Future<List<LiveShow>> lZList = threadCrowingLiveList.crowingLongZhu();
+//        Future<List<LiveShow>> ZQList = threadCrowingLiveList.crowingZanQi();
+//        Future<List<LiveShow>> QMList = threadCrowingLiveList.crowingQuanMin();
+//        //等待所有的爬虫线程执行完成
+//        while (true) {
+//            boolean flag = true;
+//            if (!(hYList.isDone() && lZList.isDone() && ZQList.isDone() && QMList.isDone())) {
+//                flag = false;
+//            }
+//            if (flag) {
+//                logger.info("批处理所有的线程执行完成...");
+//                break;
+//            }
+//        }
+        List<LiveShow> hYList = crowingLiveList.crowingHuya();
+        List<LiveShow> lZList = crowingLiveList.crowingLongZhu();
+        List<LiveShow> ZQList = crowingLiveList.crowingZanQi();
+        List<LiveShow> QMList = crowingLiveList.crowingQuanMin();
+        Long e = System.currentTimeMillis();
+        logger.info("线程爬取数据耗时耗时" + (e - s));
+
 
         List<LiveShow> liveShows = new ArrayList<>();
+//        liveShows.addAll(hYList.get());
+//        liveShows.addAll(lZList.get());
+//        liveShows.addAll(ZQList.get());
+//        liveShows.addAll(QMList.get());
+
+
         liveShows.addAll(hYList);
         liveShows.addAll(lZList);
         liveShows.addAll(ZQList);
@@ -58,7 +93,8 @@ public class SpiderServiceImpl implements SpiderService {
         //质的提升 相对于循环快了100多倍
         liveShowMapper.newUpdateLive(liveShows);
         Long end = System.currentTimeMillis();
-        logger.info("耗时"+(end-star));
+        logger.info("耗时" + (end - star));
+        logger.info(liveShows.toString());
         return 0;
     }
 
@@ -66,7 +102,7 @@ public class SpiderServiceImpl implements SpiderService {
 //    @Scheduled(fixedRate = 50000000)
     public int forInsertType() throws Exception {
         List<LiveType> liveTypes = CrowingLiveType.getLiveTypes();
-        for (LiveType liveType:liveTypes) {
+        for (LiveType liveType : liveTypes) {
             typeMapper.insertType(liveType);
         }
         return 0;
