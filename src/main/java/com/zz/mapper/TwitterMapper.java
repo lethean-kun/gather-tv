@@ -34,14 +34,13 @@ public interface TwitterMapper {
                     select = "com.zz.mapper.UserMapper.selectUserById",
                     fetchType= FetchType.EAGER
             )),
+            @Result(column = "id",property = "id"),
             @Result(column = "id",property = "comments",many = @Many(
                     select = "com.zz.mapper.CommentMapper.selectCommentsByTwitter",
                     fetchType= FetchType.EAGER
             ))
 
     })
-
-
     List<Twitter> allTwitter();
 
     /**

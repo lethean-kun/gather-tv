@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -56,6 +58,7 @@ public class ThreadCrowingLiveList {
     private String LongZhuUrl;
 
 
+    private List<LiveShow> allLiveShow = Collections.synchronizedList(new LinkedList<LiveShow>());
     /**
      * 先简单写 实现功能 之后优化 相关写入配置文件
      *
@@ -69,7 +72,10 @@ public class ThreadCrowingLiveList {
         //获取网站响应的html，这里调用了HTTPUtils类
         String html = getRawHtml(client, HuYaUrl);
         //抓取的数据
+
         List<LiveShow> liveShows = getHuYaData(html);
+
+        allLiveShow.addAll(liveShows);
 
         return new AsyncResult<>(liveShows);
 
@@ -81,6 +87,9 @@ public class ThreadCrowingLiveList {
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, LongZhuUrl);
         List<LiveShow> liveShows = getLongZhuData(html);
+
+        allLiveShow.addAll(liveShows);
+
         return new AsyncResult<>(liveShows);
 
 
@@ -92,6 +101,7 @@ public class ThreadCrowingLiveList {
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, ZanQiUrl);
         List<LiveShow> liveShows = getZanQiData(html);
+        allLiveShow.addAll(liveShows);
         return new AsyncResult<>(liveShows);
 
     }
@@ -102,6 +112,7 @@ public class ThreadCrowingLiveList {
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, QuanMinUrl);
         List<LiveShow> liveShows = getQuanMinData(html);
+        allLiveShow.addAll(liveShows);
         return new AsyncResult<>(liveShows);
 
     }
@@ -265,5 +276,13 @@ public class ThreadCrowingLiveList {
         }
         //返回数据
         return data;
+    }
+
+    public List<LiveShow> getAllLiveShow() {
+        return allLiveShow;
+    }
+
+    public void setAllLiveShow(List<LiveShow> allLiveShow) {
+        this.allLiveShow = allLiveShow;
     }
 }

@@ -37,4 +37,12 @@ public interface CommentMapper {
 
     })
     List<Comment> selectCommentsByTwitter(int twitterId);
+
+    /**
+     * 评论
+     * @param comment
+     * @return
+     */
+    @Insert("INSERT INTO comment(user_id,twitter_id,content,comment_date) values(#{userId},#{twitterId},#{content},now())")
+    int insertComment(Comment comment);
 }

@@ -3,6 +3,7 @@ package com.zz.service.impl;
 import com.zz.mapper.CommentMapper;
 import com.zz.mapper.HitRecordMapper;
 import com.zz.mapper.TwitterMapper;
+import com.zz.model.Comment;
 import com.zz.model.Twitter;
 import com.zz.service.TwitterService;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,10 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public int publishTwitter(Twitter twitter) {
         return twitterMapper.insertTwitter(twitter);
+    }
+
+    @Override
+    public int insertCommet(Comment comment) {
+        return 0;
     }
 }

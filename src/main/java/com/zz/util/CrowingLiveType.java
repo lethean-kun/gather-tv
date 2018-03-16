@@ -1,6 +1,7 @@
 package com.zz.util;
 
 import com.zz.model.LiveType;
+import com.zz.thread.ThreadCrowingLiveList;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
@@ -28,7 +29,7 @@ public class CrowingLiveType {
 
         HttpClient client = ForHttpClient.getHttpClientInstance();
         //获取网站响应的html
-        String html = CrowingLiveList.getRawHtml(client, url);
+        String html = ThreadCrowingLiveList.getRawHtml(client, url);
         List<LiveType> liveTypes = getData(html);
 
         return liveTypes;

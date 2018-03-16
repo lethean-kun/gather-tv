@@ -1,5 +1,6 @@
 package com.zz.service;
 
+import com.zz.model.Comment;
 import com.zz.model.Twitter;
 
 import java.util.List;
@@ -29,6 +30,13 @@ public interface TwitterService {
      * @return
      */
     int publishTwitter(Twitter twitter);
+
+    /**
+     * 评论
+     * @param comment
+     * @return
+     */
+    int insertCommet(Comment comment);
 
 
 }
