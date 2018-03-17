@@ -74,7 +74,7 @@ public class SpiderServiceImpl implements SpiderService {
         //质的提升 相对于循环快了100多倍
         liveShowMapper.newUpdateLive(liveShows);
         Long end = System.currentTimeMillis();
-        logger.info("耗时" + (end - star));
+        logger.info("批量insert耗时" + (end - star));
         logger.info("共爬到数据{},详细信息{}", liveShows.size(), liveShows.toString());
         return 0;
     }

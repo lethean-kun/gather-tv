@@ -57,6 +57,9 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public int insertCommet(Comment comment) {
-        return 0;
+        if(comment == null){
+            return 0;
+        }
+        return commentMapper.insertComment(comment);
     }
 }

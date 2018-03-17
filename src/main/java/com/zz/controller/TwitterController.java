@@ -2,10 +2,7 @@ package com.zz.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zz.model.Parameter;
-import com.zz.model.Result;
-import com.zz.model.Twitter;
-import com.zz.model.User;
+import com.zz.model.*;
 import com.zz.service.TwitterService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -125,5 +122,15 @@ public class TwitterController {
         json.put("data", list);
         logger.info(json.toString());
         return json;
+    }
+    @RequestMapping(value = "comment")
+    @ResponseBody
+    public Result comment(Comment comment){
+        Result result = new Result();
+
+        twitterService.insertCommet(comment);
+
+
+        return result;
     }
 }

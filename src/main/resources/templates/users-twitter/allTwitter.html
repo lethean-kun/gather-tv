@@ -133,6 +133,7 @@
         layer.load();
         if ("" == user_id) {
             login();
+            layer.closeAll('loading');
             return;
         }
         $.post("/hitIt", {"isLike": status, "userId": user_id, "twitterId": twitter_id}, function (result) {
