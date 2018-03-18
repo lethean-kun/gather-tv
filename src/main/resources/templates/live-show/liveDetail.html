@@ -205,6 +205,7 @@
         var topic = $('#topic_pub').val();
         yunba.publish({'topic': topic, 'msg': message}, function (success, msg) {
             if (success) {
+                $('#message').val("");
                 console.log(message);
             } else {
                 alert(msg);

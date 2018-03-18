@@ -37,7 +37,7 @@ public class SpiderServiceImpl implements SpiderService {
     TypeMapper typeMapper;
 
     @Override
-    @Scheduled(cron = "0/40 * * * * ? ")
+    @Scheduled(cron = "0 0/10 * * * ? ")
     public int forInsertLive() throws Exception {
 
         logger.info("10分钟抓取一次数据");

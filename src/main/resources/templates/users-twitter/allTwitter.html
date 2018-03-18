@@ -76,12 +76,12 @@
                             <br/>
                         </th:block>
                         <br/>
-                        <input id="message" type="text" name="title" lay-verify="title" autocomplete="off"
-                               placeholder="快来评论吧~" class="layui-input"/>
+                        <input type="text" name="title" lay-verify="title" autocomplete="off"
+                               placeholder="快来评论吧~" class="message layui-input"/>
                         <div style="float: right">
-                            <button class="e-button layui-btn layui-btn-small layui-btn-normal layui-btn-radius"
-                                    value="Subscribe"
-                                    onclick="mqtt_publish();">发送
+                            <span class="twitter_id" style="display: none" th:text="${twitter.id}"></span>
+                            <button class="comment-b e-button layui-btn layui-btn-small layui-btn-normal layui-btn-radius"
+                                    value="Subscribe">评论
                             </button>
                         </div>
                     </div>
@@ -125,6 +125,24 @@
 <script>
     var user_id = $("#user-id").text();
 
+    // 评论
+    $(".comment-b").click(function () {
+
+        var twitterId = $(this).parent().find(".twitter_id").text();
+        var comment = $(this).parent().parent().find(".message").text();
+        console.log(comment);
+        if ("" == user_id) {
+            login();
+            return;
+        }
+        $.post("/comment",{"userId":user_id,"twitterId":twitterId,"content":comment},function (result) {
+            if(result.status == 0){
+
+            }
+        })
+    })
+
+    //    点赞
     $(".hit").click(function () {
         var twitter_id = $(this).find(".twitter-id").text();
         var status = $(this).find(".status").text();
@@ -154,6 +172,7 @@
         '            <button id="publishTwitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>' +
         '        </div>' +
         '    </div>';
+    // 发布动态
     $("#publish").click(function () {
         if ("" == user_id) {
             login();
