@@ -14,6 +14,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -32,6 +34,8 @@ import java.util.concurrent.Future;
  */
 @Component
 public class ThreadCrowingLiveList {
+
+    private final Logger logger = LoggerFactory.getLogger(ThreadCrowingLiveList.class);
 
     @Value("${liveShow.hu-ya.name}")
     private String HuYa;
@@ -72,11 +76,9 @@ public class ThreadCrowingLiveList {
         //获取网站响应的html，这里调用了HTTPUtils类
         String html = getRawHtml(client, HuYaUrl);
         //抓取的数据
-
         List<LiveShow> liveShows = getHuYaData(html);
-
         allLiveShow.addAll(liveShows);
-
+        logger.info("爬取完毕-HuYa");
         return new AsyncResult<>(liveShows);
 
     }
@@ -87,8 +89,8 @@ public class ThreadCrowingLiveList {
         HttpClient client = ForHttpClient.getHttpClientInstance();
         String html = getRawHtml(client, LongZhuUrl);
         List<LiveShow> liveShows = getLongZhuData(html);
-
         allLiveShow.addAll(liveShows);
+        logger.info("爬取完毕-LongZhu");
 
         return new AsyncResult<>(liveShows);
 
@@ -102,6 +104,8 @@ public class ThreadCrowingLiveList {
         String html = getRawHtml(client, ZanQiUrl);
         List<LiveShow> liveShows = getZanQiData(html);
         allLiveShow.addAll(liveShows);
+        logger.info("爬取完毕-ZanQi");
+
         return new AsyncResult<>(liveShows);
 
     }
@@ -113,6 +117,8 @@ public class ThreadCrowingLiveList {
         String html = getRawHtml(client, QuanMinUrl);
         List<LiveShow> liveShows = getQuanMinData(html);
         allLiveShow.addAll(liveShows);
+        logger.info("爬取完毕-QuanMin");
+
         return new AsyncResult<>(liveShows);
 
     }

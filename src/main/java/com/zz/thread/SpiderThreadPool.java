@@ -26,7 +26,7 @@ public class SpiderThreadPool {
         executor.setCorePoolSize(threadPoolConfig.getCorePoolSize());
         executor.setMaxPoolSize(threadPoolConfig.getMaxPoolSize());
         executor.setQueueCapacity(threadPoolConfig.getQueueCapacity());
-        executor.setThreadNamePrefix("AUTO-GRAB---");
+        executor.setThreadNamePrefix("Spider-poll--");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setKeepAliveSeconds(threadPoolConfig.getKeepAlive());
         executor.initialize();
