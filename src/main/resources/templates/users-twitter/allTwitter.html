@@ -21,7 +21,7 @@
                 <blockquote class="twitter layui-elem-quote layui-quote-nm">
                     <span class="twitter_id" style="display: none" th:text="${twitter.id}"></span>
                     <div>
-                        <img th:src="'upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
+                        <img th:src="'/upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
                         <font style="color:#23ade5">
                             <th:block th:text="${twitter.user.username}"></th:block>
                         </font>
@@ -94,7 +94,7 @@
             <div style="position:fixed;">
                 <div style="margin-left: 150px;margin-top: 140%">
                     <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>
-                    <button class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
+                    <button id="my-twitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
                 </div>
             </div>
         </div>
@@ -195,6 +195,13 @@
             $("#feeling").val(editor.txt.html());
             $("#form").submit();
         })
+    })
+    $("#my-twitter").click(function () {
+        if ("" == user_id) {
+            login();
+            return;
+        }
+        window.location.href="/toUserTwitter/"+user_id;
     })
     $(".reply").click(function () {
         $(this).parent().next().slideToggle("fast");

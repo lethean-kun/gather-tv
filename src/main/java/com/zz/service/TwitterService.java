@@ -18,6 +18,13 @@ public interface TwitterService {
     List<Twitter> getAllTwitter();
 
     /**
+     * 获取用户动态
+     * @param userId
+     * @return
+     */
+    List<Twitter> getUserTwitter(int userId);
+
+    /**
      * 查询单个动态
      * @param twitterId
      * @return

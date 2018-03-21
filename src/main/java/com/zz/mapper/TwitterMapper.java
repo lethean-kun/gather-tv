@@ -60,6 +60,28 @@ public interface TwitterMapper {
     Twitter getTwitter(int twitterId);
 
     /**
+     * 根据用户id查询用户发表的动态
+     * @param userId
+     * @return
+     */
+    @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
+            "FROM user_twitter WHERE user_id=#{userId} order by creat_date desc")
+    @Results({
+            @Result(column = "user_id",property = "userId"),
+            @Result(column = "user_id",property = "user",one = @One(
+                    select = "com.zz.mapper.UserMapper.selectUserById",
+                    fetchType= FetchType.EAGER
+            )),
+            @Result(column = "id",property = "id"),
+            @Result(column = "id",property = "comments",many = @Many(
+                    select = "com.zz.mapper.CommentMapper.selectCommentsByTwitter",
+                    fetchType= FetchType.EAGER
+            ))
+
+    })
+    List<Twitter> userTwitters(int userId);
+
+    /**
      * 点赞
      * @return
      */

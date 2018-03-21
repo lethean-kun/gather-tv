@@ -1,18 +1,18 @@
 package com.zz.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zz.model.*;
+import com.zz.model.Comment;
+import com.zz.model.Parameter;
+import com.zz.model.Result;
+import com.zz.model.Twitter;
 import com.zz.service.TwitterService;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.zz.util.PicShowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,13 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author dzk
- *         Created by lethean on 2018/3/2.
+ * Created by lethean on 2018/3/2.
  */
 @Controller
 public class TwitterController {
@@ -50,24 +48,17 @@ public class TwitterController {
     public String toAllTwitter(HttpServletRequest request,
                                Parameter parameter) {
         //所有用户动态
-        List<Twitter> twitters = twitterService.getAllTwitter();
-        //筛选出三张图片下方显示
-        for(Twitter twitter:twitters){
-            List<String> imagesList= new ArrayList<>();
-            String blogInfo=twitter.getFeeling();
-            Document doc= Jsoup.parse(blogInfo);
-            Elements jpgs=doc.select("img[src]"); //　查找图片
-            for(int i=0;i<jpgs.size();i++){
-                Element jpg=jpgs.get(i);
-                logger.info(jpg.toString());
-                String temp = jpg.toString();
-                imagesList.add(temp);
-                if(i==2){
-                    break;
-                }
-            }
-            twitter.setImagesList(imagesList);
-        }
+        List<Twitter> twitters = PicShowUtil.forThreePic(twitterService.getAllTwitter());
+        request.setAttribute("twitters", twitters);
+
+        return "users-twitter/allTwitter";
+    }
+
+    @RequestMapping("toUserTwitter/{userId}")
+    public String toUserTwitter(HttpServletRequest request,
+                               @PathVariable int userId) {
+        //用户的动态
+        List<Twitter> twitters = PicShowUtil.forThreePic(twitterService.getUserTwitter(userId));
         request.setAttribute("twitters", twitters);
 
         return "users-twitter/allTwitter";
@@ -101,8 +92,8 @@ public class TwitterController {
         // 文件路径
         File path = new File(ResourceUtils.getURL("classpath:").getPath());
         //如果上传目录为/static/images/upload/，则可以如下获取：
-//                    File upload = new File(path.getAbsolutePath(),webUploadPath);
-//                    logger.info("upload url:"+upload.getAbsolutePath());
+        //File upload = new File(path.getAbsolutePath(),webUploadPath);
+        //logger.info("upload url:"+upload.getAbsolutePath());
         String filePath = path.getAbsolutePath() + picUploadPath;
         logger.info("上传图片路径" + filePath);
 
@@ -123,9 +114,10 @@ public class TwitterController {
         logger.info(json.toString());
         return json;
     }
+
     @RequestMapping(value = "comment")
     @ResponseBody
-    public Result comment(Comment comment){
+    public Result comment(Comment comment) {
         Result result = new Result();
 
         twitterService.insertCommet(comment);

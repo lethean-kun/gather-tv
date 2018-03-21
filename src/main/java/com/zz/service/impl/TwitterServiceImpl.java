@@ -32,12 +32,19 @@ public class TwitterServiceImpl implements TwitterService {
     public List<Twitter> getAllTwitter() {
 
         List<Twitter> twitters = twitterMapper.allTwitter();
-        for (Twitter twitter:twitters){
+        for (Twitter twitter : twitters) {
             twitter.setLikeHit(hitRecordMapper.getLikeHit(twitter.getId()));
             twitter.setDislikeHit(hitRecordMapper.getDisLikeHit(twitter.getId()));
             twitter.setReplyHit(commentMapper.getCommentCount(twitter.getId()));
         }
         return twitters;
+    }
+
+    @Override
+    public List<Twitter> getUserTwitter(int userId) {
+
+        return twitterMapper.userTwitters(userId);
+
     }
 
     @Override
@@ -57,7 +64,7 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public int insertCommet(Comment comment) {
-        if(comment == null){
+        if (comment == null) {
             return 0;
         }
         return commentMapper.insertComment(comment);
