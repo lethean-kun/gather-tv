@@ -21,10 +21,12 @@
                 <blockquote class="twitter layui-elem-quote layui-quote-nm">
                     <span class="twitter_id" style="display: none" th:text="${twitter.id}"></span>
                     <div>
-                        <img th:src="'/upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
-                        <font style="color:#23ade5">
-                            <th:block th:text="${twitter.user.username}"></th:block>
-                        </font>
+                        <a th:href="'/toOtherUserInfo/'+${twitter.user.id}">
+                            <img th:src="'/upLoad/head-pic/'+${twitter.user.headPic}" class="layui-nav-img"/>
+                            <font style="color:#23ade5">
+                                <th:block th:text="${twitter.user.username}"></th:block>
+                            </font>
+                        </a>
                     </div>
                     <div>
                         &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.creatData}">2017年11月5日</span>
@@ -94,7 +96,8 @@
             <div style="position:fixed;">
                 <div style="margin-left: 150px;margin-top: 140%">
                     <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>
-                    <button id="my-twitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态</button>
+                    <button id="my-twitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态
+                    </button>
                 </div>
             </div>
         </div>
@@ -135,8 +138,8 @@
             login();
             return;
         }
-        $.post("/comment",{"userId":user_id,"twitterId":twitterId,"content":comment},function (result) {
-            if(result.status == 0){
+        $.post("/comment", {"userId": user_id, "twitterId": twitterId, "content": comment}, function (result) {
+            if (result.status == 0) {
 
             }
         })
@@ -201,7 +204,7 @@
             login();
             return;
         }
-        window.location.href="/toUserTwitter/"+user_id;
+        window.location.href = "/toUserTwitter/" + user_id;
     })
     $(".reply").click(function () {
         $(this).parent().next().slideToggle("fast");

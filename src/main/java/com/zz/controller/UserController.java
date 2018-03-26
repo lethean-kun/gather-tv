@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -112,6 +113,16 @@ public class UserController {
         return "users-twitter/userIngo";
     }
 
+    @RequestMapping("toOtherUserInfo/{userId}")
+    public String toOtherUserInfo(HttpServletRequest request,
+                                  @PathVariable  int userId) {
+
+        User user = userService.getUserById(userId);
+        request.setAttribute("user",user);
+
+        return "users-twitter/otherUserIngo";
+    }
+
     /**
      * 基于用户标识的头像上传
      *
@@ -170,9 +181,9 @@ public class UserController {
                     user.setHeadPic(newFileName);
                     userService.updateUserHeadPic(user);
                     //刷新session
-                    User user1 = (User)request.getSession().getAttribute("user");
+                    User user1 = (User) request.getSession().getAttribute("user");
                     user1.setHeadPic(newFileName);
-                    request.getSession().setAttribute("user",user1);
+                    request.getSession().setAttribute("user", user1);
 
 
                     Map<String, Object> resultMap = new HashMap<>();

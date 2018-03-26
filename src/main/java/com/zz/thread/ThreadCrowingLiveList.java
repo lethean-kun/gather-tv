@@ -78,7 +78,7 @@ public class ThreadCrowingLiveList {
         //抓取的数据
         List<LiveShow> liveShows = getHuYaData(html);
         allLiveShow.addAll(liveShows);
-        logger.info("爬取完毕-HuYa");
+        logger.info("爬取完毕-HuYa:"+liveShows.size());
         return new AsyncResult<>(liveShows);
 
     }
@@ -90,7 +90,7 @@ public class ThreadCrowingLiveList {
         String html = getRawHtml(client, LongZhuUrl);
         List<LiveShow> liveShows = getLongZhuData(html);
         allLiveShow.addAll(liveShows);
-        logger.info("爬取完毕-LongZhu");
+        logger.info("爬取完毕-LongZhu"+liveShows.size());
 
         return new AsyncResult<>(liveShows);
 
@@ -104,7 +104,7 @@ public class ThreadCrowingLiveList {
         String html = getRawHtml(client, ZanQiUrl);
         List<LiveShow> liveShows = getZanQiData(html);
         allLiveShow.addAll(liveShows);
-        logger.info("爬取完毕-ZanQi");
+        logger.info("爬取完毕-ZanQi"+liveShows.size());
 
         return new AsyncResult<>(liveShows);
 
@@ -117,7 +117,7 @@ public class ThreadCrowingLiveList {
         String html = getRawHtml(client, QuanMinUrl);
         List<LiveShow> liveShows = getQuanMinData(html);
         allLiveShow.addAll(liveShows);
-        logger.info("爬取完毕-QuanMin");
+        logger.info("爬取完毕-QuanMin"+liveShows.size());
 
         return new AsyncResult<>(liveShows);
 

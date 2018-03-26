@@ -45,14 +45,16 @@ public class SpiderServiceImpl implements SpiderService {
 
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
+        threadCrowingLiveList.getAllLiveShow().clear();
         Long s = System.currentTimeMillis();
         Future<List<LiveShow>> hYList = threadCrowingLiveList.crowingHuya();
         Future<List<LiveShow>> lZList = threadCrowingLiveList.crowingLongZhu();
         Future<List<LiveShow>> ZQList = threadCrowingLiveList.crowingZanQi();
         Future<List<LiveShow>> QMList = threadCrowingLiveList.crowingQuanMin();
         //等待所有的爬虫线程执行完成
+        boolean flag;
         while (true) {
-            boolean flag = true;
+            flag = true;
             if (!(hYList.isDone() && lZList.isDone() && ZQList.isDone() && QMList.isDone())) {
                 flag = false;
             }

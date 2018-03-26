@@ -21,16 +21,15 @@
                     <form class="layui-form layui-form-pane" style="text-align:center" action="">
                         <div class="layui-form-item" style="margin-top: 20px">
                             <div class="layui-upload">
-                                <button type="button" class="e-button layui-btn" id="test1">上传头像</button>
                                 <div class="layui-upload-list">
-                                    <img class="layui-upload-img" th:src="'/upLoad/head-pic/'+${session.user.headPic}" height="100px" width="100px" id="demo1" />
+                                    <img class="layui-upload-img" th:src="'/upLoad/head-pic/'+${user.headPic}" height="100px" width="100px" id="demo1" />
                                     <p id="demoText" ></p>
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <label class="layui-form-label">手机号码</label>
                                 <div class="layui-input-inline">
-                                    <input id="phone" type="tel" name="phone" th:placeholder="${session.user.phone}"
+                                    <input id="phone" type="tel" name="phone" th:placeholder="${user.phone}"
                                            lay-verify="required|phone" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
@@ -40,7 +39,7 @@
                                 <label class="layui-form-label">昵称</label>
                                 <div class="layui-input-inline">
                                     <input id="username" type="text" name="username" lay-verify="required"
-                                           th:placeholder="${session.user.username}" autocomplete="off" class="layui-input"/>
+                                           th:placeholder="${user.username}" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                         </div>
@@ -48,16 +47,14 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">邮箱</label>
                                 <div class="layui-input-inline">
-                                    <input id="email" type="text" name="email" lay-verify="email" th:placeholder="${session.user.email}"
+                                    <input id="email" type="text" name="email" lay-verify="email" th:placeholder="${user.email}"
                                            autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn layui-btn-normal layui-btn-radius"
-                                        style="background-color: #23ade5" lay-submit="" lay-filter="register">用户动态
-                                </button>
+
                             </div>
                         </div>
                     </form>

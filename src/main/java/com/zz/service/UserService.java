@@ -37,6 +37,12 @@ public interface UserService {
     User togetUser(User user);
 
     /**
+     * 获取用户通过id
+     * @param useriId
+     * @return
+     */
+    User getUserById(int useriId);
+    /**
      * 更新用户头像
      * @return
      */
