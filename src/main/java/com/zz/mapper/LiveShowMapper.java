@@ -9,26 +9,44 @@ import java.util.List;
 
 /**
  * @author dzk
- * Created by lethean on 2017/12/22.
+ *         Created by lethean on 2017/12/22.
  */
 @Mapper
 public interface LiveShowMapper {
 
     /**
      * 获取所有直播列表
+     *
      * @return
      */
     @Select({"<script>",
-                "SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
-                "FROM live_show where is_show=1",
-                "<when test='type!=null'>",
-                    "and type=#{type}",
-                "</when>",
+            "SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
+                    "FROM live_show where is_show=1",
+            "<when test='type!=null'>",
+            "and type=#{type}",
+            "</when>",
+            "ORDER BY show_num desc limit 20",
             "</script>"})
     List<LiveShow> getAllLive(Parameter parameter);
 
     /**
+     * 分页获取所有直播列表
+     *
+     * @return
+     */
+    @Select({"<script>",
+            "SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
+                    "FROM live_show where is_show=1",
+            "<when test='type!=null'>",
+            "and type=#{type}",
+            "</when>",
+            "ORDER BY show_num desc",
+            "</script>"})
+    List<LiveShow> getAllLiveByPage(Parameter parameter);
+
+    /**
      * 获取直播详情
+     *
      * @return
      */
     @Select("SELECT id, person_name as personName, pic_url as picUrl, type,live_title as liveTitle,show_num as showNum,msg_channel as msgChannel,live_url as liveUrl " +
@@ -36,7 +54,8 @@ public interface LiveShowMapper {
     LiveShow getLiveDetail(int id);
 
     /**
-     *爬取数据存入数据库 名称和平台相同则更新
+     * 爬取数据存入数据库 名称和平台相同则更新
+     *
      * @param liveShow
      * @return
      */
@@ -46,7 +65,8 @@ public interface LiveShowMapper {
     int updateLive(LiveShow liveShow);
 
     /**
-     *爬取数据存入数据库 名称和平台相同则更新
+     * 爬取数据存入数据库 名称和平台相同则更新
+     *
      * @param liveShows
      * @return
      */
@@ -55,6 +75,7 @@ public interface LiveShowMapper {
 
     /**
      * 每次抓取之前 类似心跳吧所有直播状态改为0（未播）
+     *
      * @return
      */
     @Update("update live_show set is_show=0")

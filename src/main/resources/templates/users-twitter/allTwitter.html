@@ -68,15 +68,18 @@
 
                     <div class="comment" style="clear: both;display: none">
                         <br/>
-                        <th:block th:each="comment:${twitter.comments}">
-                            &#12288;&#12288;<img th:src="'upLoad/head-pic/'+${comment.user.headPic}"
-                                                 class="layui-nav-img"/>
-                            <font style="color:#23ade5">
-                                <th:block th:text="${comment.user.username}"></th:block>
-                            </font>：
-                            <th:block th:text="${comment.content}"></th:block>
-                            <br/>
-                        </th:block>
+                        <ul class="user-comment">
+
+                            <li th:each="comment:${twitter.comments}">
+                                &#12288;&#12288;<img th:src="'upLoad/head-pic/'+${comment.user.headPic}"
+                                                     class="layui-nav-img"/>
+                                <font style="color:#23ade5">
+                                    <th:block th:text="${comment.user.username}"></th:block>
+                                </font>：
+                                <th:block th:text="${comment.content}"></th:block>
+                            </li>
+
+                        </ul>
                         <br/>
                         <input type="text" name="title" lay-verify="title" autocomplete="off"
                                placeholder="快来评论吧~" class="message layui-input"/>
@@ -110,6 +113,7 @@
 
 </div>
 
+
 </body>
 <script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
 <script>
@@ -127,20 +131,25 @@
 </script>
 <script>
     var user_id = $("#user-id").text();
-
+    var user_name = $("#session-name").text();
     // 评论
     $(".comment-b").click(function () {
 
         var twitterId = $(this).parent().find(".twitter_id").text();
-        var comment = $(this).parent().parent().find(".message").text();
+        var comment = $(this).parent().parent().find(".message").val();
         console.log(comment);
         if ("" == user_id) {
             login();
             return;
         }
+        var mmp = $(this)
         $.post("/comment", {"userId": user_id, "twitterId": twitterId, "content": comment}, function (result) {
             if (result.status == 0) {
-
+                mmp.parent().parent().find(".message").val("");
+                mmp.parent().parent().find(".user-comment").append('<li>' +
+                    ' <font style="color:#23ade5">' + user_name +
+                    ' </font>：' + comment +
+                    ' </li>');
             }
         })
     })
@@ -157,10 +166,10 @@
             layer.closeAll('loading');
             return;
         }
+        var mmp = $(this);
         $.post("/hitIt", {"isLike": status, "userId": user_id, "twitterId": twitter_id}, function (result) {
-            console.log($(">span:nth-child(3)", this).find(".like").text());
-            $(">span:nth-child(3)", this).find(".like").text(result.data.likeHit);
-            $(">span:nth-child(3)", this).find(".dislike").text(result.data.dislikeHit);
+            mmp.parent().find("a:last").find("span:last").text(result.data.dislikeHit);
+            mmp.parent().find("a:eq(1)").find("span:last").text(result.data.likeHit);
             layer.closeAll('loading');
         })
 

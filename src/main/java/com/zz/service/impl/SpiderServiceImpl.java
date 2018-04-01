@@ -8,6 +8,7 @@ import com.zz.model.LiveType;
 import com.zz.service.SpiderService;
 import com.zz.thread.ThreadCrowingLiveList;
 import com.zz.util.CrowingLiveType;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 /**
@@ -42,21 +45,28 @@ public class SpiderServiceImpl implements SpiderService {
 
         logger.info("10分钟抓取一次数据");
 
-
+        Set<Future<List<LiveShow>>> futures = Sets.newHashSet();
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
         threadCrowingLiveList.getAllLiveShow().clear();
         Long s = System.currentTimeMillis();
         Future<List<LiveShow>> hYList = threadCrowingLiveList.crowingHuya();
+        futures.add(hYList);
         Future<List<LiveShow>> lZList = threadCrowingLiveList.crowingLongZhu();
+        futures.add(lZList);
         Future<List<LiveShow>> ZQList = threadCrowingLiveList.crowingZanQi();
+        futures.add(ZQList);
         Future<List<LiveShow>> QMList = threadCrowingLiveList.crowingQuanMin();
+        futures.add(QMList);
         //等待所有的爬虫线程执行完成
         boolean flag;
         while (true) {
             flag = true;
-            if (!(hYList.isDone() && lZList.isDone() && ZQList.isDone() && QMList.isDone())) {
-                flag = false;
+            Iterator<Future<List<LiveShow>>> isDoneIterator = futures.iterator();
+            while (isDoneIterator.hasNext()){
+                if(!isDoneIterator.next().isDone()){
+                    flag = false;
+                }
             }
             if (flag) {
                 logger.info("批处理所有的线程执行完成...");

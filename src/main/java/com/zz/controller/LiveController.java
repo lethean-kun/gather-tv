@@ -3,6 +3,7 @@ package com.zz.controller;
 import com.zz.model.LiveShow;
 import com.zz.model.LiveType;
 import com.zz.model.Parameter;
+import com.zz.model.Result;
 import com.zz.service.LiveShowService;
 import com.zz.service.LiveTypeService;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import java.util.List;
 
 /**
  * @author dzk
- * Created by lethean on 2017/12/21.
+ *         Created by lethean on 2017/12/21.
  */
 @Controller
 public class LiveController {
@@ -33,31 +34,32 @@ public class LiveController {
 
 
     @RequestMapping("index")
-    public String toIndex(){
+    public String toIndex() {
 
         return "index";
     }
 
     @RequestMapping("toLiveType")
-    public String toLiveType(HttpServletRequest request){
+    public String toLiveType(HttpServletRequest request) {
         List<LiveType> liveTypes = liveTypeService.getAllType();
-        request.setAttribute("liveTypes",liveTypes);
+        request.setAttribute("liveTypes", liveTypes);
 
         return "live-show/liveType";
     }
 
     @ResponseBody
     @RequestMapping("toCateType")
-    public List<LiveType> toCateType(){
+    public List<LiveType> toCateType() {
 
         List<LiveType> liveTypes = liveTypeService.getCateType();
 
         return liveTypes;
     }
+
     //先前写法 已不用
     @ResponseBody
     @RequestMapping("getLiveList")
-    public List<LiveShow> getLiveList(Parameter parameter){
+    public List<LiveShow> getLiveList(Parameter parameter) {
 
         List list = liveShowService.getLiveList(parameter);
 
@@ -66,18 +68,32 @@ public class LiveController {
 
     @RequestMapping("toLiveList")
     public String toLiveList(HttpServletRequest request,
-                             Parameter parameter){
+                             Parameter parameter) {
         List list = liveShowService.getLiveList(parameter);
-        request.setAttribute("liveList",list);
+        request.setAttribute("liveList", list);
 
         return "live-show/allLive";
     }
 
+    @ResponseBody
+    @RequestMapping("toLiveListByPg/{page}")
+    public Result toLiveListByPg(HttpServletRequest request,
+                                 @PathVariable int page,
+                                 Parameter parameter) {
+        Result result = new Result();
+        parameter.setPage(page);
+        parameter.setPageSize(20);
+        List list = liveShowService.getLiveListByPage(parameter);
+        request.setAttribute("liveList", list);
+        result.setData(list);
+        return result;
+    }
+
     @RequestMapping("liveDetail/{id}")
     public String liveDetail(@PathVariable("id") int id,
-                             HttpServletRequest request){
+                             HttpServletRequest request) {
         LiveShow liveShow = liveShowService.getLiveDetail(id);
-        request.setAttribute("liveShow",liveShow);
+        request.setAttribute("liveShow", liveShow);
         return "live-show/liveDetail";
     }
 
