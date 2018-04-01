@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 
 /**
  * @author dzk
- * Created by lethean on 2017/12/22.
+ *         Created by lethean on 2017/12/22.
  */
 @Component
 public class SpiderServiceImpl implements SpiderService {
@@ -63,8 +63,8 @@ public class SpiderServiceImpl implements SpiderService {
         while (true) {
             flag = true;
             Iterator<Future<List<LiveShow>>> isDoneIterator = futures.iterator();
-            while (isDoneIterator.hasNext()){
-                if(!isDoneIterator.next().isDone()){
+            while (isDoneIterator.hasNext()) {
+                if (!isDoneIterator.next().isDone()) {
                     flag = false;
                 }
             }
