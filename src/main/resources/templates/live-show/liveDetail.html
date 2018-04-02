@@ -42,10 +42,10 @@
     <script type="text/javascript" src="/yunba-2.1.2/examples/javascripts/jquery-1.10.2.min.js"></script>
 
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body" style="height: 100%">
 <div class="layui-layout layui-layout-admin">
     <th:block th:include="common/header::body"/>
-    <div class="layui-body" style="background-color: #e4e4e4 ">
+    <div class="layui-body" style="background-color: #e4e4e4;height: 100%">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <div class="layui-form">
@@ -68,17 +68,17 @@
                 </blockquote>
             </div>
             <hr class="layui-bg-blue"/>
-            <div th:if="${liveShow.status} == 1">
+            <th:block th:if="${liveShow.status} == 1">
                 <div class="room-video">
                     <embed width="100%" height="100%" wmode="opaque" allowfullscreen="true" allowscriptaccess="always"
                            th:src="${liveShow.liveUrl}"/>
                 </div>
-            </div>
-            <div th:if="${liveShow.status} == 2">
+            </th:block>
+            <th:block th:if="${liveShow.status} == 2">
                 <div class="room-video">
                     <iframe frameborder="0" th:src="${liveShow.liveUrl}" style="width:100%;height:100%;"></iframe>
                 </div>
-            </div>
+            </th:block>
             <div class="chat-list">
                 <div style="margin-top:30px;margin-left:15px;width:100%;height:85%;">
                     <div class="msg_list" style="Overflow-y:auto;line-height: 30px;height:90%;width: 95%">
