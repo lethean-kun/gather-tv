@@ -1,5 +1,5 @@
 .show{
-    width: 280px;
+    width: 290px;
     height: 220px;
     background:white;
 }
@@ -29,13 +29,13 @@
     background-color: #23ade5;
 }
 .room-video{
-    width: 70%;
-    height: 530px;
+    width: 75%;
+    height: 40vw;
     float: left
 }
 .chat-list{
-    width: 25%;
-    height: 530px;
+    width: 20%;
+    height: 40vw;
     float: left;
     background-color: white;
     margin-left: 20px
@@ -44,7 +44,7 @@
     margin-left: 20px;
     margin-top:20px;
     float: left;
-    width: 180px;
-    height: 290px;
+    width: 175px;
+    height: 270px;
 
 }
