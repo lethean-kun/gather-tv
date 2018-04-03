@@ -80,7 +80,7 @@ CREATE TABLE `live_show` (
   `pic_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播间隙图片',
   `type` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播类型',
   `live_title` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播标题',
-  `show_num` varchar(60) COLLATE utf8mb4_bin DEFAULT '0' COMMENT '直播人数',
+  `show_num` INTEGER DEFAULT 0 COMMENT '直播人数',
   `msg_channel` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '获取渠道',
   `live_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播地址（房间号）',
   `is_show` int(11) DEFAULT '0' COMMENT '是否在播（0：未直播、1：在播）',
