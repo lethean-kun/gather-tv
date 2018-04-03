@@ -7,6 +7,7 @@ import com.zz.model.LiveShow;
 import com.zz.model.LiveType;
 import com.zz.service.SpiderService;
 import com.zz.thread.ThreadCrowingLiveList;
+import com.zz.util.CrowingLiveList;
 import com.zz.util.CrowingLiveType;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
@@ -37,47 +38,59 @@ public class SpiderServiceImpl implements SpiderService {
     ThreadCrowingLiveList threadCrowingLiveList;
 
     @Autowired
+    CrowingLiveList crowingLiveList;
+
+    @Autowired
     TypeMapper typeMapper;
 
     @Override
-    @Scheduled(fixedRate = 500000)
+    @Scheduled(fixedRate = 300000)
     public int forInsertLive() throws Exception {
 
         logger.info("10分钟抓取一次数据");
 
-        Set<Future<List<LiveShow>>> futures = Sets.newHashSet();
+
         //设置状态为未播
         liveShowMapper.updateLiveIsShow();
-        threadCrowingLiveList.getAllLiveShow().clear();
         Long s = System.currentTimeMillis();
-        Future<List<LiveShow>> hYList = threadCrowingLiveList.crowingHuya();
-        futures.add(hYList);
-        Future<List<LiveShow>> lZList = threadCrowingLiveList.crowingLongZhu();
-        futures.add(lZList);
-        Future<List<LiveShow>> ZQList = threadCrowingLiveList.crowingZanQi();
-        futures.add(ZQList);
-        Future<List<LiveShow>> QMList = threadCrowingLiveList.crowingQuanMin();
-        futures.add(QMList);
-        //等待所有的爬虫线程执行完成
-        boolean flag;
-        while (true) {
-            flag = true;
-            Iterator<Future<List<LiveShow>>> isDoneIterator = futures.iterator();
-            while (isDoneIterator.hasNext()) {
-                if (!isDoneIterator.next().isDone()) {
-                    flag = false;
-                }
-            }
-            if (flag) {
-                logger.info("批处理所有的线程执行完成...");
-                break;
-            }
-        }
+
+//        Set<Future<List<LiveShow>>> futures = Sets.newHashSet();
+//        threadCrowingLiveList.getAllLiveShow().clear();
+//        Future<List<LiveShow>> hYList = threadCrowingLiveList.crowingHuya();
+//        futures.add(hYList);
+//        Future<List<LiveShow>> lZList = threadCrowingLiveList.crowingLongZhu();
+//        futures.add(lZList);
+//        Future<List<LiveShow>> ZQList = threadCrowingLiveList.crowingZanQi();
+//        futures.add(ZQList);
+//        Future<List<LiveShow>> QMList = threadCrowingLiveList.crowingQuanMin();
+//        futures.add(QMList);
+//        //等待所有的爬虫线程执行完成
+//        boolean flag;
+//        while (true) {
+//            flag = true;
+//            Iterator<Future<List<LiveShow>>> isDoneIterator = futures.iterator();
+//            while (isDoneIterator.hasNext()) {
+//                if (!isDoneIterator.next().isDone()) {
+//                    flag = false;
+//                }
+//            }
+//            if (flag) {
+//                logger.info("批处理所有的线程执行完成...");
+//                break;
+//            }
+//        }
+        CrowingLiveList.allLive.clear();
+
+        crowingLiveList.crowingHuya();
+        crowingLiveList.crowingLongZhu();
+        crowingLiveList.crowingQuanMin();
+        crowingLiveList.crowingZanQi();
+
         Long e = System.currentTimeMillis();
         logger.info("线程爬取数据耗时耗时" + (e - s));
 
         List<LiveShow> liveShows = new ArrayList<>();
-        liveShows.addAll(threadCrowingLiveList.getAllLiveShow());
+        liveShows.addAll(CrowingLiveList.allLive);
         Long star = System.currentTimeMillis();
         //未做成全部插入，虽然循环很消耗性能
         // for(LiveShow liveShow:liveShows){
