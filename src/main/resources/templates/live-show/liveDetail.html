@@ -114,7 +114,7 @@
         var room_id = $("#topic_pub").val();
         $.post("/isMyFollow",{"userId":user_id,"roomId":room_id},function (data) {
             if(data.status==1){
-                $("#is-follow").removeAttr("checked");
+                $("#my-follow").html('<div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>已关</em><i></i></div>')
             }
         })
 
