@@ -40,7 +40,7 @@ public class SpiderServiceImpl implements SpiderService {
     TypeMapper typeMapper;
 
     @Override
-    @Scheduled(cron = "0 0/10 * * * ? ")
+    @Scheduled(fixedRate = 500000)
     public int forInsertLive() throws Exception {
 
         logger.info("10分钟抓取一次数据");
@@ -79,7 +79,7 @@ public class SpiderServiceImpl implements SpiderService {
         List<LiveShow> liveShows = new ArrayList<>();
         liveShows.addAll(threadCrowingLiveList.getAllLiveShow());
         Long star = System.currentTimeMillis();
-        //未做成全部插入，虽然循环很消耗性能，日后再做
+        //未做成全部插入，虽然循环很消耗性能
         // for(LiveShow liveShow:liveShows){
         //     liveShowMapper.updateLive(liveShow);
         // }
