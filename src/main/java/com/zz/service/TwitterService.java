@@ -45,5 +45,12 @@ public interface TwitterService {
      */
     int insertCommet(Comment comment);
 
+    /**
+     * 删除twitter
+     * @param twitter
+     * @return
+     */
+    int deleteTwitter(Twitter twitter);
+
 
 }

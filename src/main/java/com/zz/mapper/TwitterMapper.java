@@ -26,7 +26,7 @@ public interface TwitterMapper {
      * 查询所有动态
      * @return
      */
-    @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
+    @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
             "FROM user_twitter order by creat_date desc")
     @Results({
             @Result(column = "user_id",property = "userId"),
@@ -47,7 +47,7 @@ public interface TwitterMapper {
      * 查询动态
      * @return
      */
-    @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
+    @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
             "FROM user_twitter WHERE id=#{twitterId}")
     @Results({
             @Result(column = "user_id",property = "userId"),
@@ -64,7 +64,7 @@ public interface TwitterMapper {
      * @param userId
      * @return
      */
-    @Select("SELECT id,user_id,feeling,creat_date as creatData,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
+    @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
             "FROM user_twitter WHERE user_id=#{userId} order by creat_date desc")
     @Results({
             @Result(column = "user_id",property = "userId"),
@@ -80,6 +80,16 @@ public interface TwitterMapper {
 
     })
     List<Twitter> userTwitters(int userId);
+
+
+    /**
+     * 删除twitter
+     * @param twitter
+     * @return
+     */
+    @Update("UPDATE user_twitter SET status = 1 WHERE user_id=#{userId} and id=#{id}")
+    int deleteTwitter(Twitter twitter);
+
 
     /**
      * 点赞
