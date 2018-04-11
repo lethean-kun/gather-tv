@@ -229,16 +229,26 @@
 
     function deleteTwitter(id,user_id){
 
-        $.post("/delTwitter",{"id":id,"userId":user_id},function (data) {
 
-            if(data.status==1){
-                layer.msg(data.message);
-                window.location.href = "/toAllTwitter";
-            }else{
-                layer.msg(data.message, {icon: 5});
+        layer.msg('确认删除？', {
+            time: 0 //不自动关闭
+            ,btn: ['确认', '取消']
+            ,yes: function(index){
+                layer.close(index);
+                $.post("/delTwitter",{"id":id,"userId":user_id},function (data) {
+
+                    if(data.status==1){
+                        layer.msg(data.message);
+                        window.location.href = "/toAllTwitter";
+                    }else{
+                        layer.msg(data.message, {icon: 5});
+                    }
+
+                })
             }
+        });
 
-        })
+
     }
 
 </script>

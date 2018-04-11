@@ -27,7 +27,7 @@ public interface TwitterMapper {
      * @return
      */
     @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
-            "FROM user_twitter order by creat_date desc")
+            "FROM user_twitter where status=0 order by creat_date desc")
     @Results({
             @Result(column = "user_id",property = "userId"),
             @Result(column = "user_id",property = "user",one = @One(
@@ -48,7 +48,7 @@ public interface TwitterMapper {
      * @return
      */
     @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
-            "FROM user_twitter WHERE id=#{twitterId}")
+            "FROM user_twitter WHERE id=#{twitterId} and status=0")
     @Results({
             @Result(column = "user_id",property = "userId"),
             @Result(column = "user_id",property = "user",one = @One(
@@ -65,7 +65,7 @@ public interface TwitterMapper {
      * @return
      */
     @Select("SELECT id,user_id,feeling,creat_date as creatDate,delete_date as deleteDate,like_hit as likeHit,dislike_hit as dislikeHit,reply_hit as replyHit " +
-            "FROM user_twitter WHERE user_id=#{userId} order by creat_date desc")
+            "FROM user_twitter WHERE user_id=#{userId} and status=0 order by creat_date desc")
     @Results({
             @Result(column = "user_id",property = "userId"),
             @Result(column = "user_id",property = "user",one = @One(
@@ -87,7 +87,7 @@ public interface TwitterMapper {
      * @param twitter
      * @return
      */
-    @Update("UPDATE user_twitter SET status = 1 WHERE user_id=#{userId} and id=#{id}")
+    @Update("UPDATE user_twitter SET status = 1,delete_date=now() WHERE user_id=#{userId} and id=#{id}")
     int deleteTwitter(Twitter twitter);
 
 
