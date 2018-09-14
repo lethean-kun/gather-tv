@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-03-07 23:07:25
+Date: 2018-04-11 22:06:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,11 +26,22 @@ CREATE TABLE `comment` (
   `content` varchar(50) DEFAULT NULL COMMENT '评论内容',
   `comment_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comment
 -- ----------------------------
+INSERT INTO `comment` VALUES ('00000000001', '1', '9', null, '2018-03-18 14:19:56');
+INSERT INTO `comment` VALUES ('00000000002', '1', '9', '', '2018-03-18 14:20:37');
+INSERT INTO `comment` VALUES ('00000000003', '1', '9', '', '2018-03-18 14:29:06');
+INSERT INTO `comment` VALUES ('00000000004', '1', '9', '', '2018-03-18 14:32:33');
+INSERT INTO `comment` VALUES ('00000000005', '1', '9', '', '2018-04-01 11:31:32');
+INSERT INTO `comment` VALUES ('00000000006', '1', '9', 'wqeq', '2018-04-01 11:34:21');
+INSERT INTO `comment` VALUES ('00000000007', '1', '7', '456', '2018-04-01 11:34:35');
+INSERT INTO `comment` VALUES ('00000000008', '1', '9', '46', '2018-04-01 12:23:11');
+INSERT INTO `comment` VALUES ('00000000009', '1', '9', '46', '2018-04-01 12:23:13');
+INSERT INTO `comment` VALUES ('00000000010', '1', '8', '好的', '2018-04-01 12:37:13');
+INSERT INTO `comment` VALUES ('00000000011', '1', '3', '我也爱你', '2018-04-01 14:16:14');
 
 -- ----------------------------
 -- Table structure for `hit_record`
@@ -44,7 +55,7 @@ CREATE TABLE `hit_record` (
   `is_like` int(11) DEFAULT NULL COMMENT '点赞或踩（0：为操作，1：点踩，2：点赞）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hit_onlyone` (`user_id`,`twitter_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hit_record
@@ -53,6 +64,11 @@ INSERT INTO `hit_record` VALUES ('00000000001', '1', '1', '2018-03-06 22:48:32',
 INSERT INTO `hit_record` VALUES ('00000000002', '1', '2', '2018-03-06 22:48:46', '1');
 INSERT INTO `hit_record` VALUES ('00000000003', '2', '5', '2018-03-07 22:34:40', '2');
 INSERT INTO `hit_record` VALUES ('00000000004', '2', '4', '2018-03-07 22:34:41', '2');
+INSERT INTO `hit_record` VALUES ('00000000005', '1', '6', '2018-03-07 23:10:44', '1');
+INSERT INTO `hit_record` VALUES ('00000000006', '1', '9', '2018-03-18 14:32:52', '2');
+INSERT INTO `hit_record` VALUES ('00000000010', '1', '8', '2018-04-01 12:03:25', '1');
+INSERT INTO `hit_record` VALUES ('00000000020', '1', '7', '2018-04-01 12:10:17', '2');
+INSERT INTO `hit_record` VALUES ('00000000026', '1', '3', '2018-04-01 12:14:03', '2');
 
 -- ----------------------------
 -- Table structure for `live_impression`
@@ -80,14 +96,13 @@ CREATE TABLE `live_show` (
   `pic_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播间隙图片',
   `type` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播类型',
   `live_title` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播标题',
-  `show_num` varchar(60) COLLATE utf8mb4_bin DEFAULT '0' COMMENT '直播人数',
+  `show_num` int(60) DEFAULT '0' COMMENT '直播人数',
   `msg_channel` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '获取渠道',
   `live_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '直播地址（房间号）',
   `is_show` int(11) DEFAULT '0' COMMENT '是否在播（0：未直播、1：在播）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_channel` (`person_name`,`msg_channel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
 
 -- ----------------------------
 -- Table structure for `live_type`
@@ -227,11 +242,8 @@ CREATE TABLE `user_follow` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '是否关注（1：关注，0：取消关注）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_channel` (`user_id`,`room_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of user_follow
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `user_twitter`
@@ -246,15 +258,19 @@ CREATE TABLE `user_twitter` (
   `like_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被赞次数',
   `dislike_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '被踩次数',
   `reply_hit` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '回复次数',
+  `status` int(10) DEFAULT '0' COMMENT '0：未删除，1：已删除，2：已被封',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user_twitter
 -- ----------------------------
-INSERT INTO `user_twitter` VALUES ('1', '1', '末将于禁，原为曹家世代赴汤蹈火。', '2018-03-06 22:18:09', null, '0000000005', '0000000000', '0000000002');
-INSERT INTO `user_twitter` VALUES ('2', '1', '不戴紧箍，如何救你；带上紧箍，如何爱你', '2018-03-06 22:19:38', null, '0000000050', '0000000000', '0000000005');
-INSERT INTO `user_twitter` VALUES ('3', '1', '<p>這是一個簡單的測試，<span style=\"color: rgb(249, 150, 59); font-weight: bold;\">我愛你</span></p>', '2018-03-07 21:53:53', null, '0000000000', '0000000000', '0000000000');
-INSERT INTO `user_twitter` VALUES ('4', '2', '<p><span style=\"color: rgb(70, 172, 200);\">人各有命，上天注定，有人天生为王，有人落草为寇。脚下的路，如果不是你自己的选择，那么旅程的终点在哪，也没人知道。你会走到哪，会遇到谁，都不一定。&nbsp;&nbsp;</span>?<br></p>', '2018-03-07 22:28:08', null, '0000000000', '0000000000', '0000000000');
-INSERT INTO `user_twitter` VALUES ('5', '2', '<p>test</p>', '2018-03-07 22:32:10', null, '0000000000', '0000000000', '0000000000');
-INSERT INTO `user_twitter` VALUES ('6', '1', '<p>发表图片测试</p><p><img src=\"/upLoad/pic/1520435203207.jpg\" style=\"max-width:100%;\"><br></p>', '2018-03-07 23:06:45', null, '0000000000', '0000000000', '0000000000');
+INSERT INTO `user_twitter` VALUES ('1', '1', '末将于禁，原为曹家世代赴汤蹈火。', '2018-03-06 22:18:09', '2018-04-11 21:34:19', '0000000005', '0000000000', '0000000002', '1');
+INSERT INTO `user_twitter` VALUES ('2', '1', '不戴紧箍，如何救你；带上紧箍，如何爱你', '2018-03-06 22:19:38', null, '0000000050', '0000000000', '0000000005', '0');
+INSERT INTO `user_twitter` VALUES ('3', '1', '<p>這是一個簡單的測試，<span style=\"color: rgb(249, 150, 59); font-weight: bold;\">我愛你</span></p>', '2018-03-07 21:53:53', null, '0000000000', '0000000000', '0000000000', '0');
+INSERT INTO `user_twitter` VALUES ('4', '2', '<p><span style=\"color: rgb(70, 172, 200);\">人各有命，上天注定，有人天生为王，有人落草为寇。脚下的路，如果不是你自己的选择，那么旅程的终点在哪，也没人知道。你会走到哪，会遇到谁，都不一定。&nbsp;&nbsp;</span>?<br></p>', '2018-03-07 22:28:08', null, '0000000000', '0000000000', '0000000000', '0');
+INSERT INTO `user_twitter` VALUES ('5', '2', '<p>test</p>', '2018-03-07 22:32:10', null, '0000000000', '0000000000', '0000000000', '0');
+INSERT INTO `user_twitter` VALUES ('6', '1', '<p>发表图片测试</p><p><img src=\"/upLoad/pic/1520435203207.jpg\" style=\"max-width:100%;\"></p>', '2018-03-07 23:06:45', null, '0000000000', '0000000000', '0000000000', '0');
+INSERT INTO `user_twitter` VALUES ('7', '1', '<p><img src=\"/upLoad/pic/1520518200523.png\" style=\"max-width:100%;\">哪位同学解释一下这个图片的含义</p>', '2018-03-08 22:10:33', null, '0000000000', '0000000000', '0000000000', '0');
+INSERT INTO `user_twitter` VALUES ('8', '1', '<p><span style=\"font-weight: bold; color: rgb(139, 170, 74);\">1221345646</span><img src=\"/upLoad/pic/1520951022303.png\" style=\"max-width: 100%;\"></p>', '2018-03-13 22:23:46', '2018-04-11 21:46:12', '0000000000', '0000000000', '0000000000', '1');
+INSERT INTO `user_twitter` VALUES ('9', '1', '<p><img src=\"/upLoad/pic/1520951035103.jpg\" style=\"max-width:100%;\"><br></p>', '2018-03-13 22:23:56', null, '0000000000', '0000000000', '0000000000', '0');

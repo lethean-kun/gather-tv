@@ -9,7 +9,7 @@
 
     <th:block th:include="common/header::nav"/>
 
-    <div style="margin-top: 10px;position:absolute; height:650px; width: 100%;overflow:auto"
+    <div style="margin-top: 10px;position:absolute; height:80%; width: 100%;overflow:auto"
          class="layui-row layui-col-space5">
         <div class="layui-col-xs3">
             <div style="position:fixed;margin-top: 100px;text-align: center">
@@ -27,9 +27,17 @@
                                 <th:block th:text="${twitter.user.username}"></th:block>
                             </font>
                         </a>
+                        <th:block th:if="${session.user != null}">
+                            <th:block th:if="${session.user.id}==${twitter.user.id}">
+                                <button th:onclick="'deleteTwitter('+${twitter.id}+','+${twitter.user.id}+')'" style="float: right" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">删除</button>
+                            </th:block>
+                        </th:block>
+
+
                     </div>
+
                     <div>
-                        &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.creatData}">2017年11月5日</span>
+                        &#12288;&#12288;<span style="font-size: 10px;color: #C9C5C5" th:text="${twitter.publishDate}">2017年11月5日</span>
                     </div>
 
 
@@ -97,8 +105,8 @@
         </div>
         <div class="layui-col-xs3">
             <div style="position:fixed;">
-                <div style="margin-left: 150px;margin-top: 140%">
-                    <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button>
+                <div style="margin-left: 150px;position:fixed; bottom:14%; right:8%;">
+                    <button id="publish" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">发表动态</button><br/>
                     <button id="my-twitter" class="e-button layui-btn-normal layui-btn-radius layui-btn-lg">我的动态
                     </button>
                 </div>
@@ -218,6 +226,30 @@
     $(".reply").click(function () {
         $(this).parent().next().slideToggle("fast");
     })
+
+    function deleteTwitter(id,user_id){
+
+
+        layer.msg('确认删除？', {
+            time: 0 //不自动关闭
+            ,btn: ['确认', '取消']
+            ,yes: function(index){
+                layer.close(index);
+                $.post("/delTwitter",{"id":id,"userId":user_id},function (data) {
+
+                    if(data.status==1){
+                        layer.msg(data.message);
+                        window.location.href = "/toAllTwitter";
+                    }else{
+                        layer.msg(data.message, {icon: 5});
+                    }
+
+                })
+            }
+        });
+
+
+    }
 
 </script>
 </html>

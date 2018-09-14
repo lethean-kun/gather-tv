@@ -1,10 +1,7 @@
 package com.zz.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zz.model.Comment;
-import com.zz.model.Parameter;
-import com.zz.model.Result;
-import com.zz.model.Twitter;
+import com.zz.model.*;
 import com.zz.service.TwitterService;
 import com.zz.util.PicShowUtil;
 import org.slf4j.Logger;
@@ -52,6 +49,30 @@ public class TwitterController {
         request.setAttribute("twitters", twitters);
 
         return "users-twitter/allTwitter";
+    }
+
+    @ResponseBody
+    @RequestMapping("delTwitter")
+    public Result delTwitter(HttpServletRequest request,
+                             Twitter twitter){
+
+        Result result = new Result();
+        if(((User)request.getSession().getAttribute("user")).getId()==twitter.getUserId()){
+            if(twitterService.deleteTwitter(twitter)>0){
+                result.setMessage("删除成功！");
+                result.setStatus(1);
+                return result;
+            }else {
+                result.setMessage("删除失败！");
+                result.setStatus(0);
+                return result;
+            }
+
+        }
+        result.setStatus(-1);
+        result.setMessage("权限不足！");
+        return result;
+
     }
 
     @RequestMapping("toUserTwitter/{userId}")

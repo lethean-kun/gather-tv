@@ -84,81 +84,81 @@
 
     <th:block th:include="common/header::foot"/>
 </div>
-<script>
-    /* <![CDATA[ */
-    layui.use('flow', function () {
-        var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
-        var flow = layui.flow;
-        flow.load({
-            elem: '#live-show',
-            isAuto: true,
-            done: function (page, next) { //到达临界点（默认滚动触发），触发下一页
-                var lis = [];
-                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                $.get('/toLiveListByPg/' + page, function (res) {
-                    //假设你的列表返回在data集合中
-                    layui.each(res.data, function (index, item) {
-                        lis.push('<li style="margin-right: 20px" >' +
-                            ' <a class="play" href="/liveDetail/'+ item.id + '">' +
-                            ' <div class="show">' +
-                            ' <div style="position:relative;">' +
-                            ' <img src="' + item.picUrl + '" height="180px" width="290px"/>' +
-                            ' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">' +
-                            ' <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>' +
-                            ' </div>' +
-                            ' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">' +
-                            ' <span style="background-color: #23ade5"  >'+ item.msgChannel +'</span>' +
-                            ' </div>' +
-                            ' </div>' +
-                            ' <div>' +
-                            ' <div style="float: left"><span class="title" title="' + item.liveTitle + '">&nbsp;' + item.liveTitle + '</span>' +
-                            ' </div>' +
-                            ' <div style="float: right;color:#23ade5"><span >' + item.type + '&nbsp;</span>' +
-                            ' </div>' +
-                            ' </div>' +
-                            ' <div style="clear:both">' +
-                            ' <div style="float: left">' +
-                            ' &nbsp;<i class="ion-android-contact"></i>' +
-                            ' <span style="color: #C9C5C5" >' + item.personName + '</span>' +
-                            ' </div>' +
-                            ' <div style="float:right">' +
-                            ' <i class="ion-fireball" style="color: #23ade5"></i>' +
-                            ' <span >&nbsp;' + item.showNum + '&nbsp;</span>' +
-                            ' </div>' +
-                            ' </div>' +
-                            ' </div>' +
-                            ' </a>' +
-                            ' </li>'
-                        );
-                    });
+<!--<script>-->
+    <!--/* <![CDATA[ */-->
+    <!--layui.use('flow', function () {-->
+        <!--var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。-->
+        <!--var flow = layui.flow;-->
+        <!--flow.load({-->
+            <!--elem: '#live-show',-->
+            <!--isAuto: true,-->
+            <!--done: function (page, next) { //到达临界点（默认滚动触发），触发下一页-->
+                <!--var lis = [];-->
+                <!--//以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）-->
+                <!--$.get('/toLiveListByPg/' + page, function (res) {-->
+                    <!--//假设你的列表返回在data集合中-->
+                    <!--layui.each(res.data, function (index, item) {-->
+                        <!--lis.push('<li style="margin-right: 20px" >' +-->
+                            <!--' <a class="play" href="/liveDetail/'+ item.id + '">' +-->
+                            <!--' <div class="show">' +-->
+                            <!--' <div style="position:relative;">' +-->
+                            <!--' <img src="' + item.picUrl + '" height="180px" width="290px"/>' +-->
+                            <!--' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:41%;top:37%;">' +-->
+                            <!--' <i class="star layui-icon" style="font-size:50px;color: white;display: none">&#xe652;</i>' +-->
+                            <!--' </div>' +-->
+                            <!--' <div style="position:absolute;width:100px;height:100px;z-indent:2;left:0;top:-2.5px;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">' +-->
+                            <!--' <span style="background-color: #23ade5"  >'+ item.msgChannel +'</span>' +-->
+                            <!--' </div>' +-->
+                            <!--' </div>' +-->
+                            <!--' <div>' +-->
+                            <!--' <div style="float: left"><span class="title" title="' + item.liveTitle + '">&nbsp;' + item.liveTitle + '</span>' +-->
+                            <!--' </div>' +-->
+                            <!--' <div style="float: right;color:#23ade5"><span >' + item.type + '&nbsp;</span>' +-->
+                            <!--' </div>' +-->
+                            <!--' </div>' +-->
+                            <!--' <div style="clear:both">' +-->
+                            <!--' <div style="float: left">' +-->
+                            <!--' &nbsp;<i class="ion-android-contact"></i>' +-->
+                            <!--' <span style="color: #C9C5C5" >' + item.personName + '</span>' +-->
+                            <!--' </div>' +-->
+                            <!--' <div style="float:right">' +-->
+                            <!--' <i class="ion-fireball" style="color: #23ade5"></i>' +-->
+                            <!--' <span >&nbsp;' + item.showNum + '&nbsp;</span>' +-->
+                            <!--' </div>' +-->
+                            <!--' </div>' +-->
+                            <!--' </div>' +-->
+                            <!--' </a>' +-->
+                            <!--' </li>'-->
+                        <!--);-->
+                    <!--});-->
 
-                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                    next(lis.join(''), page < 100);
+                    <!--//执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页-->
+                    <!--//pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多-->
+                    <!--next(lis.join(''), page < 100);-->
 
-                    $(".play").mouseover(
-                        function () {
-                            $(this).find(".star").fadeIn("slow");
-                        }
-                    );
-                    $(".play").mouseleave(
-                        function () {
-                            $(this).find(".star").fadeOut("slow");
-                        }
-                    );
-                    //title过长处理
-                    $(function () {
-                        $(".title").each(function (index, el) {
-                            var li = $(this);
-                            li.text(subLimit(li.text()))
-                        })
-                    })
-                });
-            }
-        });
-    });
-    /* ]]> */
-</script>
+                    <!--$(".play").mouseover(-->
+                        <!--function () {-->
+                            <!--$(this).find(".star").fadeIn("slow");-->
+                        <!--}-->
+                    <!--);-->
+                    <!--$(".play").mouseleave(-->
+                        <!--function () {-->
+                            <!--$(this).find(".star").fadeOut("slow");-->
+                        <!--}-->
+                    <!--);-->
+                    <!--//title过长处理-->
+                    <!--$(function () {-->
+                        <!--$(".title").each(function (index, el) {-->
+                            <!--var li = $(this);-->
+                            <!--li.text(subLimit(li.text()))-->
+                        <!--})-->
+                    <!--})-->
+                <!--});-->
+            <!--}-->
+        <!--});-->
+    <!--});-->
+    <!--/* ]]> */-->
+<!--</script>-->
 <script>
     /**
      * @param string
@@ -175,8 +175,23 @@
     }
 
 
-
-
+    $(".play").mouseover(
+        function () {
+            $(this).find(".star").fadeIn("slow");
+        }
+    );
+    $(".play").mouseleave(
+        function () {
+            $(this).find(".star").fadeOut("slow");
+        }
+    );
+    //title过长处理
+    $(function () {
+        $(".title").each(function (index, el) {
+            var li = $(this);
+            li.text(subLimit(li.text()))
+        })
+    })
 
 </script>
 

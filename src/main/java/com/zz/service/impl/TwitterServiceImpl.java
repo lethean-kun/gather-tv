@@ -6,6 +6,7 @@ import com.zz.mapper.TwitterMapper;
 import com.zz.model.Comment;
 import com.zz.model.Twitter;
 import com.zz.service.TwitterService;
+import com.zz.util.DateFormat;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,18 +33,16 @@ public class TwitterServiceImpl implements TwitterService {
     public List<Twitter> getAllTwitter() {
 
         List<Twitter> twitters = twitterMapper.allTwitter();
-        for (Twitter twitter : twitters) {
-            twitter.setLikeHit(hitRecordMapper.getLikeHit(twitter.getId()));
-            twitter.setDislikeHit(hitRecordMapper.getDisLikeHit(twitter.getId()));
-            twitter.setReplyHit(commentMapper.getCommentCount(twitter.getId()));
-        }
-        return twitters;
+
+        return formatTwitter(twitters);
     }
 
     @Override
     public List<Twitter> getUserTwitter(int userId) {
+        List<Twitter> twitters = twitterMapper.userTwitters(userId);
 
-        return twitterMapper.userTwitters(userId);
+
+        return formatTwitter(twitters);
 
     }
 
@@ -69,4 +68,29 @@ public class TwitterServiceImpl implements TwitterService {
         }
         return commentMapper.insertComment(comment);
     }
+
+    @Override
+    public int deleteTwitter(Twitter twitter) {
+
+
+        int status = twitterMapper.deleteTwitter(twitter);
+        if(status>0){
+            return 1;
+        }
+
+        return 0;
+    }
+
+    public List<Twitter> formatTwitter(List<Twitter> twitters){
+
+        for (Twitter twitter : twitters) {
+            twitter.setLikeHit(hitRecordMapper.getLikeHit(twitter.getId()));
+            twitter.setDislikeHit(hitRecordMapper.getDisLikeHit(twitter.getId()));
+            twitter.setReplyHit(commentMapper.getCommentCount(twitter.getId()));
+            twitter.setPublishDate(DateFormat.dataFormat(twitter.getCreatDate()));
+        }
+        return twitters;
+    }
+
+
 }

@@ -13,7 +13,8 @@ public class Twitter {
     private int id;
     private int userId;
     private String feeling;
-    private Date creatData;
+    private Date creatDate;
+    private String publishDate;
     private Date deleteDate;
     private int likeHit;
     private int dislikeHit;
@@ -47,12 +48,20 @@ public class Twitter {
         this.feeling = feeling;
     }
 
-    public Date getCreatData() {
-        return creatData;
+    public Date getCreatDate() {
+        return creatDate;
     }
 
-    public void setCreatData(Date creatData) {
-        this.creatData = creatData;
+    public void setCreatDate(Date creatDate) {
+        this.creatDate = creatDate;
+    }
+
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
     }
 
     public Date getDeleteDate() {
@@ -117,7 +126,7 @@ public class Twitter {
                 "id=" + id +
                 ", userId=" + userId +
                 ", feeling='" + feeling + '\'' +
-                ", creatData=" + creatData +
+                ", creatDate=" + creatDate +
                 ", deleteDate=" + deleteDate +
                 ", likeHit=" + likeHit +
                 ", dislikeHit=" + dislikeHit +
